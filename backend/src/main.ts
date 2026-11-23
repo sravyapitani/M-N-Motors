@@ -18,10 +18,9 @@ async function bootstrap() {
     }),
   );
 
-  // Restrict CORS to frontend origin (default: http://localhost:5173)
-  const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+  // Enable CORS for localhost, port-forwards, and public tunnels
   app.enableCors({
-    origin: frontendOrigin,
+    origin: true,
     credentials: true,
   });
 
