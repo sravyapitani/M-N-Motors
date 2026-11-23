@@ -1,0 +1,584 @@
+.tds-page {
+    padding: 2px 2px 2px;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 0;
+}
+
+.tds-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.tds-page-header h1 {
+    margin: 0 0 8px;
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.tds-page-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.tds-download-button {
+    flex-shrink: 0;
+    padding: 11px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #1749a6;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.tds-download-button:hover {
+    background: #123d8c;
+}
+
+.tds-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.tds-summary-card {
+    min-height: 60px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.tds-summary-card span {
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.tds-summary-card h2 {
+    margin: 12px 0 0;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.tds-report-period {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 13px;
+}
+
+.tds-report-period strong {
+    font-weight: 700;
+}
+
+.tds-report-period select {
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background: #eef2f7;
+    color: #111827;
+    font-size: 13px;
+}
+
+.tds-report-period span {
+    color: #8490a3;
+}
+
+.tds-chart-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 0.9fr;
+    align-items: stretch;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.tds-chart-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #fff;
+}
+
+.tds-chart-card h3 {
+    margin: 0 0 18px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.tds-chart-row {
+    margin-bottom: 12px;
+}
+
+.tds-chart-row:last-child {
+    margin-bottom: 0;
+}
+
+.tds-chart-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.tds-chart-label span {
+    color: #64748b;
+}
+
+.tds-chart-label strong {
+    color: #111827;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.tds-chart-track {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #e2e7ef;
+}
+
+.tds-chart-bar {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.25s ease;
+}
+
+.tds-chart-bar-blue {
+    background: #1d4fa8;
+}
+
+.tds-chart-bar-teal {
+    background: #0d9992;
+}
+
+.tds-entries-section {
+    min-width: 0;
+}
+
+.tds-entries-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tds-entries-heading h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.tds-entries-heading>span {
+    color: #8490a3;
+    font-size: 11px;
+}
+
+.tds-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 14px;
+}
+
+.tds-filter-row input,
+.tds-filter-row select {
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background: #fff;
+    color: #334155;
+    font-size: 12px;
+}
+
+.tds-filter-row input {
+    width: 203px;
+}
+
+.tds-filter-row select {
+    min-width: 92px;
+    background: #eef2f7;
+}
+
+.tds-record-count {
+    margin-left: auto;
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.tds-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px 16px 0 0;
+    background: #fff;
+}
+
+.tds-entries-table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #fff;
+    font-size: 12px;
+}
+
+.tds-entries-table thead {
+    background: #e9edf4;
+}
+
+.tds-entries-table th {
+    height: 41px;
+    padding: 12px 15px;
+    color: #8490a3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.65px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.tds-entries-table td {
+    height: 64px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e5eaf1;
+    color: #172033;
+    white-space: nowrap;
+}
+
+.tds-entries-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tds-entries-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.tds-type-pill,
+.tds-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 18px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tds-type-pill i,
+.tds-status-pill i {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.tds-type-pill.tds {
+    background: #e3e8f0;
+    color: #64748b;
+}
+
+.tds-type-pill.tcs {
+    background: #dff5eb;
+    color: #07804d;
+}
+
+.tds-section-code {
+    margin-bottom: 4px;
+    color: #172033;
+    font-size: 13px;
+}
+
+.tds-section-description {
+    max-width: 220px;
+    color: #8490a3;
+    font-size: 11px;
+    white-space: normal;
+    line-height: 1.4;
+}
+
+.tds-tax-amount {
+    font-weight: 700;
+}
+
+.tds-status-pill.deposited,
+.tds-status-pill.certificate-issued {
+    background: #dff5e9;
+    color: #07804d;
+}
+
+.tds-status-pill.deducted,
+.tds-status-pill.collected {
+    background: #e3e8f0;
+    color: #64748b;
+}
+
+.tds-certificate-button {
+    padding: 7px 10px;
+    border: 1px solid #d7e0ec;
+    border-radius: 6px;
+    background: #fff;
+    color: #172033;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.tds-certificate-button:hover {
+    background: #f1f5f9;
+}
+
+.tds-certificate-pending {
+    color: #8490a3;
+    font-size: 11px;
+}
+
+.tds-empty-row {
+    height: 80px !important;
+    color: #8490a3 !important;
+    text-align: center;
+}
+
+.tds-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    background: #fff;
+}
+
+.tds-pagination>span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.tds-pagination>div {
+    display: flex;
+    gap: 8px;
+}
+
+.tds-pagination button {
+    padding: 8px 12px;
+    border: 1px solid #d7e0ec;
+    border-radius: 6px;
+    background: #fff;
+    color: #111827;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tds-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 1200px) {
+    .tds-chart-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .tds-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tds-page-header {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .tds-page {
+        padding: 16px 8px 24px;
+    }
+
+    .tds-page-header {
+        flex-direction: column;
+    }
+
+    .tds-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tds-entries-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tds-filter-row input {
+        width: 100%;
+    }
+
+    .tds-record-count {
+        margin-left: 0;
+    }
+}
+
+
+
+/* Certificate Download Popup */
+
+.tds-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(2px);
+}
+
+.tds-certificate-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 555px;
+    max-height: 82vh;
+    overflow: hidden;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.tds-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.tds-modal-header h2 {
+    margin: 0 0 7px;
+    color: #1e293b;
+    font-size: 18px;
+}
+
+.tds-modal-header p {
+    margin: 0;
+    color: #8490a3;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.tds-modal-close {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.tds-modal-table-wrap {
+    flex: 1;
+    overflow: auto;
+    padding: 20px 24px 0;
+}
+
+.tds-modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.tds-modal-table thead {
+    background: #e9edf4;
+}
+
+.tds-modal-table th {
+    padding: 14px 12px;
+    color: #8490a3;
+    font-size: 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.tds-modal-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #e5eaf1;
+    color: #273449;
+    line-height: 1.5;
+}
+
+.tds-modal-download {
+    padding: 8px 11px;
+    border: none;
+    border-radius: 6px;
+    background: #1749a6;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tds-modal-download:hover {
+    background: #123b88;
+}
+
+.tds-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid #edf0f4;
+}
+
+.tds-modal-footer button {
+    padding: 10px 15px;
+    border: 1px solid #d7e0ec;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #273449;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tds-modal-footer button:hover {
+    background: #f5f7fa;
+}
+
+@media (max-width: 600px) {
+    .tds-modal-overlay {
+        padding: 10px;
+    }
+
+    .tds-modal-header,
+    .tds-modal-table-wrap {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}

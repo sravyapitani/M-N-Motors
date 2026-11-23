@@ -1,0 +1,2912 @@
+/* ==============================
+   HR & PAYROLL - MAIN PAGE
+============================== */
+
+.hr-page {
+    width: 100%;
+    min-height: 100%;
+    padding: 2px 2px 2px;
+    box-sizing: border-box;
+    background: #f4f6fa;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.hr-page * {
+    box-sizing: border-box;
+}
+
+.hr-page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 17px;
+}
+
+.hr-page-heading h1 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 24px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.hr-page-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.hr-primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 11px 16px;
+    border: 1px solid #1749a6;
+    border-radius: 7px;
+    background: #1749a6;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.hr-primary-button:hover {
+    background: #123d8c;
+}
+
+/* ==============================
+   SECTION TABS
+============================== */
+
+.hr-section-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 10px;
+    margin-bottom: 21px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-section-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 43px;
+    padding: 10px 13px;
+    margin-bottom: -1px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #536176;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.hr-section-tab span {
+    font-size: 15px;
+}
+
+.hr-section-tab:hover {
+    color: #1749a6;
+    background: #edf2fb;
+}
+
+.hr-section-tab.active {
+    border-bottom-color: #1749a6;
+    color: #1749a6;
+}
+
+/* ==============================
+   SUMMARY CARDS
+============================== */
+
+.hr-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.hr-summary-card {
+    min-height: 102px;
+    padding: 20px 21px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-summary-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.hr-summary-card strong {
+    display: block;
+    color: #111827;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+/* ==============================
+   DEPARTMENT PROGRESS PANEL
+============================== */
+
+.hr-department-panel {
+    margin-bottom: 19px;
+    padding: 20px 22px 19px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.hr-department-panel h2 {
+    margin: 0 0 18px;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.hr-department-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.hr-department-item {
+    min-width: 0;
+}
+
+.hr-department-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.hr-department-label strong {
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.hr-progress-track {
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e2e7ef;
+}
+
+.hr-progress-fill {
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+    background: #204da5;
+    transition: width 0.2s ease;
+}
+
+/* ==============================
+   SEARCH AND FILTERS
+============================== */
+
+.hr-records-section {
+    width: 100%;
+    min-width: 0;
+}
+
+
+.hr-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 9px;
+    margin-bottom: 13px;
+    width: 100%;
+}
+
+
+.hr-search-input,
+.hr-filter-row select {
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    outline: none;
+    background: #ffffff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-search-input {
+    width: 203px;
+    max-width: 100%;
+}
+
+.hr-filter-row select {
+    min-width: 98px;
+    cursor: pointer;
+}
+
+.hr-search-input:focus,
+.hr-filter-row select:focus {
+    border-color: #1749a6;
+    box-shadow: 0 0 0 2px rgba(23, 73, 166, 0.08);
+}
+
+.hr-record-count {
+    margin-left: auto;
+    color: #8490a3;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ==============================
+   TABLE
+============================== */
+
+.hr-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5eaf1;
+    border-radius: 17px;
+    background: #ffffff;
+}
+
+.hr-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #ffffff;
+}
+
+.hr-table thead {
+    background: #eaf0f6;
+}
+
+.hr-table th {
+    height: 43px;
+    padding: 13px 15px;
+    color: #8490a3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.hr-table td {
+    height: 65px;
+    padding: 13px 15px;
+    border-bottom: 1px solid #e7edf4;
+    color: #10203a;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.hr-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hr-table tbody tr:hover {
+    background: #fafcff;
+}
+
+.hr-person-name {
+    margin-bottom: 5px;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.hr-secondary-text {
+    color: #8490a3;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.hr-center-cell {
+    text-align: center;
+}
+
+.hr-type-badge,
+.hr-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hr-type-badge {
+    background: #e0f5eb;
+    color: #087b50;
+}
+
+.hr-status-badge.success {
+    background: #e0f5eb;
+    color: #087b50;
+}
+
+.hr-status-badge.open {
+    background: #e8efff;
+    color: #1749a6;
+}
+
+.hr-status-badge.warning {
+    background: #fff0d5;
+    color: #9a6500;
+}
+
+.hr-status-badge.neutral {
+    background: #eef2f7;
+    color: #536176;
+}
+
+.hr-empty-state {
+    height: 90px !important;
+    color: #8490a3 !important;
+    text-align: center;
+}
+
+/* ==============================
+   PAGINATION
+============================== */
+
+.hr-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 51px;
+    padding: 10px 15px;
+    border-top: 1px solid #e7edf4;
+    background: #ffffff;
+}
+
+.hr-table-footer>span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-pagination {
+    display: flex;
+    gap: 8px;
+}
+
+.hr-pagination button {
+    min-height: 31px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #10203a;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-pagination button:hover:not(:disabled) {
+    border-color: #1749a6;
+    color: #1749a6;
+}
+
+.hr-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ==============================
+   OTHER SECTION PLACEHOLDER
+============================== */
+
+.hr-coming-soon {
+    padding: 35px;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.hr-coming-soon h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.hr-coming-soon p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   FORM MODAL
+============================== */
+
+.hr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.hr-form-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 470px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.hr-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 3px;
+}
+
+.hr-form-header h2 {
+    margin: 0 0 7px;
+    color: #111827;
+    font-size: 19px;
+}
+
+.hr-form-header p {
+    margin: 0;
+    color: #8490a3;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.hr-close-button {
+    border: none;
+    background: transparent;
+    color: #8490a3;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.hr-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.hr-form-field input,
+.hr-form-field select {
+    width: 100%;
+    height: 40px;
+    padding: 0 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    outline: none;
+    background: #ffffff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-form-field input:focus,
+.hr-form-field select:focus {
+    border-color: #1749a6;
+}
+
+.hr-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 5px;
+}
+
+.hr-cancel-button {
+    padding: 10px 14px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ==============================
+   RESPONSIVE LAYOUT
+============================== */
+
+@media (max-width: 1050px) {
+    .hr-page {
+        padding: 22px 18px 30px;
+    }
+
+    .hr-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hr-section-tabs {
+        gap: 0 3px;
+    }
+
+    .hr-section-tab {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+}
+
+@media (max-width: 650px) {
+    .hr-page {
+        padding: 17px 12px 24px;
+    }
+
+    .hr-page-heading {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hr-page-heading h1 {
+        font-size: 21px;
+    }
+
+    .hr-primary-button {
+        align-self: flex-start;
+    }
+
+    .hr-summary-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .hr-summary-card {
+        min-height: 91px;
+        padding: 15px;
+    }
+
+    .hr-summary-card span {
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+    .hr-summary-card strong {
+        font-size: 24px;
+    }
+
+    .hr-department-panel {
+        padding: 16px;
+    }
+
+    .hr-filter-row {
+        align-items: stretch;
+    }
+
+    .hr-search-input {
+        width: 100%;
+    }
+
+    .hr-record-count {
+        width: 100%;
+        margin: 4px 0 0;
+    }
+
+    .hr-table-footer {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}
+
+
+/* HIRING PIPELINE */
+.hr-hiring-section {
+    width: 100%;
+    min-width: 0;
+}
+
+.hr-recruitment-panel {
+    padding: 24px 22px 29px;
+    margin-bottom: 19px;
+    background: #fff;
+    border: 1px solid #e5eaf1;
+    border-radius: 18px;
+    box-shadow: 0 2px 3px rgba(20, 40, 80, 0.04);
+}
+
+.hr-panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 21px;
+}
+
+.hr-panel-heading h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 750;
+    color: #101828;
+}
+
+.hr-panel-heading span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-hiring-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.hr-hiring-stage {
+    display: grid;
+    grid-template-columns: 125px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+}
+
+.hr-hiring-stage-name {
+    color: #66758d;
+    font-size: 12px;
+}
+
+.hr-hiring-track {
+    height: 24px;
+    overflow: hidden;
+    background: #e2e7ef;
+    border-radius: 6px;
+}
+
+.hr-hiring-fill {
+    display: flex;
+    height: 100%;
+    min-width: 32px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    background: linear-gradient(90deg, #204da9, #109b96);
+    border-radius: 6px 0 0 6px;
+    transition: width 0.2s ease;
+}
+
+.hr-hiring-fill strong {
+    color: #fff;
+    font-size: 12px;
+}
+
+.hr-candidates-section {
+    min-width: 0;
+}
+
+.hr-candidate-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 13px;
+}
+
+.hr-candidate-toolbar .hr-search-input {
+    width: 203px;
+}
+
+.hr-candidate-toolbar select {
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #e1e6ef;
+    border-radius: 8px;
+    background: #edf0f5;
+    color: #273449;
+    font-size: 12px;
+}
+
+.hr-candidate-toolbar .hr-record-count {
+    margin-left: auto;
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-candidates-table {
+    min-width: 800px;
+}
+
+.hr-candidate-stage {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8edf9;
+    color: #214fa8;
+    font-size: 11px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.hr-candidate-stage.screening,
+.hr-candidate-stage.applied {
+    background: #e4e8ef;
+    color: #596579;
+}
+
+.hr-candidate-stage.offer-extended {
+    background: #fff0d7;
+    color: #986000;
+}
+
+.hr-candidate-stage.offer-accepted,
+.hr-candidate-stage.hired {
+    background: #dff5e9;
+    color: #087b51;
+}
+
+.hr-candidate-stage.rejected {
+    background: #fde7e7;
+    color: #b42318;
+}
+
+@media (max-width: 700px) {
+    .hr-recruitment-panel {
+        padding: 18px 14px;
+    }
+
+    .hr-panel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hr-hiring-stage {
+        grid-template-columns: 105px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .hr-hiring-stage-name {
+        font-size: 11px;
+    }
+
+    .hr-candidate-toolbar .hr-record-count {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/* Onboarding section */
+.hr-onboarding-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.hr-onboarding-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hr-onboarding-summary-card {
+    min-height: 102px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.hr-onboarding-summary-card span {
+    color: #8491a5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.hr-onboarding-summary-card strong {
+    color: #111827;
+    font-size: 27px;
+    font-weight: 750;
+    line-height: 1;
+}
+
+.hr-onboarding-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hr-onboarding-card {
+    padding: 19px 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-onboarding-card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.hr-onboarding-card-heading>div {
+    min-width: 0;
+}
+
+.hr-onboarding-card-heading strong {
+    color: #111827;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.hr-onboarding-card-heading>div>span {
+    color: #8491a5;
+    font-size: 12px;
+}
+
+.hr-onboarding-status {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8efff;
+    color: #1749a6;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hr-onboarding-progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    background: #e1e6ee;
+    border-radius: 10px;
+}
+
+.hr-onboarding-progress-fill {
+    height: 100%;
+    background: #1c4eaa;
+    border-radius: 10px;
+    transition: width 0.25s ease;
+}
+
+.hr-onboarding-progress-text {
+    margin: 10px 0 0;
+    color: #8491a5;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .hr-onboarding-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .hr-onboarding-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .hr-onboarding-card-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+/* ===== On-Roll & Daily Wages ===== */
+
+.hr-wages-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 2px;
+    color: #1f2937;
+}
+
+.hr-wages-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hr-wages-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    padding: 20px;
+    min-height: 102px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-wages-card span {
+    display: block;
+    color: #8491a5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.hr-wages-card h2 {
+    margin: 12px 0 0;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 750;
+    color: #111827;
+}
+
+.hr-wages-card small {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.hr-wages-panel {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    min-width: 0;
+}
+
+.hr-wages-panel h2 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.hr-wages-panel>p {
+    display: none;
+}
+
+.hr-wages-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid #e6eaf0;
+    background: #ffffff;
+}
+
+.hr-wages-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    text-align: left;
+}
+
+
+.hr-wages-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e6eaf0;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.hr-wages-pagination-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.hr-wages-pagination-buttons button {
+    padding: 7px 12px;
+    border: 1px solid #dbe2ea;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.hr-wages-pagination-buttons button:hover:not(:disabled) {
+    background: #f1f5f9;
+}
+
+.hr-wages-pagination-buttons button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+
+.hr-wages-table thead {
+    background: #e9edf3;
+}
+
+.hr-wages-table th {
+    padding: 14px 16px;
+    background: #e9edf3;
+    color: #8491a5;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.hr-wages-table td {
+    padding: 16px;
+    color: #111827;
+    border-bottom: 1px solid #e8edf3;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.hr-wages-table tbody tr:hover {
+    background: #fafbfd;
+}
+
+.hr-wages-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 1100px) {
+    .hr-wages-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .hr-wages-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hr-wages-summary {
+    grid-template-columns: 1fr;
+}
+
+.hr-wages-panel {
+    padding: 14px;
+}
+
+
+
+/* ===== On-Roll & Daily Wages Search Fields ===== */
+
+.hr-wages-search {
+    display: block;
+    width: 203px;
+    max-width: 100%;
+    height: 39px;
+    margin: 0 0 12px;
+    padding: 0 12px;
+    border: 1px solid #d8e0eb;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.hr-wages-search::placeholder {
+    color: #9ca3af;
+}
+
+.hr-wages-search:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+
+
+.hr-wages-employee-name {
+    color: #111827;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.hr-wages-employee-designation {
+    color: #8290a3;
+    font-size: 12px;
+}
+
+.hr-wages-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.hr-wages-status-paid {
+    background: #e1f5eb;
+    color: #08784e;
+}
+
+.hr-wages-status-pending {
+    background: #fff0d2;
+    color: #996000;
+}
+
+
+/* Fix On-Roll & Daily Wages summary card layout */
+.hr-wages-section .hr-wages-summary {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.hr-wages-section .hr-wages-card {
+    width: auto !important;
+    min-width: 0;
+    min-height: 102px;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+/* Keep cards responsive on smaller screens */
+@media (max-width: 1100px) {
+    .hr-wages-section .hr-wages-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .hr-wages-section .hr-wages-summary {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.hr-wages-section .hr-wages-summary {
+    margin-bottom: 0;
+}
+
+.hr-wages-section .hr-wages-panel h2 {
+    margin-bottom: 16px;
+}
+
+
+.hr-wages-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.hr-wages-section .hr-wages-heading-row h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.hr-wages-heading-row span {
+    color: #8491a5;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .hr-wages-heading-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+.hr-wages-search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.hr-wages-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 216px;
+    flex-shrink: 0;
+}
+
+.hr-wages-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 40%;
+    transform: translateY(-50%);
+    z-index: 1;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.hr-wages-search-box .hr-wages-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 32px;
+}
+
+.hr-wages-record-count {
+    color: #8492a6;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ==============================
+   PAYROLL RUNS
+============================== */
+
+.hr-payroll-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+    color: #111827;
+}
+
+.hr-payroll-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    min-height: 34px;
+}
+
+.hr-payroll-toolbar label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.hr-payroll-toolbar select {
+    width: 166px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid #e1e6ef;
+    border-radius: 7px;
+    outline: none;
+    background: #edf0f5;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.hr-payroll-process-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 15px;
+    border: 1px solid #1749a6;
+    border-radius: 7px;
+    background: #1749a6;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hr-payroll-process-button:hover {
+    background: #123d8c;
+}
+
+.hr-payroll-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hr-payroll-summary-card {
+    min-width: 0;
+    min-height: 102px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-payroll-summary-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.hr-payroll-summary-card strong {
+    display: block;
+    color: #111827;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+.hr-payroll-payslips {
+    min-width: 0;
+}
+
+.hr-payroll-payslips-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.hr-payroll-payslips-heading h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.hr-payroll-payslips-heading>span {
+    color: #8490a3;
+    font-size: 12px;
+    text-align: right;
+}
+
+.hr-payroll-search-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 13px;
+}
+
+.hr-payroll-search {
+    width: 203px;
+    max-width: 100%;
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    outline: none;
+    background: #ffffff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-payroll-search:focus {
+    border-color: #1749a6;
+    box-shadow: 0 0 0 2px rgba(23, 73, 166, 0.08);
+}
+
+.hr-payroll-record-count {
+    color: #8490a3;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.hr-payroll-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5eaf1;
+    border-radius: 17px;
+    background: #ffffff;
+}
+
+.hr-payroll-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #ffffff;
+}
+
+.hr-payroll-table thead {
+    background: #eaf0f6;
+}
+
+.hr-payroll-table th {
+    height: 42px;
+    padding: 13px 15px;
+    border-bottom: 1px solid #e5eaf1;
+    color: #8490a3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.hr-payroll-table td {
+    height: 65px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e7edf4;
+    color: #10203a;
+    font-size: 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.hr-payroll-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hr-payroll-table tbody tr:hover {
+    background: #fafcff;
+}
+
+.hr-payroll-employee-name {
+    margin-bottom: 5px;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.hr-payroll-employee-role {
+    color: #8490a3;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.hr-payroll-view-button {
+    min-height: 30px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #10203a;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.hr-payroll-view-button:hover {
+    border-color: #1749a6;
+    color: #1749a6;
+}
+
+.hr-payroll-empty {
+    height: 90px;
+    color: #8490a3 !important;
+    text-align: center;
+}
+
+.hr-payroll-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 51px;
+    padding: 10px 15px;
+    border-top: 1px solid #e7edf4;
+    background: #ffffff;
+}
+
+.hr-payroll-pagination>span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-payroll-pagination>div {
+    display: flex;
+    gap: 8px;
+}
+
+.hr-payroll-pagination button {
+    min-height: 31px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #10203a;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-payroll-pagination button:hover:not(:disabled) {
+    border-color: #1749a6;
+    color: #1749a6;
+}
+
+.hr-payroll-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.hr-payroll-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.hr-payroll-modal {
+    width: 100%;
+    max-width: 470px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.hr-payroll-modal-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.hr-payroll-modal-heading h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 19px;
+}
+
+.hr-payroll-modal-heading button {
+    border: none;
+    background: transparent;
+    color: #8490a3;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.hr-payroll-modal p {
+    margin: 12px 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.hr-payroll-modal p strong {
+    color: #111827;
+}
+
+.hr-payroll-modal hr {
+    margin: 16px 0;
+    border: 0;
+    border-top: 1px solid #e5eaf1;
+}
+
+@media (max-width: 1100px) {
+    .hr-payroll-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .hr-payroll-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .hr-payroll-summary-card {
+        min-height: 91px;
+        padding: 15px;
+    }
+
+    .hr-payroll-summary-card strong {
+        font-size: 23px;
+    }
+
+    .hr-payroll-payslips-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hr-payroll-payslips-heading>span {
+        text-align: left;
+    }
+
+    .hr-payroll-search {
+        width: 100%;
+    }
+}
+
+
+/* ==============================
+   PAYSLIP RIGHT-SIDE DRAWER
+============================== */
+
+.hr-payslip-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(3px);
+}
+
+.hr-payslip-drawer {
+    display: flex;
+    flex-direction: column;
+    width: 490px;
+    max-width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: -10px 0 35px rgba(15, 23, 42, 0.12);
+    animation: hr-payslip-slide-in 0.22s ease-out;
+}
+
+@keyframes hr-payslip-slide-in {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.hr-payslip-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 21px 19px;
+    border-bottom: 1px solid #e5eaf1;
+}
+
+.hr-payslip-header h2 {
+    margin: 0 0 6px;
+    color: #111827;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.hr-payslip-header p {
+    margin: 0;
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-payslip-close {
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #8490a3;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.hr-payslip-close:hover {
+    color: #111827;
+}
+
+.hr-payslip-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 21px 26px;
+}
+
+.hr-payslip-info-row,
+.hr-payslip-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.hr-payslip-info-row {
+    min-height: 41px;
+    border-bottom: 1px solid #e5eaf1;
+}
+
+.hr-payslip-info-row span,
+.hr-payslip-detail-row span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-payslip-info-row strong,
+.hr-payslip-detail-row strong {
+    color: #202938;
+    font-size: 12px;
+    font-weight: 650;
+    text-align: right;
+}
+
+.hr-payslip-detail-card {
+    margin-top: 15px;
+    padding: 20px 21px 12px;
+    border: 1px solid #e5eaf1;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-payslip-detail-card h3 {
+    margin: 0 0 15px;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.hr-payslip-detail-row {
+    min-height: 42px;
+    border-bottom: 1px solid #e8edf3;
+}
+
+.hr-payslip-detail-row:last-child {
+    border-bottom: none;
+}
+
+.hr-payslip-total {
+    min-height: 47px;
+}
+
+.hr-payslip-total span,
+.hr-payslip-total strong {
+    font-weight: 750;
+}
+
+.hr-payslip-net-pay {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.hr-payslip-net-pay span {
+    color: #8490a3;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.hr-payslip-net-pay strong {
+    color: #111827;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+@media (max-width: 520px) {
+    .hr-payslip-drawer {
+        width: 100%;
+    }
+
+    .hr-payslip-header {
+        padding: 19px 16px;
+    }
+
+    .hr-payslip-content {
+        padding: 16px;
+    }
+
+    .hr-payslip-detail-card {
+        padding: 17px 15px 10px;
+    }
+}
+
+
+/* ========================================
+   LEAVE SECTION
+======================================== */
+
+.hr-leave-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+    color: #10203a;
+}
+
+.hr-leave-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hr-leave-summary-card {
+    min-width: 0;
+    min-height: 102px;
+    padding: 20px;
+    border: 1px solid #e3e9f1;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-leave-summary-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.hr-leave-summary-card strong {
+    display: block;
+    color: #111827;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+.hr-leave-chart {
+    padding: 20px 22px;
+    border: 1px solid #e3e9f1;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-leave-chart h2 {
+    margin: 0 0 18px;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.hr-leave-chart-item {
+    margin-top: 13px;
+}
+
+.hr-leave-chart-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.hr-leave-chart-label strong {
+    color: #10203a;
+    font-size: 12px;
+}
+
+.hr-leave-progress-track {
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #e1e6ee;
+}
+
+.hr-leave-progress-fill {
+    height: 100%;
+    background: #204da7;
+}
+
+.hr-leave-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    min-width: 0;
+}
+
+.hr-leave-search {
+    box-sizing: border-box;
+    width: 203px;
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    outline: none;
+    background: #fff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-leave-search:focus {
+    border-color: #204da7;
+    box-shadow: 0 0 0 2px rgba(32, 77, 167, 0.08);
+}
+
+.hr-leave-toolbar select {
+    height: 39px;
+    min-width: 100px;
+    padding: 0 11px;
+    border: 1px solid #e3e9f1;
+    border-radius: 7px;
+    outline: none;
+    background: #edf0f5;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.hr-leave-record-count {
+    margin-left: auto;
+    color: #8490a3;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.hr-leave-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5eaf1;
+    border-radius: 17px;
+    background: #fff;
+}
+
+.hr-leave-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #fff;
+}
+
+.hr-leave-table thead {
+    background: #eaf0f6;
+}
+
+.hr-leave-table th {
+    height: 42px;
+    padding: 13px 15px;
+    border-bottom: 1px solid #e5eaf1;
+    color: #8490a3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.hr-leave-table td {
+    height: 46px;
+    padding: 11px 15px;
+    border-bottom: 1px solid #e7edf4;
+    color: #10203a;
+    font-size: 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.hr-leave-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hr-leave-table tbody tr:hover {
+    background: #fafcff;
+}
+
+.hr-leave-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 18px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hr-leave-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.hr-leave-status-pending {
+    background: #fff1d6;
+    color: #946200;
+}
+
+.hr-leave-status-approved {
+    background: #dff5e9;
+    color: #087c52;
+}
+
+.hr-leave-status-rejected {
+    background: #fde7e7;
+    color: #c12626;
+}
+
+.hr-leave-empty {
+    height: 90px !important;
+    color: #8490a3 !important;
+    text-align: center;
+}
+
+.hr-leave-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 51px;
+    padding: 10px 15px;
+    border-top: 1px solid #e7edf4;
+    background: #fff;
+}
+
+.hr-leave-pagination>span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-leave-pagination>div {
+    display: flex;
+    gap: 8px;
+}
+
+.hr-leave-pagination button {
+    min-height: 31px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #fff;
+    color: #10203a;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-leave-pagination button:hover:not(:disabled) {
+    border-color: #204da7;
+    color: #204da7;
+}
+
+.hr-leave-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 1100px) {
+    .hr-leave-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .hr-leave-summary {
+        gap: 10px;
+    }
+
+    .hr-leave-summary-card {
+        min-height: 90px;
+        padding: 15px;
+    }
+
+    .hr-leave-summary-card strong {
+        font-size: 23px;
+    }
+
+    .hr-leave-chart {
+        padding: 16px;
+    }
+
+    .hr-leave-search {
+        width: 100%;
+    }
+
+    .hr-leave-record-count {
+        margin-left: 0;
+    }
+}
+
+
+
+/* ===== Attendance Management ===== */
+
+.hr-attendance {
+    padding: 0;
+    background: transparent;
+    color: #1e293b;
+    border-radius: 0;
+    min-width: 0;
+}
+
+.hr-attendance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.hr-attendance-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.hr-attendance-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.hr-attendance-export {
+    padding: 10px 16px;
+    border: 1px solid #dbe2ea;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-attendance-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+.hr-attendance-metric {
+    min-height: 102px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hr-attendance-metric span {
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.hr-attendance-metric strong {
+    color: #111827;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+.hr-attendance-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 13px;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.hr-attendance-toolbar input,
+.hr-attendance-toolbar select {
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-attendance-toolbar input {
+    flex: 0 1 203px;
+    width: 203px;
+    min-width: 0;
+}
+
+.hr-attendance-table-wrapper {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 17px;
+    overflow-x: auto;
+}
+
+.hr-attendance-table {
+    width: 100%;
+    min-width: 750px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.hr-attendance-table th {
+    height: 43px;
+    padding: 12px 15px;
+    background: #e9edf3;
+    color: #8491a4;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-attendance-table td {
+    height: 47px;
+    padding: 12px 15px;
+    background: #ffffff;
+    color: #10203a;
+    font-size: 12px;
+    font-weight: 400;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-attendance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.hr-attendance-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.hr-attendance-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #64748b;
+    flex-shrink: 0;
+}
+
+.hr-attendance-status-present,
+.hr-attendance-status-late,
+.hr-attendance-status-absent,
+.hr-attendance-status-on-leave {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+
+.hr-attendance-empty {
+    padding: 28px !important;
+    text-align: center;
+    color: #64748b !important;
+}
+
+.hr-attendance-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 51px;
+    padding: 10px 15px;
+    margin-top: 0;
+    background: transparent;
+}
+
+.hr-attendance-pagination>div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hr-attendance-pagination button {
+    min-height: 31px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #10203a;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-attendance-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 1000px) {
+    .hr-attendance-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .hr-attendance {
+        padding: 14px;
+    }
+
+    .hr-attendance-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hr-attendance-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .hr-attendance-toolbar {
+        flex-direction: column;
+    }
+
+    .hr-attendance-toolbar input,
+    .hr-attendance-toolbar select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+
+
+/* ===== Attendance Mix Chart ===== */
+
+.hr-attendance-chart-card {
+    width: 100%;
+    min-height: 274px;
+    margin-bottom: 19px;
+    padding: 20px 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.hr-attendance-chart-card h3 {
+    margin: 0 0 16px;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.hr-attendance-chart-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 210px;
+}
+
+.hr-attendance-donut {
+    width: 192px;
+    height: 192px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: conic-gradient(#1d4ed8 0deg 279.7deg,
+            #0d9488 279.7deg 312.9deg,
+            #a16207 312.9deg 351.7deg,
+            #15803d 351.7deg 360deg);
+    position: relative;
+}
+
+.hr-attendance-donut::before {
+    content: '';
+    position: absolute;
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.hr-attendance-donut-center {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.hr-attendance-donut-center strong {
+    color: #0f172a;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.hr-attendance-donut-center span {
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+.hr-attendance-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hr-attendance-legend>div {
+    display: grid;
+    grid-template-columns: 10px 70px auto;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.hr-attendance-legend strong {
+    color: #0f172a;
+    font-size: 12px;
+}
+
+.hr-attendance-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.hr-attendance-legend-dot.present {
+    background: #1d4ed8;
+}
+
+.hr-attendance-legend-dot.late {
+    background: #0d9488;
+}
+
+.hr-attendance-legend-dot.absent {
+    background: #a16207;
+}
+
+.hr-attendance-legend-dot.leave {
+    background: #15803d;
+}
+
+@media (max-width: 600px) {
+    .hr-attendance-chart-card {
+        padding: 16px;
+    }
+
+    .hr-attendance-chart-content {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+
+/* ===== Attendance table reference styling ===== */
+
+.hr-attendance-table-wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.hr-attendance-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.hr-attendance-table th {
+    padding: 12px 16px;
+    background: #e9edf3;
+    color: #8491a4;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-attendance-table td {
+    padding: 12px 16px;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 400;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-attendance-table tbody tr:hover td {
+    background: #fafbfc;
+}
+
+.hr-attendance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.hr-attendance-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.hr-attendance-status-present {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.hr-attendance-status {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.hr-attendance-status-absent {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.hr-attendance-status-on-leave {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.hr-attendance-record-count {
+    margin-left: auto;
+    color: #64748b;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.hr-attendance-toolbar {
+    align-items: center;
+}
+
+.hr-attendance-toolbar input {
+    flex: 0 1 260px;
+}
+
+.hr-attendance-toolbar select {
+    min-width: 135px;
+}
+
+
+/* =====================================
+   INCENTIVES & COMMISSIONS
+===================================== */
+
+.hr-incentives-section {
+    width: 100%;
+    min-width: 0;
+    color: #111827;
+}
+
+/* Summary cards */
+.hr-incentive-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.hr-incentive-card {
+    min-height: 102px;
+    padding: 20px 21px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.hr-incentive-card span {
+    display: block;
+    margin-bottom: 12px;
+    color: #8490a3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+}
+
+.hr-incentive-card strong {
+    display: block;
+    color: #111827;
+    font-size: 27px;
+    font-weight: 750;
+    line-height: 1.1;
+}
+
+/* Payout by Type panel */
+.hr-incentive-payout-panel {
+    margin-bottom: 19px;
+    padding: 20px 22px 19px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.hr-incentive-payout-panel h2 {
+    margin: 0 0 18px;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.hr-incentive-progress-item+.hr-incentive-progress-item {
+    margin-top: 13px;
+}
+
+.hr-incentive-progress-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.hr-incentive-progress-label strong {
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.hr-incentive-progress-track {
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e2e7ef;
+}
+
+.hr-incentive-progress-fill {
+    height: 100%;
+    background: #204da5;
+}
+
+.hr-incentive-progress-fill.sales {
+    width: 91%;
+}
+
+.hr-incentive-progress-fill.finance {
+    width: 33%;
+}
+
+
+/* Incentives: Search and filters */
+.hr-incentive-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 9px;
+    width: 100%;
+    margin-bottom: 13px;
+}
+
+.hr-incentive-toolbar input {
+    width: 203px;
+    height: 39px;
+    flex: 0 0 203px;
+    padding: 0 12px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    outline: none;
+    background: #ffffff;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.hr-incentive-toolbar input:focus {
+    border-color: #204da5;
+}
+
+.hr-incentive-toolbar select {
+    width: 165px;
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #e1e6ef;
+    border-radius: 8px;
+    background: #edf0f5;
+    color: #273449;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.hr-incentive-record-count {
+    margin-left: auto;
+    color: #8490a3;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Incentive records table */
+.hr-incentive-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5eaf1;
+    border-radius: 17px;
+    background: #ffffff;
+}
+
+.hr-incentive-table {
+    width: 100%;
+    min-width: 950px;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #ffffff;
+}
+
+.hr-incentive-table thead {
+    background: #eaf0f6;
+}
+
+.hr-incentive-table th {
+    height: 43px;
+    padding: 13px 15px;
+    color: #8490a3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.hr-incentive-table td {
+    height: 48px;
+    padding: 11px 15px;
+    border-bottom: 1px solid #e7edf4;
+    color: #10203a;
+    font-size: 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.hr-incentive-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hr-incentive-table tbody tr:hover {
+    background: #fafcff;
+}
+
+.hr-incentive-table .hr-incentive-basis {
+    color: #8490a3;
+}
+
+.hr-incentive-table .hr-incentive-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Payout status badges */
+.hr-incentive-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hr-incentive-status i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.hr-incentive-status.credited {
+    color: #087b50;
+    background: #e0f5eb;
+}
+
+.hr-incentive-status.pending {
+    color: #9a6500;
+    background: #fff0d5;
+}
+
+.hr-incentive-empty {
+    height: 90px !important;
+    color: #8490a3 !important;
+    text-align: center;
+}
+
+/* Incentive pagination */
+.hr-incentive-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 51px;
+    padding: 10px 15px;
+    border-top: 1px solid #e7edf4;
+    background: #ffffff;
+}
+
+.hr-incentive-pagination>span {
+    color: #8490a3;
+    font-size: 12px;
+}
+
+.hr-incentive-pagination>div {
+    display: flex;
+    gap: 8px;
+}
+
+.hr-incentive-pagination button {
+    min-height: 31px;
+    padding: 6px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #10203a;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hr-incentive-pagination button:hover:not(:disabled) {
+    border-color: #1749a6;
+    color: #1749a6;
+}
+
+.hr-incentive-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

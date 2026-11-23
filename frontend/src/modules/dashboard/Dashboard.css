@@ -1,0 +1,583 @@
+/* =========================================
+   NEXUS ERP — EXECUTIVE DASHBOARD
+   Module-specific styles
+   ========================================= */
+
+.executive-dashboard {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.executive-dashboard * {
+    box-sizing: border-box;
+}
+
+.dashboard-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-title-row h1 {
+    margin: 0 0 5px;
+    color: #101828;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-title-row p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    padding-top: 1px;
+}
+
+.report-button,
+.copilot-button {
+    min-height: 37px;
+    padding: 9px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.report-button {
+    border: 1px solid #d8e0ec;
+    background: #ffffff;
+    color: #172033;
+}
+
+.report-button:hover {
+    background: #f1f5f9;
+}
+
+.copilot-button {
+    border: 1px solid #1c4da5;
+    background: #1c4da5;
+    color: #ffffff;
+}
+
+.copilot-button:hover {
+    background: #173f89;
+}
+
+/* KPI cards */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    min-height: 129px;
+    padding: 19px 20px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+.metric-label {
+    margin-bottom: 9px;
+    overflow: hidden;
+    color: #8491a6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.metric-value {
+    color: #101828;
+    font-size: 28px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+    line-height: 1.3;
+}
+
+.metric-note {
+    margin-top: 10px;
+    color: #718096;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.metric-note.danger {
+    color: #d92d20;
+    font-weight: 600;
+}
+
+.metric-note.success {
+    color: #00845a;
+    font-weight: 600;
+}
+
+/* Shared dashboard panels */
+
+.dashboard-panel {
+    min-width: 0;
+    padding: 19px 21px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 1.4;
+}
+
+.panel-heading>span {
+    color: #8794aa;
+    font-size: 11px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Receivables and payables */
+
+.aging-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.6fr;
+    gap: 17px;
+    margin-bottom: 17px;
+}
+
+.progress-row {
+    min-width: 0;
+    margin-bottom: 12px;
+}
+
+.progress-row:last-child {
+    margin-bottom: 0;
+}
+
+.progress-row-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 5px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.progress-row-heading strong {
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.progress-track {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #e2e8f0;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 0;
+    background: #1e4fa8;
+    transition: width 0.25s ease;
+}
+
+.progress-fill.gold {
+    background: #9b6900;
+}
+
+/* Loan and exchange panels */
+
+.operations-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.6fr;
+    gap: 17px;
+    margin-bottom: 17px;
+}
+
+.loan-panel,
+.exchange-panel {
+    min-height: 330px;
+}
+
+.loan-panel .panel-heading,
+.exchange-panel .panel-heading {
+    margin-bottom: 17px;
+}
+
+.loan-panel .progress-row,
+.exchange-panel .progress-row {
+    margin-bottom: 12px;
+}
+
+/* Scanner and tax compliance */
+
+.compliance-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.6fr;
+    gap: 17px;
+    margin-bottom: 17px;
+}
+
+.scanner-panel {
+    min-height: 257px;
+}
+
+.scanner-description {
+    margin: 0 0 13px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.risk-badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 12px;
+}
+
+.risk-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.risk-badge.genuine {
+    background: #e1f5eb;
+    color: #08764e;
+}
+
+.risk-badge.verification {
+    background: #fff1d6;
+    color: #946000;
+}
+
+.risk-badge.high-risk {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+.risk-badge.unscanned {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.scanner-footnote {
+    margin: 0;
+    color: #8794aa;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.tds-panel {
+    min-height: 257px;
+}
+
+.compliance-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 45px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8edf4;
+}
+
+.compliance-item:last-child {
+    border-bottom: 0;
+}
+
+.compliance-item>span {
+    flex-shrink: 0;
+    font-size: 15px;
+}
+
+.compliance-item p {
+    margin: 0;
+    color: #263244;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.compliance-item strong {
+    color: #101828;
+    font-weight: 700;
+}
+
+/* Headcount and notifications */
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+    margin-bottom: 20px;
+}
+
+.bottom-grid .dashboard-panel {
+    min-height: 300px;
+}
+
+.bottom-grid .progress-row {
+    margin-bottom: 11px;
+}
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 13px 0;
+    border-bottom: 1px solid #e8edf4;
+}
+
+.notification-item:first-child {
+    padding-top: 0;
+}
+
+.notification-item:last-child {
+    border-bottom: 0;
+}
+
+.notification-icon {
+    flex-shrink: 0;
+    width: 17px;
+    padding-top: 2px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.notification-item p {
+    margin: 0 0 3px;
+    color: #263244;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.notification-item time {
+    display: block;
+    color: #8794aa;
+    font-size: 11px;
+}
+
+.floating-copilot {
+    position: fixed;
+    right: 30px;
+    bottom: 24px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: 0;
+    border-radius: 50%;
+    background: #087f9b;
+    box-shadow: 0 5px 15px rgb(15 23 42 / 15%);
+    color: #ffffff;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.floating-copilot:hover {
+    background: #076b83;
+}
+
+/* Responsive layout */
+
+@media (max-width: 1250px) {
+    .metrics-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .aging-grid,
+    .operations-grid,
+    .compliance-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dashboard-title-row {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 850px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .aging-grid,
+    .operations-grid,
+    .compliance-grid,
+    .bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .dashboard-panel {
+        padding: 16px;
+    }
+
+    .metric-card {
+        padding: 16px;
+    }
+
+    .dashboard-title-row h1 {
+        font-size: 22px;
+    }
+
+    .dashboard-actions {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+    }
+
+    .metric-card {
+        min-height: 112px;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .metric-label {
+        font-size: 9px;
+        letter-spacing: 0.4px;
+    }
+
+    .metric-value {
+        font-size: 21px;
+    }
+
+    .metric-note {
+        font-size: 10px;
+    }
+
+    .dashboard-title-row {
+        gap: 12px;
+    }
+
+    .dashboard-actions {
+        width: 100%;
+    }
+
+    .report-button,
+    .copilot-button {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .panel-heading h2 {
+        font-size: 14px;
+    }
+
+    .panel-heading>span {
+        font-size: 10px;
+        white-space: normal;
+    }
+
+    .floating-copilot {
+        right: 16px;
+        bottom: 16px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+
+/* ===== DARK MODE: EXECUTIVE DASHBOARD ===== */
+
+.app-dark-mode .dashboard-content {
+    color: #f1f5f9;
+}
+
+.app-dark-mode .dashboard-panel {
+    background: #111c2e;
+    border-color: #263750;
+    color: #f1f5f9;
+}
+
+.app-dark-mode .panel-heading h2 {
+    color: #f1f5f9;
+}
+
+.app-dark-mode .panel-heading span {
+    color: #94a3b8;
+}
+
+.app-dark-mode .metric-card {
+    background: #111c2e;
+    border-color: #263750;
+    color: #f1f5f9;
+}
+
+.app-dark-mode .metric-card h3,
+.app-dark-mode .metric-card p {
+    color: #f1f5f9;
+}
+
+.app-dark-mode .progress-track {
+    background: #263750;
+}
+
+.app-dark-mode .progress-row {
+    color: #cbd5e1;
+}

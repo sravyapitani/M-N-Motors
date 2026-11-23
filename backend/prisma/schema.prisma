@@ -1,0 +1,538 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Department {
+  FINANCE
+  HR
+  EXCHANGE
+}
+
+model User {
+  id                    String            @id @default(cuid())
+  email                 String            @unique
+  firstName             String
+  lastName              String
+  passwordHash          String?
+  department            Department?
+  isActive              Boolean           @default(true)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  roles                 UserRole[]
+  branchAccess          UserBranch[]
+  loanApplications      LoanApplication[]
+  createdJournalEntries JournalEntry[]
+}
+
+model Branch {
+  id               String            @id @default(cuid())
+  code             String            @unique
+  name             String
+  isActive         Boolean           @default(true)
+  users            UserBranch[]
+  loanApplications LoanApplication[]
+  journalEntries   JournalEntry[]
+  accounts         Account[]
+  vehicles         Vehicle[]
+  createdAt        DateTime          @default(now())
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  key         String           @unique
+  name        String
+  description String?
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  key         String           @unique
+  description String?
+  roles       RolePermission[]
+}
+
+model UserRole {
+  userId     String
+  roleId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  assignedAt DateTime @default(now())
+
+  @@id([userId, roleId])
+}
+
+model UserBranch {
+  userId   String
+  branchId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  branch   Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@id([userId, branchId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+enum LenderType {
+  BANK
+  NBFC
+  INSURANCE
+  OTHER
+}
+
+model Lender {
+  id               String            @id @default(cuid())
+  name             String
+  tallyLedgerName  String            @unique
+  type             LenderType
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  loanApplications LoanApplication[]
+
+  @@index([type])
+  @@index([isActive])
+}
+
+enum LoanStatus {
+  ENQUIRY
+  SUBMITTED
+  UNDER_REVIEW
+  SANCTIONED
+  DISBURSED
+  REJECTED
+}
+
+model LoanApplication {
+  id               String      @id @default(cuid())
+  customerName     String
+  lenderName       String
+  lenderId         String?
+  lender           Lender?     @relation(fields: [lenderId], references: [id], onDelete: Restrict)
+  loanAmount       Decimal     @db.Decimal(14, 2)
+  interestRate     Decimal     @db.Decimal(5, 2)
+  tenureMonths     Int
+  commissionAmount Decimal     @default(0.00) @db.Decimal(12, 2)
+  status           LoanStatus  @default(ENQUIRY)
+  branchId         String
+  branch           Branch      @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  submittingUserId String
+  submittingUser   User        @relation(fields: [submittingUserId], references: [id], onDelete: Restrict)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  @@index([branchId])
+  @@index([lenderId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([branchId, status])
+}
+
+enum AccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  REVENUE
+  EXPENSE
+}
+
+enum JournalStatus {
+  DRAFT
+  POSTED
+  VOID
+}
+
+model Account {
+  id          String        @id @default(cuid())
+  code        String        @unique
+  name        String
+  type        AccountType
+  description String?
+  isActive    Boolean       @default(true)
+  branchId    String?
+  branch      Branch?       @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  lines       JournalLine[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([type])
+  @@index([branchId])
+}
+
+model JournalEntry {
+  id              String        @id @default(cuid())
+  entryNumber     String        @unique
+  entryDate       DateTime      @default(now())
+  postingDate     DateTime?
+  status          JournalStatus @default(POSTED)
+  sourceModule    String?
+  sourceReference String?
+  narration       String
+  branchId        String
+  branch          Branch        @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  createdById     String
+  createdBy       User          @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  lines           JournalLine[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([branchId])
+  @@index([entryDate])
+  @@index([status])
+  @@index([sourceModule, sourceReference])
+  @@unique([sourceModule, sourceReference])
+}
+
+model JournalLine {
+  id             String       @id @default(cuid())
+  journalEntryId String
+  journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  accountId      String
+  account        Account      @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  description    String?
+  debitAmount    Decimal      @default(0.00) @db.Decimal(14, 2)
+  creditAmount   Decimal      @default(0.00) @db.Decimal(14, 2)
+
+  @@index([journalEntryId])
+  @@index([accountId])
+}
+
+// ===================== Exchange / Used Vehicles =====================
+
+enum VehicleStage {
+  INTAKE
+  INSPECTION
+  VALUATION
+  APPROVAL
+  PURCHASED
+  REFURBISHMENT
+  LISTED
+  RESOLD
+  CANCELLED
+}
+enum ValuationStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  BLOCKED
+}
+enum ApprovalDecision {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RcBookStatus {
+  NOT_SCANNED
+  NEEDS_VERIFICATION
+  GENUINE
+  HIGH_RISK
+}
+
+enum RcBookRiskVerdict {
+  LOW_RISK
+  MEDIUM_RISK
+  HIGH_RISK
+}
+
+enum RcBookAssessmentStatus {
+  CLEAR
+  MANUAL_REVIEW
+  BLOCKED
+}
+
+enum RcBookReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_RESUBMISSION
+}
+
+enum VehicleDocumentType {
+  RC_BOOK_FRONT
+  RC_BOOK_BACK
+}
+
+enum VehicleLoanStatus {
+  UNKNOWN
+  NO_OUTSTANDING
+  OUTSTANDING
+  CLEARED
+}
+
+enum HypothecationStatus {
+  UNKNOWN
+  NOT_HYPOTHECATED
+  HYPOTHECATED
+}
+
+enum NocVerificationStatus {
+  NOT_RECEIVED
+  PENDING_VERIFICATION
+  VERIFIED
+  REJECTED
+}
+
+enum HypothecationTerminationStatus {
+  UNKNOWN
+  NOT_APPLICABLE
+  PENDING
+  COMPLETED
+}
+
+enum VehicleFuelType {
+  PETROL
+  DIESEL
+  CNG
+  EV
+}
+
+enum VehicleSegment {
+  PASSENGER
+  COMMERCIAL
+  THREE_WHEELER
+}
+
+model Vehicle {
+  id                 String       @id @default(cuid())
+  customerName       String
+  vehicleName        String
+  make               String?
+  model              String?
+  variant            String?
+  modelYear          Int?
+  fuelType      VehicleFuelType?
+vehicleSegment VehicleSegment?
+  registrationDate    DateTime?
+  registrationNumber String?      @unique
+  chassisNumber      String?      @unique
+  engineNumber       String?
+  odometerKm         Int
+  previousOwnerCount Int?
+  score              Int?
+  aiValuation        Decimal?     @db.Decimal(14, 2)
+  rcBookStatus       RcBookStatus @default(NOT_SCANNED)
+  loanStatus         VehicleLoanStatus @default(UNKNOWN)
+  nocReceived        Boolean           @default(false)
+  colour                        String?
+  hypothecationStatus           HypothecationStatus @default(UNKNOWN)
+  financierName                 String?
+  loanAccountReference          String?
+  nocVerificationStatus         NocVerificationStatus @default(NOT_RECEIVED)
+  hypothecationTerminationStatus HypothecationTerminationStatus @default(UNKNOWN)
+  hypothecationRemarks          String?
+  stage              VehicleStage @default(INTAKE)
+
+  branchId           String
+  branch             Branch       @relation(fields: [branchId], references: [id])
+  inspections VehicleInspection[]
+  valuations         VehicleValuation[]
+  documents VehicleDocument[]
+  rcBookVerifications RcBookVerification[]
+
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  @@index([branchId, stage])
+  @@index([customerName])
+}
+
+model VehicleInspection {
+  id        String   @id @default(cuid())
+  vehicleId String
+  condition String
+  notes     String?
+  inspectionScore    Int?
+  accidentHistory    Boolean?
+  accidentSeverity   String?
+  repaintHistory     Boolean?
+  repaintCoverage    String?
+  fullServiceHistory Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId])
+}
+
+model VehicleBasePrice {
+  id        String   @id @default(cuid())
+  make      String
+  model     String
+  variant   String
+  modelYear Int
+  basePrice Decimal  @db.Decimal(14, 2)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([make, model, variant, modelYear])
+  @@index([make, model, modelYear])
+}
+
+model ValuationRule {
+  id            String   @id @default(cuid())
+  ruleKey       String   @unique
+  ruleName      String
+  description   String?
+
+  isActive      Boolean  @default(true)
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  bands         ValuationRuleBand[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model ValuationRuleBand {
+  id          String        @id @default(cuid())
+  ruleId      String
+  rule        ValuationRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  bandKey     String
+  minValue    Decimal?      @db.Decimal(14, 2)
+  maxValue    Decimal?      @db.Decimal(14, 2)
+  ruleValue   Decimal       @db.Decimal(14, 4)
+  unit        String
+  conditions  Json?
+  sortOrder   Int           @default(0)
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@unique([ruleId, bandKey])
+  @@index([ruleId, sortOrder])
+}
+
+model VehicleValuation {
+  id                   String          @id @default(cuid())
+  vehicleId            String
+  vehicle               Vehicle         @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  suggestedValue       Decimal         @db.Decimal(14, 2)
+  evaluatorQuotedValue Decimal?        @db.Decimal(14, 2)
+  finalValue           Decimal?        @db.Decimal(14, 2)
+
+  status               ValuationStatus @default(DRAFT)
+  calculationSnapshot  Json?
+  evaluatorRemarks     String?
+
+  calculatedAt         DateTime        @default(now())
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  approvals            VehicleValuationApproval[]
+
+  @@index([vehicleId, status])
+  @@index([createdAt])
+}
+
+model VehicleValuationApproval {
+  id          String           @id @default(cuid())
+  valuationId String
+  valuation   VehicleValuation @relation(fields: [valuationId], references: [id], onDelete: Cascade)
+
+  decision    ApprovalDecision @default(PENDING)
+  remarks     String?
+  reviewerName String?
+
+  requestedAt DateTime         @default(now())
+  decidedAt   DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([valuationId, decision])
+  @@index([createdAt])
+}
+
+model VehicleDocument {
+  id           String              @id @default(cuid())
+  vehicleId    String
+  documentType VehicleDocumentType
+
+  originalName String
+  storedName   String
+  filePath     String
+  mimeType     String
+  fileSize     Int
+
+  version      Int                 @default(1)
+  isCurrent    Boolean             @default(true)
+  fileHash     String?
+  replacedAt   DateTime?
+
+  createdAt    DateTime            @default(now())
+
+  vehicle      Vehicle             @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@unique([vehicleId, documentType, version])
+  @@index([vehicleId, isCurrent])
+  @@index([documentType])
+}
+
+model RcBookVerification {
+  id               String               @id @default(cuid())
+  vehicleId        String
+  vehicle          Vehicle              @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  extractedFields  Json?
+  checkResults     Json?
+  riskFlags        Json?
+  documentSnapshot Json?
+  isOutdated       Boolean @default(false)
+
+  riskScore        Int?
+  riskVerdict      RcBookRiskVerdict?
+  assessmentStatus RcBookAssessmentStatus @default(MANUAL_REVIEW)
+  authenticityStatus String @default("NOT_INDEPENDENTLY_VERIFIED")
+  reviewStatus     RcBookReviewStatus   @default(PENDING)
+
+  reviewerName     String?
+  reviewRemarks    String?
+  reviewedAt       DateTime?
+
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  @@index([vehicleId, createdAt])
+  @@index([riskVerdict, reviewStatus])
+}
+
+model RcBookRule {
+  id            String   @id @default(cuid())
+  ruleKey       String   @unique
+  ruleName      String
+  description   String?
+  category      String
+  weight        Int      @default(0)
+  conditions    Json?
+
+  isActive      Boolean  @default(true)
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive, category])
+}

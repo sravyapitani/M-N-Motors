@@ -1,0 +1,195 @@
+.ai-copilot-panel {
+    position: fixed;
+    top: 55px;
+    right: 8px;
+    bottom: 4px;
+    width: 450px;
+    max-width: calc(100vw - 24px);
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e1e7f0;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(15, 35, 65, 0.18);
+    z-index: 1000;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.ai-copilot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #e7ebf2;
+    background: #ffffff;
+}
+
+.ai-copilot-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.ai-copilot-logo {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #087eaa;
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.ai-copilot-brand strong,
+.ai-copilot-brand span {
+    display: block;
+}
+
+.ai-copilot-brand strong {
+    color: #152238;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.ai-copilot-brand span {
+    color: #8290a5;
+    font-size: 11px;
+}
+
+.ai-copilot-close {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.ai-copilot-close:hover {
+    background: #f1f5f9;
+}
+
+.ai-copilot-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: #ffffff;
+}
+
+.ai-copilot-welcome {
+    padding: 14px;
+    border-radius: 10px 10px 10px 3px;
+    background: #eef1f6;
+    color: #263449;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.ai-copilot-suggestions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.ai-copilot-suggestions button {
+    max-width: 100%;
+    padding: 8px 11px;
+    border: 1px solid #dce3ed;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #62718a;
+    font-size: 11px;
+    text-align: left;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.ai-copilot-suggestions button:hover {
+    border-color: #2455ad;
+    color: #2455ad;
+}
+
+.ai-copilot-message {
+    max-width: 90%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.ai-copilot-message.user {
+    align-self: flex-end;
+    background: #204fa8;
+    color: #ffffff;
+    border-radius: 10px 10px 3px 10px;
+}
+
+.ai-copilot-message.assistant {
+    align-self: flex-start;
+    background: #eef1f6;
+    color: #263449;
+}
+
+.ai-copilot-input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid #e7ebf2;
+    background: #ffffff;
+}
+
+.ai-copilot-input-area input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    padding: 0 13px;
+    border: 1px solid #2455ad;
+    border-radius: 24px;
+    outline: none;
+    color: #243247;
+    font-size: 12px;
+}
+
+.ai-copilot-input-area input:focus {
+    box-shadow: 0 0 0 2px rgba(36, 85, 173, 0.12);
+}
+
+.ai-copilot-input-area button {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: #204fa8;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ai-copilot-input-area button:hover {
+    background: #173e88;
+}
+
+@media (max-width: 600px) {
+    .ai-copilot-panel {
+        top: 76px;
+        right: 8px;
+        bottom: 8px;
+        width: calc(100vw - 16px);
+    }
+}

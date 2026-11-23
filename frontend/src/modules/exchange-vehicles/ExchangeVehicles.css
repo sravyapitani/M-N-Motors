@@ -1,0 +1,2751 @@
+/* ===== Exchange & Used Vehicles Page ===== */
+
+.exchange-vehicles-page {
+    width: 100%;
+    min-width: 0;
+    padding: 2px 2px 2px;
+    color: #10213b;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.exchange-vehicles-page * {
+    box-sizing: border-box;
+}
+
+.exchange-vehicles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.exchange-vehicles-header h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #10213b;
+}
+
+.exchange-vehicles-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.exchange-new-button {
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 6px;
+    background: #1d4fae;
+    color: #fff;
+    padding: 11px 16px;
+    min-height: 36px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.exchange-new-button:hover {
+    background: #173f91;
+}
+
+/* ===== Summary Cards ===== */
+
+.exchange-vehicles-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.exchange-summary-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    min-height: 100px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e0e7f0;
+    border-radius: 17px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.exchange-summary-card span {
+    color: #8191a9;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.65px;
+}
+
+.exchange-summary-card strong {
+    color: #07172e;
+    font-size: 27px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+/* ===== Pipeline and RC Scanner ===== */
+
+.exchange-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2.05fr) minmax(300px, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+.exchange-panel {
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #e0e7f0;
+    border-radius: 17px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.exchange-panel h2 {
+    margin: 0;
+    color: #0c1b31;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.exchange-pipeline-panel h2 {
+    margin-bottom: 18px;
+}
+
+.exchange-pipeline-row {
+    margin-bottom: 12px;
+}
+
+.exchange-pipeline-row:last-child {
+    margin-bottom: 0;
+}
+
+.exchange-pipeline-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.exchange-pipeline-label strong {
+    color: #0c1b31;
+    font-size: 12px;
+}
+
+.exchange-progress-track {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #e1e6ee;
+}
+
+.exchange-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: #2452ae;
+    transition: width 0.2s ease;
+}
+
+.exchange-scanner-panel {
+    min-height: 300px;
+}
+
+.exchange-scanner-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.exchange-scanner-heading h2 {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.exchange-scanner-heading>span {
+    flex-shrink: 0;
+    color: #8191a9;
+    font-size: 12px;
+}
+
+.exchange-scanner-panel p {
+    margin: 0 0 12px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.exchange-scanner-panel p strong {
+    color: #334155;
+}
+
+.exchange-scanner-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.exchange-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.exchange-badge.genuine {
+    color: #087f5b;
+    background: #dff5eb;
+}
+
+.exchange-badge.verification {
+    color: #996000;
+    background: #fff0d3;
+}
+
+.exchange-badge.risk {
+    color: #c52c26;
+    background: #fde5e3;
+}
+
+.exchange-badge.unscanned {
+    color: #526176;
+    background: #e2e7ef;
+}
+
+/* ===== Search and Stage Filter ===== */
+
+.exchange-vehicle-list {
+    width: 100%;
+    min-width: 0;
+}
+
+.exchange-table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.exchange-table-toolbar input,
+.exchange-table-toolbar select {
+    height: 38px;
+    border: 1px solid #dce4ef;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #24364f;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 400;
+    outline: none;
+    box-shadow: none;
+}
+
+.exchange-table-toolbar input {
+    width: 203px;
+    max-width: 100%;
+    padding: 0 12px;
+}
+
+.exchange-table-toolbar input::placeholder {
+    color: #8191a9;
+    opacity: 1;
+}
+
+.exchange-table-toolbar select {
+    width: 140px;
+    min-width: 140px;
+    height: 39px;
+    padding: 0 12px;
+    border: 1px solid #e5eaf2;
+    border-radius: 7px;
+    background-color: #edf1f7;
+    color: #24364f;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.exchange-table-toolbar input:focus,
+.exchange-table-toolbar select:focus {
+    border-color: #dce4ef;
+    box-shadow: none;
+}
+
+.exchange-record-count {
+    margin-left: auto;
+    color: #8191a9;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+/* ===== Vehicle Table ===== */
+
+.exchange-table-wrapper {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e1e8f1;
+    border-radius: 18px;
+}
+
+.exchange-vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.exchange-vehicle-table thead {
+    background: #eaf0f6;
+}
+
+.exchange-vehicle-table th {
+    height: 42px;
+    padding: 12px 15px;
+    background: #eaf0f6;
+    color: #8191a9;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.65px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.exchange-vehicle-table th:first-child {
+    border-top-left-radius: 16px;
+}
+
+.exchange-vehicle-table th:last-child {
+    border-top-right-radius: 16px;
+}
+
+.exchange-vehicle-table td {
+    height: 46px;
+    padding: 12px 15px;
+    color: #152844;
+    border-bottom: 1px solid #e7edf4;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.exchange-vehicle-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.exchange-vehicle-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.exchange-empty-state {
+    height: 80px !important;
+    color: #8191a9 !important;
+    text-align: center;
+}
+
+/* ===== RC Book and Stage Status Badges ===== */
+
+.exchange-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 18px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.exchange-status.unscanned {
+    color: #526176;
+    background: #e2e7ef;
+}
+
+.exchange-status.stage-valuation,
+.exchange-status.stage-approval,
+.exchange-status.stage-inspection,
+.exchange-status.stage-refurbishment,
+.exchange-status.stage-listed-for-resale {
+    color: #526176;
+    background: #e2e7ef;
+}
+
+.exchange-status.stage-purchased {
+    color: #526176;
+    background: #e2e7ef;
+}
+
+.exchange-status.stage-resold {
+    color: #087f5b;
+    background: #dff5eb;
+}
+
+/* ===== Pagination ===== */
+
+.exchange-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 10px 15px;
+    background: #fff;
+    border: 1px solid #e0e7f0;
+    border-top: none;
+    border-radius: 0 0 17px 17px;
+}
+
+.exchange-pagination>span {
+    color: #8191a9;
+    font-size: 12px;
+}
+
+.exchange-pagination>div {
+    display: flex;
+    gap: 8px;
+}
+
+.exchange-pagination button {
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid #dce4ef;
+    border-radius: 7px;
+    background: #fff;
+    color: #263750;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.exchange-pagination button:hover:not(:disabled) {
+    background: #f0f5ff;
+    border-color: #b8c9e8;
+}
+
+.exchange-pagination button:disabled {
+    color: #a2adbc;
+    background: #fff;
+    cursor: not-allowed;
+    opacity: 0.75;
+}
+
+/* ===== Responsive Layout ===== */
+
+@media (max-width: 1100px) {
+    .exchange-vehicles-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .exchange-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .exchange-vehicles-page {
+        padding: 18px 10px 24px;
+    }
+
+    .exchange-vehicles-header {
+        flex-direction: column;
+    }
+
+    .exchange-vehicles-header h1 {
+        font-size: 21px;
+    }
+
+    .exchange-new-button {
+        width: 100%;
+    }
+
+    .exchange-vehicles-summary {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .exchange-summary-card {
+        min-height: 90px;
+        padding: 14px;
+    }
+
+    .exchange-summary-card strong {
+        font-size: 23px;
+    }
+
+    .exchange-panel {
+        padding: 16px;
+    }
+
+    .exchange-scanner-heading {
+        flex-direction: column;
+    }
+
+    .exchange-table-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .exchange-table-toolbar input {
+        width: 100%;
+    }
+
+    .exchange-record-count {
+        width: 100%;
+        margin: 0;
+        text-align: right;
+    }
+}
+
+
+/* ===== Exchange Vehicle Details Drawer ===== */
+
+.exchange-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(31, 41, 55, 0.42);
+    backdrop-filter: blur(2px);
+}
+
+.exchange-vehicle-drawer {
+    width: 490px;
+    max-width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background: #ffffff;
+    box-shadow: -8px 0 28px rgba(15, 23, 42, 0.12);
+}
+
+.exchange-drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 22px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.exchange-drawer-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.exchange-drawer-header p {
+    margin: 4px 0 0;
+    color: #8793a7;
+    font-size: 12px;
+}
+
+.exchange-drawer-close {
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #8793a7;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.exchange-drawer-content {
+    padding: 20px 22px;
+}
+
+.exchange-drawer-notice {
+    margin-bottom: 18px;
+    padding: 18px 22px;
+    border-radius: 16px;
+    background: #eef1f5;
+    color: #8793a7;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.exchange-detail-row {
+    display: grid;
+    grid-template-columns: minmax(115px, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 16px;
+    min-height: 46px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e7ebf1;
+    font-size: 13px;
+}
+
+.exchange-detail-row>span {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.exchange-detail-row>strong {
+    color: #182033;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.exchange-scan-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 17px;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 6px;
+    background: #194ba6;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.exchange-scan-button:hover {
+    background: #153f8c;
+}
+
+.exchange-scan-message {
+    margin: 16px 0 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff4db;
+    color: #895a00;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.exchange-demo-note {
+    margin-top: 14px;
+    color: #8793a7;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.exchange-intake-modal {
+    align-self: center;
+    width: 480px;
+    max-width: calc(100% - 32px);
+    margin: auto;
+    padding-bottom: 22px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18);
+}
+
+.exchange-intake-message {
+    padding: 0 22px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.exchange-intake-modal>.exchange-scan-button {
+    margin-left: 22px;
+}
+
+@media (max-width: 560px) {
+    .exchange-vehicle-drawer {
+        width: 100%;
+    }
+
+    .exchange-drawer-header,
+    .exchange-drawer-content {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .exchange-detail-row {
+        gap: 10px;
+    }
+}
+
+
+
+.exchange-vehicles-pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.exchange-vehicles-pagination-buttons button {
+    height: 32px;
+    min-width: 68px;
+    padding: 0 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.exchange-vehicles-pagination-buttons button:hover:not(:disabled) {
+    background: #f1f5f9;
+}
+
+.exchange-vehicles-pagination-buttons button:disabled {
+    color: #94a3b8;
+    background: #ffffff;
+    border-color: #e8edf4;
+    cursor: not-allowed;
+}
+
+
+.exchange-vehicles-pagination-buttons button {
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    font-size: 12px !important;
+}
+
+/* Exchange vehicle search box with search icon */
+
+.exchange-search-box {
+    position: relative;
+    width: 203px;
+    height: 39px;
+    flex-shrink: 0;
+}
+
+.exchange-search-box .exchange-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #24364f;
+    font-size: 15px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.exchange-table-toolbar .exchange-search-box input {
+    width: 100%;
+    height: 39px;
+    box-sizing: border-box;
+    padding: 0 12px 0 30px;
+    border: 1px solid #dce4ef;
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #24364f;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.exchange-table-toolbar .exchange-search-box input::placeholder {
+    color: #8191a9;
+    opacity: 1;
+}
+
+.exchange-table-toolbar .exchange-search-box input:focus {
+    border-color: #dce4ef;
+    box-shadow: none;
+}
+
+/* Exchange Vehicles - Pagination Container */
+.exchange-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 58px;
+    padding: 0 16px;
+    background: #ffffff;
+    border-top: 1px solid #e5ebf3;
+}
+
+/* Page Indicator */
+.exchange-pagination-page {
+    color: #8191a9;
+    font-size: 12px;
+}
+
+/* Pagination Buttons */
+.exchange-pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.exchange-pagination-buttons button {
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #dce4ef;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.exchange-pagination-buttons button:hover:not(:disabled) {
+    background: #f4f7fb;
+    border-color: #cbd6e5;
+}
+
+.exchange-pagination-buttons button:disabled {
+    color: #64748b;
+    background: #ffffff;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* New Exchange Intake Form */
+.exchange-intake-form {
+    margin: 0;
+    padding: 0;
+}
+
+.exchange-intake-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    padding: 22px 24px;
+}
+
+.exchange-intake-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.exchange-intake-field label {
+    color: #5f6b80;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.exchange-intake-field input,
+.exchange-intake-field select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 41px;
+    padding: 0 12px;
+    border: 1px solid #d8e0eb;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #344054;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.exchange-intake-field input::placeholder {
+    color: #858585;
+}
+
+.exchange-intake-field input:focus,
+.exchange-intake-field select:focus {
+    border-color: #2456b8;
+    box-shadow: 0 0 0 2px rgba(36, 86, 184, 0.1);
+}
+
+.exchange-intake-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    padding: 17px 24px 0;
+    border-top: 1px solid #e7ebf1;
+}
+
+.exchange-intake-cancel,
+.exchange-intake-submit {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.exchange-intake-cancel {
+    border: 1px solid #d8e0eb;
+    background: #ffffff;
+    color: #172033;
+}
+
+.exchange-intake-cancel:hover {
+    background: #f8fafc;
+}
+
+.exchange-intake-submit {
+    border: 1px solid #194db2;
+    background: #194db2;
+    color: #ffffff;
+}
+
+.exchange-intake-submit:hover {
+    background: #153f96;
+}
+
+/* Modal Header */
+.exchange-intake-modal .exchange-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 65px;
+    padding: 0 24px;
+    border-bottom: 1px solid #e7ebf1;
+}
+
+.exchange-intake-modal .exchange-drawer-header h2 {
+    margin: 0;
+    color: #151c2d;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.exchange-intake-modal .exchange-drawer-header p {
+    display: none;
+}
+
+/* Header actions: Upload RC Book + New Exchange Intake */
+.exchange-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.exchange-upload-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    min-height: 42px;
+    border: 1px solid #2454a6;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #2454a6;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.exchange-upload-button:hover {
+    background: #edf3ff;
+}
+
+.exchange-header-actions .exchange-new-button {
+    min-height: 42px;
+}
+
+@media (max-width: 640px) {
+    .exchange-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+.rc-book-upload-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.rc-book-selected-file {
+    display: block;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #334155;
+    font-size: 11px;
+    padding: 5px 8px;
+    background: #ffffff;
+    border: 1px solid #dbe4f0;
+    border-radius: 6px;
+}
+
+/* Professional RC Book Upload Panel */
+.rc-document-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 18px 0;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #dce4ef;
+    border-radius: 12px;
+}
+
+.rc-document-upload label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 13px;
+    background: #f8faff;
+    border: 1px dashed #b8c8df;
+    border-radius: 9px;
+    color: #243b5a;
+    font-size: 13px;
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.rc-document-upload label:hover {
+    border-color: #2455b5;
+    background: #f1f6ff;
+}
+
+.rc-document-upload input[type="file"] {
+    width: 100%;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.rc-document-upload input[type="file"]::file-selector-button {
+    padding: 7px 11px;
+    margin-right: 9px;
+    border: 1px solid #cbd7e6;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #2455b5;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rc-document-upload button {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 16px;
+    background: #2455b5;
+    color: #ffffff;
+    border: 1px solid #2455b5;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rc-document-upload button:hover:not(:disabled) {
+    background: #194493;
+    box-shadow: 0 3px 8px rgba(36, 85, 181, 0.18);
+}
+
+.rc-document-upload button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.rc-document-upload p {
+    margin: 0;
+    font-size: 12px;
+}
+
+/* Uploaded RC Documents */
+.exchange-uploaded-documents {
+    margin: 18px 0;
+    padding: 16px;
+    background: #f8faff;
+    border: 1px solid #e1e8f2;
+    border-radius: 12px;
+}
+
+.exchange-uploaded-documents h4 {
+    margin: 0 0 14px;
+    color: #172b4d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.exchange-uploaded-documents>p {
+    margin: 0;
+    color: #8492a6;
+    font-size: 13px;
+}
+
+.exchange-document-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px;
+    margin-top: 10px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: border-color 0.2s ease;
+}
+
+.exchange-document-item:hover {
+    border-color: #b9c9e3;
+}
+
+.exchange-document-item>div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.exchange-document-item strong {
+    color: #243b5a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.exchange-document-item span {
+    color: #8492a6;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.exchange-document-item a {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    color: #2455b5;
+    background: #eff5ff;
+    border: 1px solid #d8e5fa;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.exchange-document-item a:hover {
+    background: #e2edff;
+    text-decoration: none;
+}
+
+/* RC Book OCR Results */
+
+.rc-ocr-results {
+    margin-top: 16px;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #e1e8f1;
+    border-radius: 12px;
+}
+
+.rc-ocr-results h4 {
+    margin: 0 0 14px;
+    color: #17345f;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.rc-ocr-document {
+    margin-bottom: 12px;
+    padding: 13px;
+    background: #f7f9fc;
+    border: 1px solid #e3eaf3;
+    border-radius: 9px;
+}
+
+.rc-ocr-document h5 {
+    margin: 0 0 10px;
+    color: #2455a4;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rc-ocr-document pre {
+    margin: 0;
+    color: #34445c;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.rc-ocr-notice {
+    margin: 12px 0 0;
+    padding: 10px;
+    color: #8a5a08;
+    background: #fff7e6;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* RC Book vs Vehicle Record Comparison */
+.rc-comparison-results {
+    margin-top: 14px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e1e8f1;
+    border-radius: 14px;
+}
+
+.rc-comparison-results h4 {
+    margin: 0 0 16px;
+    color: #17345c;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.rc-comparison-row {
+    display: grid;
+    grid-template-columns: minmax(100px, 0.9fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
+    gap: 10px;
+    align-items: start;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: #f7f9fc;
+    border: 1px solid #e7edf5;
+    border-radius: 9px;
+    font-size: 12px;
+    color: #53657d;
+    overflow-wrap: anywhere;
+}
+
+.rc-comparison-row:last-child {
+    margin-bottom: 0;
+}
+
+.rc-comparison-row strong {
+    color: #17345c;
+    font-size: 12px;
+    text-transform: capitalize;
+    line-height: 1.5;
+}
+
+.rc-comparison-row span {
+    line-height: 1.6;
+    min-width: 0;
+}
+
+.rc-match,
+.rc-mismatch,
+.rc-ocr-warning,
+.rc-comparison-row span:last-child {
+    display: inline-block;
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.rc-comparison-row span:last-child:not(.rc-match):not(.rc-mismatch):not(.rc-ocr-warning) {
+    color: #93620b;
+    background: #fff3d8;
+}
+
+.rc-comparison-row span.rc-match {
+    color: #167548;
+    background: #e5f6ed;
+}
+
+.rc-comparison-row span.rc-mismatch {
+    color: #bd3030;
+    background: #fdeaea;
+}
+
+.rc-comparison-row span.rc-ocr-warning {
+    color: #93620b;
+    background: #fff3d8;
+}
+
+@media (max-width: 600px) {
+    .rc-comparison-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+}
+
+/* RC Book Extracted Fields */
+.rc-extracted-fields {
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid #e1e8f1;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.rc-extracted-fields h5 {
+    margin: 0 0 14px;
+    color: #17365f;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.rc-extracted-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf1f6;
+    font-size: 13px;
+}
+
+.rc-extracted-field-row strong {
+    color: #52647d;
+    text-transform: capitalize;
+}
+
+.rc-extracted-field-row span {
+    color: #243b5a;
+    overflow-wrap: anywhere;
+}
+
+.rc-extraction-summary {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f1f5fb;
+    color: #24446d;
+    font-size: 13px;
+}
+
+.rc-extraction-summary p {
+    margin: 7px 0 0;
+    overflow-wrap: anywhere;
+}
+
+/* Collapsible Original OCR Text */
+.rc-raw-ocr-details {
+    margin: 14px 0;
+    border: 1px solid #e1e8f1;
+    border-radius: 10px;
+    background: #f8fafd;
+    overflow: hidden;
+}
+
+.rc-raw-ocr-details summary {
+    padding: 13px 15px;
+    color: #24446d;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+}
+
+.rc-raw-ocr-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.rc-raw-ocr-details summary::after {
+    content: "+";
+    float: right;
+    font-size: 17px;
+}
+
+.rc-raw-ocr-details[open] summary::after {
+    content: "−";
+}
+
+.rc-raw-ocr-details .rc-ocr-document {
+    margin: 0 12px 12px;
+}
+
+/* RC Book Risk Assessment Report */
+.rc-verification-report {
+    margin-top: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e1e8f1;
+    border-radius: 14px;
+}
+
+.rc-verification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.rc-verification-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.rc-risk-verdict {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.rc-risk-verdict.low-risk {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.rc-risk-verdict.medium-risk {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.rc-risk-verdict.high-risk {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.rc-risk-score {
+    margin-bottom: 18px;
+}
+
+.rc-risk-score>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #475569;
+    font-size: 13px;
+}
+
+.rc-risk-score strong {
+    color: #1e293b;
+    font-size: 18px;
+}
+
+.rc-risk-progress {
+    height: 9px;
+    overflow: hidden;
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.rc-risk-progress>div {
+    height: 100%;
+    background: #f59e0b;
+    border-radius: 10px;
+}
+
+.rc-verification-report h4 {
+    margin: 20px 0 10px;
+    color: #334155;
+    font-size: 14px;
+}
+
+.rc-risk-flag,
+.rc-rule-check {
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    font-size: 12px;
+}
+
+.rc-risk-flag {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+.rc-risk-flag strong {
+    color: #9a3412;
+}
+
+.rc-risk-flag span {
+    float: right;
+    color: #64748b;
+}
+
+.rc-risk-flag p {
+    margin: 7px 0 0;
+    color: #475569;
+}
+
+.rc-rule-check {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #475569;
+}
+
+.rc-verification-note {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.exchange-intake-success {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #a7dfbd;
+    border-radius: 8px;
+    background: #effaf3;
+    color: #18733b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ===== Professional Exchange Intake Modal ===== */
+
+.exchange-intake-modal {
+    display: flex;
+    flex-direction: column;
+    width: 760px;
+    max-width: calc(100% - 32px);
+    max-height: 90vh;
+    margin: auto;
+    padding-bottom: 0;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.20);
+}
+
+.exchange-intake-modal .exchange-drawer-header {
+    flex-shrink: 0;
+    min-height: 68px;
+    padding: 0 26px;
+    background: #ffffff;
+}
+
+.exchange-intake-form {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.exchange-intake-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 22px;
+    padding: 24px 26px;
+    overflow-y: auto;
+}
+
+.exchange-intake-field {
+    min-width: 0;
+    gap: 7px;
+}
+
+.exchange-intake-field label {
+    color: #34445c;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.exchange-intake-field input,
+.exchange-intake-field select {
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #d9e1ec;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #24364f;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exchange-intake-field input:focus,
+.exchange-intake-field select:focus {
+    border-color: #2456b8;
+    box-shadow: 0 0 0 3px rgba(36, 86, 184, 0.09);
+    outline: none;
+}
+
+.exchange-intake-field input:disabled,
+.exchange-intake-field select:disabled {
+    background: #f1f5f9;
+    cursor: not-allowed;
+}
+
+.exchange-intake-footer {
+    flex-shrink: 0;
+    padding: 16px 26px;
+    background: #ffffff;
+    border-top: 1px solid #e7ebf1;
+}
+
+.exchange-intake-cancel,
+.exchange-intake-submit {
+    min-width: 100px;
+    height: 40px;
+    font-size: 13px;
+    border-radius: 7px;
+}
+
+.exchange-intake-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.exchange-intake-success {
+    position: relative;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #a7dfbd;
+    border-radius: 8px;
+    background: #effaf3;
+    color: #18733b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Mobile responsive intake form */
+@media (max-width: 640px) {
+    .exchange-intake-modal {
+        width: calc(100% - 20px);
+        max-width: 100%;
+        max-height: 92vh;
+    }
+
+    .exchange-intake-fields {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .exchange-intake-modal .exchange-drawer-header {
+        padding: 0 20px;
+    }
+
+    .exchange-intake-footer {
+        padding: 14px 20px;
+    }
+}
+
+.exchange-intake-section {
+    grid-column: 1 / -1;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e7ebf1;
+}
+
+.exchange-intake-section:not(:first-child) {
+    margin-top: 5px;
+}
+
+.exchange-intake-section h3 {
+    margin: 0 0 5px;
+    color: #172b4d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.exchange-intake-section p {
+    margin: 0;
+    color: #8191a9;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   VEHICLE INSPECTION SECTION
+========================================= */
+
+.exchange-inspection-section {
+    margin: 20px 0;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.exchange-inspection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.exchange-inspection-header h3 {
+    margin: 0 0 5px;
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.exchange-inspection-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.exchange-inspection-header button,
+.exchange-inspection-form button {
+    padding: 9px 15px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.exchange-inspection-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #edf1f7;
+}
+
+.exchange-inspection-details p {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding: 12px;
+    border: 1px solid #e8edf4;
+    border-radius: 9px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.exchange-inspection-details strong {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.exchange-inspection-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #edf1f7;
+}
+
+.exchange-inspection-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.exchange-inspection-field label {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.exchange-inspection-field input,
+.exchange-inspection-field select,
+.exchange-inspection-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dbe3ed;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #334155;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.exchange-inspection-field textarea {
+    resize: vertical;
+}
+
+.exchange-inspection-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.exchange-inspection-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #475569;
+    font-size: 12px;
+}
+
+.exchange-inspection-checkboxes input {
+    accent-color: #2563eb;
+}
+
+.exchange-inspection-message {
+    margin: 12px 0 0;
+    color: #2563eb;
+    font-size: 12px;
+}
+
+@media (max-width: 600px) {
+    .exchange-inspection-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .exchange-inspection-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.exchange-detail-section-title {
+    margin: 22px 0 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e7ebf1;
+}
+
+.exchange-detail-section-title h3 {
+    margin: 0;
+    color: #182033;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.exchange-detail-section-title p {
+    margin: 4px 0 0;
+    color: #8793a7;
+    font-size: 12px;
+}
+
+
+
+
+/* Professional intake form section layout */
+.exchange-intake-section {
+    grid-column: 1 / -1;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 10px 0 4px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.exchange-intake-section h3 {
+    margin: 0 0 5px;
+    color: #172b4d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.exchange-intake-section p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Professional intake form grid */
+.exchange-intake-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.exchange-intake-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.exchange-intake-field label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.exchange-intake-field input,
+.exchange-intake-field select,
+.exchange-intake-field textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172b4d;
+    font-size: 13px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.exchange-intake-field input:focus,
+.exchange-intake-field select:focus,
+.exchange-intake-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+@media (max-width: 640px) {
+    .exchange-intake-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Refined Vehicle Details Drawer ===== */
+
+.exchange-vehicle-drawer {
+    width: 620px;
+    max-width: min(620px, 100%);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.exchange-drawer-header {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 20px 26px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5eaf1;
+}
+
+.exchange-drawer-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 22px 26px 30px;
+    background: #f8fafc;
+}
+
+.exchange-drawer-notice,
+.exchange-inspection-section,
+.rc-verification-report,
+.rc-ocr-results,
+.rc-document-upload,
+.exchange-uploaded-documents {
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.exchange-detail-section-title {
+    margin-top: 24px;
+}
+
+.exchange-detail-row {
+    background: #ffffff;
+    padding: 12px 14px;
+}
+
+.exchange-detail-row:first-of-type {
+    border-radius: 8px 8px 0 0;
+}
+
+.exchange-detail-row:last-of-type {
+    border-radius: 0 0 8px 8px;
+}
+
+@media (max-width: 640px) {
+    .exchange-vehicle-drawer {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .exchange-drawer-content {
+        padding: 16px;
+    }
+}
+
+/* RC Book Manual Review Form */
+.rc-manual-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.rc-manual-review-form h4 {
+    margin: 0 0 4px;
+    color: #172b4d;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.rc-manual-review-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.rc-manual-review-form input,
+.rc-manual-review-form select,
+.rc-manual-review-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    border: 1px solid #d7e0ec;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #172b4d;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.rc-manual-review-form input:focus,
+.rc-manual-review-form select:focus,
+.rc-manual-review-form textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.rc-manual-review-form textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+.rc-manual-review-form button {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rc-manual-review-form button:hover {
+    background: #1d4ed8;
+}
+
+.rc-manual-review-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.rc-manual-review-form p {
+    margin: 0;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.rc-review-completed {
+    margin-top: 12px;
+}
+
+.rc-review-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #172b4d;
+}
+
+.rc-review-grid {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.rc-review-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 11px 13px;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.rc-review-row span,
+.rc-review-remarks span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.rc-review-row strong {
+    color: #334155;
+    font-size: 13px;
+    text-align: right;
+}
+
+.rc-review-remarks {
+    padding: 12px 13px;
+}
+
+.rc-review-remarks p {
+    margin: 7px 0 0;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* Vehicle Details Edit Form */
+.exchange-edit-form {
+    margin: 16px 0 20px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #dfe5ee;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.exchange-edit-header {
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e8edf3;
+}
+
+.exchange-edit-header h3 {
+    margin: 0;
+    color: #172b4d;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.exchange-edit-header p {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.exchange-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 20px;
+}
+
+.exchange-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.exchange-edit-field label {
+    color: #344054;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.exchange-edit-field input {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid #cfd7e3;
+    border-radius: 6px;
+    background: #fff;
+    color: #172b4d;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.exchange-edit-field input:focus {
+    border-color: #315da8;
+    box-shadow: 0 0 0 3px rgba(49, 93, 168, 0.12);
+}
+
+.exchange-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e8edf3;
+}
+
+.exchange-edit-actions button {
+    min-height: 38px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.exchange-edit-cancel {
+    background: #fff;
+    color: #344054;
+    border: 1px solid #cfd7e3;
+}
+
+.exchange-edit-save {
+    background: #244f91;
+    color: #fff;
+    border: 1px solid #244f91;
+}
+
+.exchange-edit-save:hover {
+    background: #193d75;
+}
+
+@media (max-width: 600px) {
+    .exchange-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .exchange-edit-actions {
+        flex-wrap: wrap;
+    }
+}
+
+
+
+.exchange-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 30px;
+    padding: 0 11px;
+    border: 1px solid #d8dee8;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.exchange-edit-trigger:hover {
+    background: #f8fafc;
+    border-color: #aebaca;
+    color: #1e293b;
+}
+
+.exchange-edit-trigger:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.exchange-detail-section-title .exchange-detail-heading {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
+    gap: 12px;
+}
+
+.exchange-detail-section-title .exchange-detail-heading>div {
+    flex: 1;
+}
+
+.exchange-detail-section-title .exchange-edit-trigger {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* =========================================
+   EXCHANGE VEHICLES - VALUATION UI
+========================================= */
+
+.ev-valuation-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0 18px;
+}
+
+.ev-valuation-metric {
+    min-width: 0;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ev-valuation-metric span,
+.ev-valuation-breakdown span,
+.ev-valuation-status-row>span:first-child {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.ev-valuation-metric strong {
+    color: #172b4d;
+    font-size: 21px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.ev-valuation-metric small {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.ev-valuation-card {
+    padding: 19px;
+    margin: 14px 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+}
+
+.ev-valuation-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.ev-valuation-card-heading h4 {
+    margin: 0 0 5px;
+    color: #172b4d;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.ev-valuation-card-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ev-valuation-step {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #2457a6;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ev-valuation-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.ev-valuation-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.ev-valuation-field-full {
+    grid-column: 1 / -1;
+}
+
+.ev-valuation-field label {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ev-valuation-field input,
+.ev-valuation-field textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid #dbe3ee;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #172b4d;
+    font: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ev-valuation-field input:focus,
+.ev-valuation-field textarea:focus {
+    border-color: #3974c6;
+    box-shadow: 0 0 0 3px rgba(57, 116, 198, 0.10);
+}
+
+.ev-valuation-field textarea {
+    resize: vertical;
+    min-height: 78px;
+}
+
+.ev-valuation-primary-button {
+    width: 100%;
+    margin-top: 17px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 7px;
+    background: #2457a6;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.ev-valuation-primary-button:hover {
+    background: #194786;
+}
+
+.ev-valuation-primary-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.ev-valuation-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ev-valuation-breakdown>div,
+.ev-valuation-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.ev-valuation-breakdown strong,
+.ev-valuation-status-row strong {
+    color: #263b5a;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.ev-valuation-suggested {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 17px;
+    border: 1px solid #cfe0fa;
+    border-radius: 9px;
+    background: #f1f6ff;
+}
+
+.ev-valuation-suggested span {
+    color: #2457a6;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ev-valuation-suggested strong {
+    color: #17458b;
+    font-size: 21px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.ev-valuation-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #fff7e6;
+    color: #a15c00;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.ev-valuation-status.approved {
+    background: #e9f8ef;
+    color: #187443;
+}
+
+.ev-valuation-status.rejected {
+    background: #fff0f0;
+    color: #bd3030;
+}
+
+.ev-valuation-status.pending_approval {
+    background: #fff7e6;
+    color: #a15c00;
+}
+
+.ev-valuation-manager-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.ev-valuation-manager-actions button {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 0;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ev-valuation-approve-button {
+    background: #198754;
+    color: #ffffff;
+}
+
+.ev-valuation-reject-button {
+    background: #fff0f0;
+    color: #b42318;
+    border: 1px solid #f2c5c5 !important;
+}
+
+.ev-valuation-manager-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ev-valuation-message {
+    margin: 12px 0 0;
+    padding: 11px 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ev-valuation-message.success {
+    background: #edf8f1;
+    color: #187443;
+    border: 1px solid #ccebd7;
+}
+
+.ev-valuation-message.error {
+    background: #fff1f0;
+    color: #b42318;
+    border: 1px solid #f3cccc;
+}
+
+.ev-valuation-message.warning {
+    background: #fff7e6;
+    color: #945700;
+    border: 1px solid #f2dfb4;
+}
+
+@media (max-width: 480px) {
+
+    .ev-valuation-summary,
+    .ev-valuation-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ev-valuation-field-full {
+        grid-column: auto;
+    }
+
+    .ev-valuation-manager-actions {
+        flex-direction: column;
+    }
+
+    .ev-valuation-suggested strong {
+        font-size: 17px;
+    }
+}
+
+/* Valuation summary: display each value in a separate full-width row */
+.ev-valuation-summary {
+    grid-template-columns: 1fr !important;
+}
+
+.ev-valuation-metric {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Valuation metrics displayed like vehicle detail rows */
+.ev-valuation-summary {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
+.ev-valuation-metric {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 16px;
+    border-radius: 0;
+    border-bottom: 1px solid #e5eaf1;
+    box-shadow: none;
+}
+
+.ev-valuation-metric:last-child {
+    border-bottom: none;
+}
+
+/* Final valuation row alignment */
+.ev-valuation-metric {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    align-items: center !important;
+    justify-content: initial !important;
+    gap: 12px;
+    padding: 18px 16px;
+    text-align: left;
+}
+
+/* Hide helper descriptions from valuation summary rows */
+.ev-valuation-metric> :last-child {
+    display: none !important;
+}
+
+/* Keep the amount aligned to the right */
+.ev-valuation-metric> :nth-child(2) {
+    text-align: right;
+    justify-self: end;
+}
+
+/* Valuation rows - match vehicle registration detail rows */
+.ev-valuation-summary {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    border: 1px solid #e5eaf1;
+    background: #ffffff;
+}
+
+.ev-valuation-metric {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    align-items: center !important;
+    width: 100%;
+    min-width: 0;
+    min-height: 49px !important;
+    height: 49px !important;
+    box-sizing: border-box;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid #e5eaf1 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    gap: 12px;
+}
+
+.ev-valuation-metric:last-child {
+    border-bottom: none !important;
+}
+
+.ev-valuation-metric> :last-child {
+    display: none !important;
+}
+
+.ev-valuation-metric> :nth-child(2) {
+    justify-self: end;
+    text-align: right;
+}
+
+/* Keep valuation summary amounts consistent with the drawer */
+.ev-valuation-amount {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+
+/* Delete action - visible only when hovering over a vehicle row */
+.exchange-action-cell {
+    width: 70px;
+    text-align: center;
+}
+
+.exchange-delete-button {
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 7px 9px;
+    border-radius: 6px;
+    transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.exchange-vehicle-table tbody tr:hover .exchange-delete-button {
+    opacity: 1;
+    visibility: visible;
+}
+
+.exchange-delete-button:hover {
+    background: #fee2e2;
+}
+
+.exchange-delete-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Stage and hover-only delete action */
+.exchange-stage-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.exchange-delete-button {
+    opacity: 0;
+    visibility: hidden;
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.exchange-vehicle-table tbody tr:hover .exchange-delete-button {
+    opacity: 1;
+    visibility: visible;
+}
+
+.exchange-delete-button:hover {
+    background: #fee2e2;
+}
+
+.exchange-delete-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

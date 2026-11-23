@@ -1,0 +1,62 @@
+{
+  "users": [
+    {
+      "firstName": "Bharathi",
+      "lastName": "Kakinada",
+      "email": "bharathi.kkd@nexus.local",
+      "branchCodes": [
+        "KKD"
+      ],
+      "role": "BRANCH_HEAD"
+    },
+    {
+      "firstName": "Dharshan",
+      "lastName": "Tanuku",
+      "email": "dharshan.tnk@nexus.local",
+      "branchCodes": [
+        "TNK"
+      ],
+      "role": "BRANCH_HEAD"
+    },
+    {
+      "firstName": "Suresh",
+      "lastName": "Narasapuram",
+      "email": "suresh.nrp@nexus.local",
+      "branchCodes": [
+        "NRP"
+      ],
+      "role": "BRANCH_HEAD"
+    },
+    {
+      "firstName": "Swathi",
+      "lastName": "Eluru",
+      "email": "swathi.elr@nexus.local",
+      "branchCodes": [
+        "ELR"
+      ],
+      "role": "BRANCH_HEAD"
+    },
+    {
+      "firstName": "Rahul",
+      "lastName": "Eluru",
+      "email": "rahul.elr@nexus.local",
+      "branchCodes": [
+        "ELR"
+      ],
+      "role": "LOAN_OFFICER"
+    },
+    {
+      "firstName": "Sanjeev",
+      "lastName": "Head Office",
+      "email": "sanjeev.ho@nexus.local",
+      "branchCodes": [
+        "HO",
+        "KKD",
+        "TNK",
+        "NRP",
+        "ELR"
+      ],
+      "role": "FINANCE_MANAGER"
+    }
+  ]
+}
