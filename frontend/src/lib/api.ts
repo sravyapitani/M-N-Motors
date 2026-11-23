@@ -1,9 +1,15 @@
 // API client for Nexus ERP frontend
 
-const API_BASE_URL =
+const rawApiUrl =
     (import.meta.env.VITE_API_URL as string | undefined) ||
-    (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
-    'http://localhost:3000/api';
+    (import.meta.env.VITE_API_BASE_URL as string | undefined);
+
+// Use relative '/api' when pointing to localhost so requests route through
+// Vite's reverse-proxy across port-forwards, public tunnels, and LAN devices.
+const API_BASE_URL =
+    rawApiUrl && !rawApiUrl.includes('localhost:3000')
+        ? rawApiUrl
+        : '/api';
 
 const TOKEN_STORAGE_KEY = 'nexus_erp_token';
 const USER_STORAGE_KEY = 'nexus_erp_user';

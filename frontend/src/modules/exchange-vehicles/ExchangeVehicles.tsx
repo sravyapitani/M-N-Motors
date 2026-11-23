@@ -294,7 +294,7 @@ function ExchangeVehicles() {
                 setApiError('');
 
                 const response = await fetch(
-                    'http://localhost:3000/api/exchange-vehicles'
+                    '/api/exchange-vehicles'
                 );
 
                 if (!response.ok) {
@@ -462,7 +462,7 @@ function ExchangeVehicles() {
 
         try {
             const response = await fetch(
-                'http://localhost:3000/api/exchange-vehicles/branches/active'
+                '/api/exchange-vehicles/branches/active'
             );
 
             const result = await response.json();
@@ -541,7 +541,7 @@ function ExchangeVehicles() {
             setIntakeSuccess('');
 
             const response = await fetch(
-                'http://localhost:3000/api/exchange-vehicles',
+                '/api/exchange-vehicles',
                 {
                     method: 'POST',
                     headers: {
@@ -563,7 +563,7 @@ function ExchangeVehicles() {
 
             // Fetch the latest records from the backend.
             const vehiclesResponse = await fetch(
-                'http://localhost:3000/api/exchange-vehicles'
+                '/api/exchange-vehicles'
             );
 
             const vehiclesResult = await vehiclesResponse.json();
@@ -601,7 +601,7 @@ function ExchangeVehicles() {
 
         try {
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${vehicleId}/inspection`
+                `/api/exchange-vehicles/${vehicleId}/inspection`
             );
 
             if (!response.ok) {
@@ -668,7 +668,7 @@ function ExchangeVehicles() {
             setInspectionMessage('');
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/inspection/validate`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/inspection/validate`,
                 {
                     method: 'POST',
                     headers: {
@@ -688,7 +688,7 @@ function ExchangeVehicles() {
 
             // Move the vehicle to the Inspection stage after saving.
             const stageResponse = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/stage`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/stage`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -708,7 +708,7 @@ function ExchangeVehicles() {
 
             // Refresh the vehicle table from the backend.
             const vehiclesResponse = await fetch(
-                'http://localhost:3000/api/exchange-vehicles'
+                '/api/exchange-vehicles'
             );
 
             if (vehiclesResponse.ok) {
@@ -749,7 +749,7 @@ function ExchangeVehicles() {
             setValuationResult(null);
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/valuation/calculate`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/valuation/calculate`,
                 {
                     method: 'POST',
                     headers: {
@@ -836,7 +836,7 @@ function ExchangeVehicles() {
             setValuationReviewMessage('');
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/valuation/${valuationResult.valuationId}/review`,
+                `/api/exchange-vehicles/valuation/${valuationResult.valuationId}/review`,
                 {
                     method: 'POST',
                     headers: {
@@ -907,7 +907,7 @@ function ExchangeVehicles() {
 
         try {
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/details`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/details`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -964,7 +964,7 @@ function ExchangeVehicles() {
             setDeletingVehicleId(record.id);
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${record.id}`,
+                `/api/exchange-vehicles/${record.id}`,
                 {
                     method: 'DELETE',
                 }
@@ -1009,7 +1009,7 @@ function ExchangeVehicles() {
         setEvaluatorRemarks('');
 
         fetch(
-            `http://localhost:3000/api/exchange-vehicles/${record.id}/valuation/latest`,
+            `/api/exchange-vehicles/${record.id}/valuation/latest`,
         )
             .then(async (response) => {
                 if (!response.ok) return null;
@@ -1074,7 +1074,7 @@ function ExchangeVehicles() {
 
         // Restore the previously saved RC Book verification result
         fetch(
-            `http://localhost:3000/api/exchange-vehicles/${record.id}/rc-book/latest-verification`,
+            `/api/exchange-vehicles/${record.id}/rc-book/latest-verification`,
         )
             .then(async (response) => {
                 if (!response.ok) return null;
@@ -1134,7 +1134,7 @@ function ExchangeVehicles() {
 
             // Step 1: Extract text and fields from uploaded RC documents.
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/rc-book/extract`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/rc-book/extract`,
                 {
                     method: 'POST',
                 },
@@ -1169,7 +1169,7 @@ function ExchangeVehicles() {
 
             // Step 2: Run configurable authenticity verification.
             const verificationResponse = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/rc-book/verify`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/rc-book/verify`,
                 {
                     method: 'POST',
                     headers: {
@@ -1200,7 +1200,7 @@ function ExchangeVehicles() {
 
             // Refresh vehicle records so the updated RC Book status appears
             const vehiclesResponse = await fetch(
-                'http://localhost:3000/api/exchange-vehicles'
+                '/api/exchange-vehicles'
             );
 
             if (vehiclesResponse.ok) {
@@ -1256,7 +1256,7 @@ function ExchangeVehicles() {
             setReviewMessage('');
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/rc-book/${verificationResult.verificationId}/review`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/rc-book/${verificationResult.verificationId}/review`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -1290,7 +1290,7 @@ function ExchangeVehicles() {
             setReviewRemarks('');
             setReviewStatus('');
             const vehiclesResponse = await fetch(
-                'http://localhost:3000/api/exchange-vehicles'
+                '/api/exchange-vehicles'
             );
 
             if (vehiclesResponse.ok) {
@@ -1334,7 +1334,7 @@ function ExchangeVehicles() {
             setRcUploadMessage('');
 
             const response = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/documents`,
+                `/api/exchange-vehicles/${selectedVehicle.id}/documents`,
                 {
                     method: 'POST',
                     body: formData,
@@ -1349,7 +1349,7 @@ function ExchangeVehicles() {
 
             // Refresh uploaded document list
             const documentsResponse = await fetch(
-                `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/documents`
+                `/api/exchange-vehicles/${selectedVehicle.id}/documents`
             );
 
             if (!documentsResponse.ok) {
@@ -1390,7 +1390,7 @@ function ExchangeVehicles() {
                 setLoadingDocuments(true);
 
                 const response = await fetch(
-                    `http://localhost:3000/api/exchange-vehicles/${selectedVehicle.id}/documents`
+                    `/api/exchange-vehicles/${selectedVehicle.id}/documents`
                 );
 
                 if (!response.ok) {
@@ -2965,7 +2965,7 @@ function ExchangeVehicles() {
                                             </div>
 
                                             <a
-                                                href={`http://localhost:3000/api/exchange-vehicles/${document.vehicleId}/documents/${document.id}/file`}
+                                                href={`/api/exchange-vehicles/${document.vehicleId}/documents/${document.id}/file`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
