@@ -127,6 +127,11 @@ model LoanApplication {
   tenureMonths     Int
   commissionAmount Decimal     @default(0.00) @db.Decimal(12, 2)
   status           LoanStatus  @default(ENQUIRY)
+  submittedAt      DateTime?
+  underReviewAt    DateTime?
+  sanctionedAt     DateTime?
+  disbursedAt      DateTime?
+  rejectedAt       DateTime?
   branchId         String
   branch           Branch      @relation(fields: [branchId], references: [id], onDelete: Restrict)
   submittingUserId String

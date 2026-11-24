@@ -50,6 +50,11 @@ export type LoanApplicationMinAggregateOutputType = {
   tenureMonths: number | null
   commissionAmount: runtime.Decimal | null
   status: $Enums.LoanStatus | null
+  submittedAt: Date | null
+  underReviewAt: Date | null
+  sanctionedAt: Date | null
+  disbursedAt: Date | null
+  rejectedAt: Date | null
   branchId: string | null
   submittingUserId: string | null
   createdAt: Date | null
@@ -66,6 +71,11 @@ export type LoanApplicationMaxAggregateOutputType = {
   tenureMonths: number | null
   commissionAmount: runtime.Decimal | null
   status: $Enums.LoanStatus | null
+  submittedAt: Date | null
+  underReviewAt: Date | null
+  sanctionedAt: Date | null
+  disbursedAt: Date | null
+  rejectedAt: Date | null
   branchId: string | null
   submittingUserId: string | null
   createdAt: Date | null
@@ -82,6 +92,11 @@ export type LoanApplicationCountAggregateOutputType = {
   tenureMonths: number
   commissionAmount: number
   status: number
+  submittedAt: number
+  underReviewAt: number
+  sanctionedAt: number
+  disbursedAt: number
+  rejectedAt: number
   branchId: number
   submittingUserId: number
   createdAt: number
@@ -114,6 +129,11 @@ export type LoanApplicationMinAggregateInputType = {
   tenureMonths?: true
   commissionAmount?: true
   status?: true
+  submittedAt?: true
+  underReviewAt?: true
+  sanctionedAt?: true
+  disbursedAt?: true
+  rejectedAt?: true
   branchId?: true
   submittingUserId?: true
   createdAt?: true
@@ -130,6 +150,11 @@ export type LoanApplicationMaxAggregateInputType = {
   tenureMonths?: true
   commissionAmount?: true
   status?: true
+  submittedAt?: true
+  underReviewAt?: true
+  sanctionedAt?: true
+  disbursedAt?: true
+  rejectedAt?: true
   branchId?: true
   submittingUserId?: true
   createdAt?: true
@@ -146,6 +171,11 @@ export type LoanApplicationCountAggregateInputType = {
   tenureMonths?: true
   commissionAmount?: true
   status?: true
+  submittedAt?: true
+  underReviewAt?: true
+  sanctionedAt?: true
+  disbursedAt?: true
+  rejectedAt?: true
   branchId?: true
   submittingUserId?: true
   createdAt?: true
@@ -249,6 +279,11 @@ export type LoanApplicationGroupByOutputType = {
   tenureMonths: number
   commissionAmount: runtime.Decimal
   status: $Enums.LoanStatus
+  submittedAt: Date | null
+  underReviewAt: Date | null
+  sanctionedAt: Date | null
+  disbursedAt: Date | null
+  rejectedAt: Date | null
   branchId: string
   submittingUserId: string
   createdAt: Date
@@ -288,6 +323,11 @@ export type LoanApplicationWhereInput = {
   tenureMonths?: Prisma.IntFilter<"LoanApplication"> | number
   commissionAmount?: Prisma.DecimalFilter<"LoanApplication"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFilter<"LoanApplication"> | $Enums.LoanStatus
+  submittedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  underReviewAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  sanctionedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  disbursedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  rejectedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
   branchId?: Prisma.StringFilter<"LoanApplication"> | string
   submittingUserId?: Prisma.StringFilter<"LoanApplication"> | string
   createdAt?: Prisma.DateTimeFilter<"LoanApplication"> | Date | string
@@ -307,6 +347,11 @@ export type LoanApplicationOrderByWithRelationInput = {
   tenureMonths?: Prisma.SortOrder
   commissionAmount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  underReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sanctionedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  disbursedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   branchId?: Prisma.SortOrder
   submittingUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -329,6 +374,11 @@ export type LoanApplicationWhereUniqueInput = Prisma.AtLeast<{
   tenureMonths?: Prisma.IntFilter<"LoanApplication"> | number
   commissionAmount?: Prisma.DecimalFilter<"LoanApplication"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFilter<"LoanApplication"> | $Enums.LoanStatus
+  submittedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  underReviewAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  sanctionedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  disbursedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  rejectedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
   branchId?: Prisma.StringFilter<"LoanApplication"> | string
   submittingUserId?: Prisma.StringFilter<"LoanApplication"> | string
   createdAt?: Prisma.DateTimeFilter<"LoanApplication"> | Date | string
@@ -348,6 +398,11 @@ export type LoanApplicationOrderByWithAggregationInput = {
   tenureMonths?: Prisma.SortOrder
   commissionAmount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  underReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sanctionedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  disbursedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   branchId?: Prisma.SortOrder
   submittingUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -372,6 +427,11 @@ export type LoanApplicationScalarWhereWithAggregatesInput = {
   tenureMonths?: Prisma.IntWithAggregatesFilter<"LoanApplication"> | number
   commissionAmount?: Prisma.DecimalWithAggregatesFilter<"LoanApplication"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusWithAggregatesFilter<"LoanApplication"> | $Enums.LoanStatus
+  submittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
+  underReviewAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
+  sanctionedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
+  disbursedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
+  rejectedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"LoanApplication"> | Date | string | null
   branchId?: Prisma.StringWithAggregatesFilter<"LoanApplication"> | string
   submittingUserId?: Prisma.StringWithAggregatesFilter<"LoanApplication"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LoanApplication"> | Date | string
@@ -387,6 +447,11 @@ export type LoanApplicationCreateInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lender?: Prisma.LenderCreateNestedOneWithoutLoanApplicationsInput
@@ -404,6 +469,11 @@ export type LoanApplicationUncheckedCreateInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   submittingUserId: string
   createdAt?: Date | string
@@ -419,6 +489,11 @@ export type LoanApplicationUpdateInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lender?: Prisma.LenderUpdateOneWithoutLoanApplicationsNestedInput
@@ -436,6 +511,11 @@ export type LoanApplicationUncheckedUpdateInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -452,6 +532,11 @@ export type LoanApplicationCreateManyInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   submittingUserId: string
   createdAt?: Date | string
@@ -467,6 +552,11 @@ export type LoanApplicationUpdateManyMutationInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -481,6 +571,11 @@ export type LoanApplicationUncheckedUpdateManyInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -507,6 +602,11 @@ export type LoanApplicationCountOrderByAggregateInput = {
   tenureMonths?: Prisma.SortOrder
   commissionAmount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  underReviewAt?: Prisma.SortOrder
+  sanctionedAt?: Prisma.SortOrder
+  disbursedAt?: Prisma.SortOrder
+  rejectedAt?: Prisma.SortOrder
   branchId?: Prisma.SortOrder
   submittingUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -530,6 +630,11 @@ export type LoanApplicationMaxOrderByAggregateInput = {
   tenureMonths?: Prisma.SortOrder
   commissionAmount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  underReviewAt?: Prisma.SortOrder
+  sanctionedAt?: Prisma.SortOrder
+  disbursedAt?: Prisma.SortOrder
+  rejectedAt?: Prisma.SortOrder
   branchId?: Prisma.SortOrder
   submittingUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -546,6 +651,11 @@ export type LoanApplicationMinOrderByAggregateInput = {
   tenureMonths?: Prisma.SortOrder
   commissionAmount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  underReviewAt?: Prisma.SortOrder
+  sanctionedAt?: Prisma.SortOrder
+  disbursedAt?: Prisma.SortOrder
+  rejectedAt?: Prisma.SortOrder
   branchId?: Prisma.SortOrder
   submittingUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -705,6 +815,10 @@ export type EnumLoanStatusFieldUpdateOperationsInput = {
   set?: $Enums.LoanStatus
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type LoanApplicationCreateWithoutSubmittingUserInput = {
   id?: string
   customerName: string
@@ -714,6 +828,11 @@ export type LoanApplicationCreateWithoutSubmittingUserInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lender?: Prisma.LenderCreateNestedOneWithoutLoanApplicationsInput
@@ -730,6 +849,11 @@ export type LoanApplicationUncheckedCreateWithoutSubmittingUserInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -774,6 +898,11 @@ export type LoanApplicationScalarWhereInput = {
   tenureMonths?: Prisma.IntFilter<"LoanApplication"> | number
   commissionAmount?: Prisma.DecimalFilter<"LoanApplication"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFilter<"LoanApplication"> | $Enums.LoanStatus
+  submittedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  underReviewAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  sanctionedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  disbursedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
+  rejectedAt?: Prisma.DateTimeNullableFilter<"LoanApplication"> | Date | string | null
   branchId?: Prisma.StringFilter<"LoanApplication"> | string
   submittingUserId?: Prisma.StringFilter<"LoanApplication"> | string
   createdAt?: Prisma.DateTimeFilter<"LoanApplication"> | Date | string
@@ -789,6 +918,11 @@ export type LoanApplicationCreateWithoutBranchInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lender?: Prisma.LenderCreateNestedOneWithoutLoanApplicationsInput
@@ -805,6 +939,11 @@ export type LoanApplicationUncheckedCreateWithoutBranchInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   submittingUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -845,6 +984,11 @@ export type LoanApplicationCreateWithoutLenderInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   branch: Prisma.BranchCreateNestedOneWithoutLoanApplicationsInput
@@ -860,6 +1004,11 @@ export type LoanApplicationUncheckedCreateWithoutLenderInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   submittingUserId: string
   createdAt?: Date | string
@@ -902,6 +1051,11 @@ export type LoanApplicationCreateManySubmittingUserInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -916,6 +1070,11 @@ export type LoanApplicationUpdateWithoutSubmittingUserInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lender?: Prisma.LenderUpdateOneWithoutLoanApplicationsNestedInput
@@ -932,6 +1091,11 @@ export type LoanApplicationUncheckedUpdateWithoutSubmittingUserInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -947,6 +1111,11 @@ export type LoanApplicationUncheckedUpdateManyWithoutSubmittingUserInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -962,6 +1131,11 @@ export type LoanApplicationCreateManyBranchInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   submittingUserId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -976,6 +1150,11 @@ export type LoanApplicationUpdateWithoutBranchInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lender?: Prisma.LenderUpdateOneWithoutLoanApplicationsNestedInput
@@ -992,6 +1171,11 @@ export type LoanApplicationUncheckedUpdateWithoutBranchInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1007,6 +1191,11 @@ export type LoanApplicationUncheckedUpdateManyWithoutBranchInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1021,6 +1210,11 @@ export type LoanApplicationCreateManyLenderInput = {
   tenureMonths: number
   commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.LoanStatus
+  submittedAt?: Date | string | null
+  underReviewAt?: Date | string | null
+  sanctionedAt?: Date | string | null
+  disbursedAt?: Date | string | null
+  rejectedAt?: Date | string | null
   branchId: string
   submittingUserId: string
   createdAt?: Date | string
@@ -1036,6 +1230,11 @@ export type LoanApplicationUpdateWithoutLenderInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   branch?: Prisma.BranchUpdateOneRequiredWithoutLoanApplicationsNestedInput
@@ -1051,6 +1250,11 @@ export type LoanApplicationUncheckedUpdateWithoutLenderInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1066,6 +1270,11 @@ export type LoanApplicationUncheckedUpdateManyWithoutLenderInput = {
   tenureMonths?: Prisma.IntFieldUpdateOperationsInput | number
   commissionAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumLoanStatusFieldUpdateOperationsInput | $Enums.LoanStatus
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sanctionedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   branchId?: Prisma.StringFieldUpdateOperationsInput | string
   submittingUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1084,6 +1293,11 @@ export type LoanApplicationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   tenureMonths?: boolean
   commissionAmount?: boolean
   status?: boolean
+  submittedAt?: boolean
+  underReviewAt?: boolean
+  sanctionedAt?: boolean
+  disbursedAt?: boolean
+  rejectedAt?: boolean
   branchId?: boolean
   submittingUserId?: boolean
   createdAt?: boolean
@@ -1103,6 +1317,11 @@ export type LoanApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   tenureMonths?: boolean
   commissionAmount?: boolean
   status?: boolean
+  submittedAt?: boolean
+  underReviewAt?: boolean
+  sanctionedAt?: boolean
+  disbursedAt?: boolean
+  rejectedAt?: boolean
   branchId?: boolean
   submittingUserId?: boolean
   createdAt?: boolean
@@ -1122,6 +1341,11 @@ export type LoanApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   tenureMonths?: boolean
   commissionAmount?: boolean
   status?: boolean
+  submittedAt?: boolean
+  underReviewAt?: boolean
+  sanctionedAt?: boolean
+  disbursedAt?: boolean
+  rejectedAt?: boolean
   branchId?: boolean
   submittingUserId?: boolean
   createdAt?: boolean
@@ -1141,13 +1365,18 @@ export type LoanApplicationSelectScalar = {
   tenureMonths?: boolean
   commissionAmount?: boolean
   status?: boolean
+  submittedAt?: boolean
+  underReviewAt?: boolean
+  sanctionedAt?: boolean
+  disbursedAt?: boolean
+  rejectedAt?: boolean
   branchId?: boolean
   submittingUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LoanApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerName" | "lenderName" | "lenderId" | "loanAmount" | "interestRate" | "tenureMonths" | "commissionAmount" | "status" | "branchId" | "submittingUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["loanApplication"]>
+export type LoanApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerName" | "lenderName" | "lenderId" | "loanAmount" | "interestRate" | "tenureMonths" | "commissionAmount" | "status" | "submittedAt" | "underReviewAt" | "sanctionedAt" | "disbursedAt" | "rejectedAt" | "branchId" | "submittingUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["loanApplication"]>
 export type LoanApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lender?: boolean | Prisma.LoanApplication$lenderArgs<ExtArgs>
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
@@ -1181,6 +1410,11 @@ export type $LoanApplicationPayload<ExtArgs extends runtime.Types.Extensions.Int
     tenureMonths: number
     commissionAmount: runtime.Decimal
     status: $Enums.LoanStatus
+    submittedAt: Date | null
+    underReviewAt: Date | null
+    sanctionedAt: Date | null
+    disbursedAt: Date | null
+    rejectedAt: Date | null
     branchId: string
     submittingUserId: string
     createdAt: Date
@@ -1620,6 +1854,11 @@ export interface LoanApplicationFieldRefs {
   readonly tenureMonths: Prisma.FieldRef<"LoanApplication", 'Int'>
   readonly commissionAmount: Prisma.FieldRef<"LoanApplication", 'Decimal'>
   readonly status: Prisma.FieldRef<"LoanApplication", 'LoanStatus'>
+  readonly submittedAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>
+  readonly underReviewAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>
+  readonly sanctionedAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>
+  readonly disbursedAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>
+  readonly rejectedAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>
   readonly branchId: Prisma.FieldRef<"LoanApplication", 'String'>
   readonly submittingUserId: Prisma.FieldRef<"LoanApplication", 'String'>
   readonly createdAt: Prisma.FieldRef<"LoanApplication", 'DateTime'>

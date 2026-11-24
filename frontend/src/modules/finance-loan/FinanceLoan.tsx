@@ -48,6 +48,11 @@ export interface LoanApplicationRecord {
     tenureMonths: number;
     commissionAmount: string | number;
     status: LoanStatus;
+    submittedAt?: string | null;
+    underReviewAt?: string | null;
+    sanctionedAt?: string | null;
+    disbursedAt?: string | null;
+    rejectedAt?: string | null;
     branchId: string;
     submittingUserId: string;
     createdAt: string;
@@ -193,10 +198,6 @@ function FinanceApplicationModal({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const calculatedCommission = loanAmount && !isNaN(parseFloat(loanAmount))
-        ? Math.round(parseFloat(loanAmount) * 0.02)
-        : 0;
-
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setErrorMessage(null);
@@ -269,7 +270,11 @@ function FinanceApplicationModal({
             const comm = parseFloat(commissionAmount);
             if (!isNaN(comm) && comm >= 0) {
                 payload.commissionAmount = comm;
+            } else {
+                payload.commissionAmount = 0;
             }
+        } else {
+            payload.commissionAmount = 0;
         }
 
         setIsSubmitting(true);
@@ -496,11 +501,11 @@ function FinanceApplicationModal({
                             step="any"
                             value={commissionAmount}
                             onChange={(event) => setCommissionAmount(event.target.value)}
-                            placeholder={calculatedCommission ? `Auto 2%: ${formatINR(calculatedCommission)}` : 'Leave blank for auto 2%'}
+                            placeholder="Enter commission amount (₹)"
                             disabled={isSubmitting}
                         />
                         <span style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
-                            Leave blank for automatic 2% standard dealership commission payout (calculated by backend).
+                            Variable commission amount. Enter any amount you want.
                         </span>
                     </label>
 
@@ -527,6 +532,361 @@ function FinanceApplicationModal({
     );
 }
 
+interface EditLoanModalProps {
+    application: LoanApplicationRecord;
+    isOpen: boolean;
+    onClose: () => void;
+    onSuccess: (updated: LoanApplicationRecord) => void;
+    lenders: LenderRecord[];
+}
+
+function EditLoanModal({
+    application,
+    isOpen,
+    onClose,
+    onSuccess,
+    lenders,
+}: EditLoanModalProps) {
+    const { user } = useAuth();
+    const [customerName, setCustomerName] = useState(application.customerName);
+    const [selectedLenderValue, setSelectedLenderValue] = useState(() => {
+        if (application.lenderId && lenders.some((l) => l.id === application.lenderId)) {
+            return application.lenderId;
+        }
+        return 'Other';
+    });
+    const [customLender, setCustomLender] = useState(() =>
+        application.lenderId ? '' : application.lenderName || '',
+    );
+    const [loanAmount, setLoanAmount] = useState(String(application.loanAmount));
+    const [interestRate, setInterestRate] = useState(String(application.interestRate));
+    const [tenureMonths, setTenureMonths] = useState(String(application.tenureMonths));
+    const standardTenures = ['12', '24', '36', '48', '60', '84'];
+    const [isCustomTenure, setIsCustomTenure] = useState(
+        !standardTenures.includes(String(application.tenureMonths)),
+    );
+    const [commissionAmount, setCommissionAmount] = useState(String(application.commissionAmount));
+    const [branchId, setBranchId] = useState(application.branchId);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        setCustomerName(application.customerName);
+        if (application.lenderId && lenders.some((l) => l.id === application.lenderId)) {
+            setSelectedLenderValue(application.lenderId);
+            setCustomLender('');
+        } else {
+            setSelectedLenderValue('Other');
+            setCustomLender(application.lenderName || '');
+        }
+        setLoanAmount(String(application.loanAmount));
+        setInterestRate(String(application.interestRate));
+        setTenureMonths(String(application.tenureMonths));
+        setIsCustomTenure(!standardTenures.includes(String(application.tenureMonths)));
+        setCommissionAmount(String(application.commissionAmount));
+        setBranchId(application.branchId);
+        setErrorMessage(null);
+    }, [application, lenders]);
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setErrorMessage(null);
+
+        const amount = parseFloat(loanAmount);
+        const rate = parseFloat(interestRate);
+        const tenure = parseInt(tenureMonths, 10);
+        const comm = commissionAmount.trim() ? parseFloat(commissionAmount) : 0;
+
+        if (!customerName.trim()) {
+            setErrorMessage('Customer name is required.');
+            return;
+        }
+
+        let finalLenderName = '';
+        let finalLenderId: string | undefined = undefined;
+
+        if (selectedLenderValue === 'Other') {
+            finalLenderName = customLender.trim();
+            if (!finalLenderName) {
+                setErrorMessage('Lender name is required.');
+                return;
+            }
+        } else {
+            const found = lenders.find((l) => l.id === selectedLenderValue);
+            if (found) {
+                finalLenderId = found.id;
+                finalLenderName = found.name;
+            } else {
+                finalLenderName = selectedLenderValue;
+            }
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+            setErrorMessage('Loan amount must be greater than zero.');
+            return;
+        }
+
+        if (isNaN(rate) || rate < 0 || rate > 100) {
+            setErrorMessage('Interest rate must be between 0% and 100%.');
+            return;
+        }
+
+        if (isNaN(tenure) || tenure < 1 || tenure > 360) {
+            setErrorMessage('Tenure must be between 1 and 360 months.');
+            return;
+        }
+
+        if (isNaN(comm) || comm < 0) {
+            setErrorMessage('Commission amount cannot be negative.');
+            return;
+        }
+
+        const payload: Record<string, unknown> = {
+            customerName: customerName.trim(),
+            loanAmount: amount,
+            interestRate: rate,
+            tenureMonths: tenure,
+            commissionAmount: comm,
+            branchId: branchId.trim(),
+        };
+
+        if (finalLenderId) {
+            payload.lenderId = finalLenderId;
+            payload.lenderName = finalLenderName;
+        } else {
+            payload.lenderName = finalLenderName;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const updated = await apiRequest<LoanApplicationRecord>(
+                `/finance/loans/${application.id}`,
+                {
+                    method: 'PATCH',
+                    body: JSON.stringify(payload),
+                },
+            );
+            onSuccess(updated);
+        } catch (err: unknown) {
+            if (err instanceof ApiError) {
+                setErrorMessage(err.message);
+            } else if (err instanceof Error) {
+                setErrorMessage(err.message);
+            } else {
+                setErrorMessage('Failed to update loan application.');
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="loan-modal-backdrop" role="dialog" aria-modal="true">
+            <section className="loan-modal">
+                <div className="loan-modal-heading">
+                    <div>
+                        <h2>Edit Loan Application</h2>
+                        <p>Update customer details, tenure, or amounts for {application.customerName}</p>
+                    </div>
+                    <button
+                        className="loan-modal-close"
+                        type="button"
+                        onClick={onClose}
+                        disabled={isSubmitting}
+                        aria-label="Close dialog"
+                    >
+                        ×
+                    </button>
+                </div>
+
+                {errorMessage && (
+                    <div className="loan-modal-error" role="alert">
+                        <strong>Error: </strong>
+                        {errorMessage}
+                    </div>
+                )}
+
+                <form className="loan-modal-form" onSubmit={handleSubmit}>
+                    <label>
+                        Customer Full Name *
+                        <input
+                            type="text"
+                            value={customerName}
+                            onChange={(e) => setCustomerName(e.target.value)}
+                            placeholder="Enter customer full name"
+                            required
+                            disabled={isSubmitting}
+                        />
+                    </label>
+
+                    <label>
+                        Lender Partner *
+                        <select
+                            value={selectedLenderValue}
+                            onChange={(e) => setSelectedLenderValue(e.target.value)}
+                            disabled={isSubmitting}
+                        >
+                            {lenders.map((lender) => (
+                                <option key={lender.id} value={lender.id}>
+                                    {lender.name}
+                                </option>
+                            ))}
+                            <option value="Other">Other (Custom Lender)</option>
+                        </select>
+                    </label>
+
+                    {selectedLenderValue === 'Other' && (
+                        <label>
+                            Custom Lender Name *
+                            <input
+                                type="text"
+                                value={customLender}
+                                onChange={(e) => setCustomLender(e.target.value)}
+                                placeholder="e.g. Bank of Baroda"
+                                required
+                                disabled={isSubmitting}
+                            />
+                        </label>
+                    )}
+
+                    {user?.branches && user.branches.length > 1 && (
+                        <label>
+                            Dealership Branch *
+                            <select
+                                value={branchId}
+                                onChange={(e) => setBranchId(e.target.value)}
+                                disabled={isSubmitting}
+                            >
+                                {user.branches.map((b) => (
+                                    <option key={b.id} value={b.id}>
+                                        {b.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    )}
+
+                    <label>
+                        Loan Amount (₹) *
+                        <input
+                            type="number"
+                            min="1"
+                            step="any"
+                            value={loanAmount}
+                            onChange={(e) => setLoanAmount(e.target.value)}
+                            placeholder="e.g. 750000"
+                            required
+                            disabled={isSubmitting}
+                        />
+                    </label>
+
+                    <div className="loan-modal-grid">
+                        <label>
+                            Interest Rate (% p.a.) *
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                value={interestRate}
+                                onChange={(e) => setInterestRate(e.target.value)}
+                                placeholder="e.g. 9.5"
+                                required
+                                disabled={isSubmitting}
+                            />
+                        </label>
+
+                        <label>
+                            Tenure (months) *
+                            {isCustomTenure ? (
+                                <div style={{ display: 'flex', gap: '6px' }}>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="360"
+                                        value={tenureMonths}
+                                        onChange={(e) => setTenureMonths(e.target.value)}
+                                        placeholder="Months"
+                                        required
+                                        disabled={isSubmitting}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="loan-button-secondary"
+                                        style={{ padding: '0 8px', fontSize: '11px', whiteSpace: 'nowrap' }}
+                                        onClick={() => {
+                                            setIsCustomTenure(false);
+                                            setTenureMonths('48');
+                                        }}
+                                    >
+                                        Preset
+                                    </button>
+                                </div>
+                            ) : (
+                                <select
+                                    value={tenureMonths}
+                                    onChange={(e) => {
+                                        if (e.target.value === 'custom') {
+                                            setIsCustomTenure(true);
+                                        } else {
+                                            setTenureMonths(e.target.value);
+                                        }
+                                    }}
+                                    disabled={isSubmitting}
+                                >
+                                    <option value="12">12 months (1 yr)</option>
+                                    <option value="24">24 months (2 yrs)</option>
+                                    <option value="36">36 months (3 yrs)</option>
+                                    <option value="48">48 months (4 yrs)</option>
+                                    <option value="60">60 months (5 yrs)</option>
+                                    <option value="84">84 months (7 yrs)</option>
+                                    <option value="custom">Custom tenure (enter months)...</option>
+                                </select>
+                            )}
+                        </label>
+                    </div>
+
+                    <label>
+                        Commission Amount (₹)
+                        <input
+                            type="number"
+                            min="0"
+                            step="any"
+                            value={commissionAmount}
+                            onChange={(e) => setCommissionAmount(e.target.value)}
+                            placeholder="Enter commission amount (₹)"
+                            disabled={isSubmitting}
+                        />
+                        <span style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
+                            Variable commission amount. Enter any amount you want.
+                        </span>
+                    </label>
+
+                    <div className="loan-modal-actions">
+                        <button
+                            className="loan-button-secondary"
+                            type="button"
+                            onClick={onClose}
+                            disabled={isSubmitting}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="loan-button-primary"
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    );
+}
+
 interface OverviewTabProps {
     metrics: LoanMetrics | null;
     isLoadingMetrics: boolean;
@@ -534,6 +894,7 @@ interface OverviewTabProps {
     onRetryMetrics: () => void;
     onNewApplication: () => void;
     onSelectApplication: (application: LoanApplicationRecord) => void;
+    onEditApplication: (application: LoanApplicationRecord) => void;
     refreshTrigger: number;
     lenders: LenderRecord[];
 }
@@ -545,6 +906,7 @@ function OverviewTab({
     onRetryMetrics,
     onNewApplication,
     onSelectApplication,
+    onEditApplication,
     refreshTrigger,
     lenders,
 }: OverviewTabProps) {
@@ -803,12 +1165,13 @@ function OverviewTab({
                                     <th className="align-right">RATE</th>
                                     <th>STATUS</th>
                                     <th className="align-right">COMMISSION</th>
+                                    <th className="align-center">ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {isLoadingLoans ? (
                                     <tr>
-                                        <td colSpan={6} className="loan-loading-state">
+                                        <td colSpan={7} className="loan-loading-state">
                                             Loading applications from backend...
                                         </td>
                                     </tr>
@@ -840,11 +1203,21 @@ function OverviewTab({
                                             <td className="align-right">
                                                 {formatINR(application.commissionAmount)}
                                             </td>
+                                            <td className="align-center" onClick={(e) => e.stopPropagation()}>
+                                                <button
+                                                    type="button"
+                                                    className="loan-row-edit-btn"
+                                                    onClick={() => onEditApplication(application)}
+                                                    title="Edit loan details"
+                                                >
+                                                    ✏️ Edit
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td className="loan-empty-state" colSpan={6}>
+                                        <td className="loan-empty-state" colSpan={7}>
                                             No applications match your search or filters. Click &quot;+ New Finance Application&quot; to create one.
                                         </td>
                                     </tr>
@@ -1235,6 +1608,7 @@ export default function FinanceLoan() {
     const { selectedBranchId } = useAuth();
     const [activeTab, setActiveTab] = useState<'overview' | 'tieups'>('overview');
     const [selectedApplication, setSelectedApplication] = useState<LoanApplicationRecord | null>(null);
+    const [editingApplication, setEditingApplication] = useState<LoanApplicationRecord | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -1412,6 +1786,9 @@ export default function FinanceLoan() {
                         setSelectedApplication(application);
                         setStatusError(null);
                     }}
+                    onEditApplication={(application) => {
+                        setEditingApplication(application);
+                    }}
                     refreshTrigger={refreshTrigger}
                     lenders={activeLenders}
                 />
@@ -1437,6 +1814,22 @@ export default function FinanceLoan() {
                 />
             )}
 
+            {editingApplication && (
+                <EditLoanModal
+                    application={editingApplication}
+                    isOpen={Boolean(editingApplication)}
+                    onClose={() => setEditingApplication(null)}
+                    onSuccess={(updated) => {
+                        setEditingApplication(null);
+                        setRefreshTrigger((prev) => prev + 1);
+                        if (selectedApplication && selectedApplication.id === updated.id) {
+                            setSelectedApplication(updated);
+                        }
+                    }}
+                    lenders={activeLenders}
+                />
+            )}
+
             {selectedApplication && (
                 <div
                     className="loan-detail-overlay"
@@ -1453,15 +1846,25 @@ export default function FinanceLoan() {
                                 <h2>{selectedApplication.customerName}</h2>
                                 <p>{selectedApplication.lenderName}</p>
                             </div>
-                            <button
-                                type="button"
-                                className="loan-detail-close"
-                                onClick={() => setSelectedApplication(null)}
-                                disabled={isUpdatingStatus}
-                                aria-label="Close details"
-                            >
-                                ×
-                            </button>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <button
+                                    type="button"
+                                    className="loan-drawer-edit-btn"
+                                    onClick={() => setEditingApplication(selectedApplication)}
+                                    title="Edit loan details"
+                                >
+                                    ✏️ Edit
+                                </button>
+                                <button
+                                    type="button"
+                                    className="loan-detail-close"
+                                    onClick={() => setSelectedApplication(null)}
+                                    disabled={isUpdatingStatus}
+                                    aria-label="Close details"
+                                >
+                                    ×
+                                </button>
+                            </div>
                         </div>
 
                         <div className="loan-detail-content">
@@ -1511,15 +1914,104 @@ export default function FinanceLoan() {
                                     </strong>
                                 </div>
                             )}
-                            <div className="loan-detail-row">
-                                <span>Date Created</span>
-                                <strong>
-                                    {new Date(selectedApplication.createdAt).toLocaleDateString(undefined, {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                    })}
-                                </strong>
+
+                            {/* Loan History & Lifecycle Milestones */}
+                            <div className="loan-history-card">
+                                <div className="loan-history-header">
+                                    <span className="loan-history-title">Application History &amp; Lifecycle</span>
+                                </div>
+                                <div className="loan-history-timeline">
+                                    <div className="timeline-item done">
+                                        <div className="timeline-dot">✓</div>
+                                        <div className="timeline-content">
+                                            <span className="timeline-label">Application Created</span>
+                                            <strong className="timeline-date">
+                                                {new Date(selectedApplication.createdAt).toLocaleString(undefined, {
+                                                    dateStyle: 'medium',
+                                                    timeStyle: 'short',
+                                                })}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <div className={`timeline-item ${selectedApplication.submittedAt || ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
+                                        <div className="timeline-dot">
+                                            {selectedApplication.submittedAt || ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
+                                        </div>
+                                        <div className="timeline-content">
+                                            <span className="timeline-label">Submitted to Lender</span>
+                                            <strong className="timeline-date">
+                                                {selectedApplication.submittedAt
+                                                    ? new Date(selectedApplication.submittedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                                                    : ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
+                                                        ? 'Completed'
+                                                        : 'Pending submission'}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <div className={`timeline-item ${selectedApplication.underReviewAt || ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
+                                        <div className="timeline-dot">
+                                            {selectedApplication.underReviewAt || ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
+                                        </div>
+                                        <div className="timeline-content">
+                                            <span className="timeline-label">Under Review (Appraisal)</span>
+                                            <strong className="timeline-date">
+                                                {selectedApplication.underReviewAt
+                                                    ? new Date(selectedApplication.underReviewAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                                                    : ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
+                                                        ? 'Under Review'
+                                                        : 'Pending review'}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <div className={`timeline-item ${selectedApplication.sanctionedAt || ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
+                                        <div className="timeline-dot">
+                                            {selectedApplication.sanctionedAt || ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
+                                        </div>
+                                        <div className="timeline-content">
+                                            <span className="timeline-label">Sanctioned</span>
+                                            <strong className="timeline-date">
+                                                {selectedApplication.sanctionedAt
+                                                    ? new Date(selectedApplication.sanctionedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                                                    : ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
+                                                        ? 'Sanctioned'
+                                                        : 'Pending sanction'}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <div className={`timeline-item ${selectedApplication.disbursedAt || selectedApplication.status === 'DISBURSED' ? 'done' : 'pending'}`}>
+                                        <div className="timeline-dot">
+                                            {selectedApplication.disbursedAt || selectedApplication.status === 'DISBURSED' ? '✓' : '○'}
+                                        </div>
+                                        <div className="timeline-content">
+                                            <span className="timeline-label">Disbursed (Payout to Dealership)</span>
+                                            <strong className="timeline-date">
+                                                {selectedApplication.disbursedAt
+                                                    ? new Date(selectedApplication.disbursedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                                                    : selectedApplication.status === 'DISBURSED'
+                                                        ? 'Disbursed'
+                                                        : 'Pending disbursement'}
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    {selectedApplication.status === 'REJECTED' && (
+                                        <div className="timeline-item rejected">
+                                            <div className="timeline-dot">✕</div>
+                                            <div className="timeline-content">
+                                                <span className="timeline-label">Application Rejected</span>
+                                                <strong className="timeline-date">
+                                                    {selectedApplication.rejectedAt
+                                                        ? new Date(selectedApplication.rejectedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+                                                        : 'Rejected'}
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Status Lifecycle Transition Controls */}

@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "LoanApplication" ADD COLUMN IF NOT EXISTS "submittedAt" TIMESTAMP(3);
+ALTER TABLE "LoanApplication" ADD COLUMN IF NOT EXISTS "underReviewAt" TIMESTAMP(3);
+ALTER TABLE "LoanApplication" ADD COLUMN IF NOT EXISTS "sanctionedAt" TIMESTAMP(3);
+ALTER TABLE "LoanApplication" ADD COLUMN IF NOT EXISTS "disbursedAt" TIMESTAMP(3);
+ALTER TABLE "LoanApplication" ADD COLUMN IF NOT EXISTS "rejectedAt" TIMESTAMP(3);

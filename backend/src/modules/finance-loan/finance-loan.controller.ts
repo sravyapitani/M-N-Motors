@@ -16,6 +16,7 @@ import type { AuthenticatedUser } from '../auth/jwt.strategy';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { LoanQueryDto } from './dto/loan-query.dto';
 import { UpdateLoanStatusDto } from './dto/update-loan-status.dto';
+import { UpdateLoanDto } from './dto/update-loan.dto';
 import { FinanceLoanService } from './finance-loan.service';
 
 interface RequestWithUser {
@@ -66,6 +67,19 @@ export class FinanceLoanController {
   @Get(':id')
   async findOne(@Req() req: RequestWithUser, @Param('id') id: string) {
     return this.loanService.findOne(req.user, id);
+  }
+
+  /**
+   * PATCH /api/finance/loans/:id
+   * Update details of an existing loan application (customer name, tenure, amount, lender, etc.).
+   */
+  @Patch(':id')
+  async update(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateLoanDto,
+  ) {
+    return this.loanService.update(req.user, id, dto);
   }
 
   /**

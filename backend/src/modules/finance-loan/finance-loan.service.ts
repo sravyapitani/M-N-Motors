@@ -14,6 +14,7 @@ import { CreateLoanDto } from './dto/create-loan.dto';
 import { LoanQueryDto } from './dto/loan-query.dto';
 import { LenderQueryDto } from './dto/lender-query.dto';
 import { UpdateLoanStatusDto } from './dto/update-loan-status.dto';
+import { UpdateLoanDto } from './dto/update-loan.dto';
 import { LoanStatus, JournalStatus } from '../../generated/prisma/enums';
 import { Prisma } from '../../generated/prisma/client';
 import { GeneralLedgerService } from '../general-ledger/general-ledger.service';
@@ -267,11 +268,11 @@ export class FinanceLoanService {
       throw new BadRequestException('Customer name cannot be empty.');
     }
 
-    // 4. Calculate commission (default: 2% of loan amount if not specified; round to 2 decimals)
+    // 4. Commission amount: variable, user provided (default 0 if not specified)
     const rawCommission =
       dto.commissionAmount !== undefined && dto.commissionAmount !== null
         ? dto.commissionAmount
-        : dto.loanAmount * 0.02;
+        : 0;
     const commission = Math.round(rawCommission * 100) / 100;
 
     try {
@@ -386,13 +387,21 @@ export class FinanceLoanService {
       }
     }
 
+    const statusDateUpdate: Record<string, unknown> = { status: nextStatus };
+    const now = new Date();
+    if (nextStatus === LoanStatus.SUBMITTED) statusDateUpdate.submittedAt = now;
+    if (nextStatus === LoanStatus.UNDER_REVIEW) statusDateUpdate.underReviewAt = now;
+    if (nextStatus === LoanStatus.SANCTIONED) statusDateUpdate.sanctionedAt = now;
+    if (nextStatus === LoanStatus.DISBURSED) statusDateUpdate.disbursedAt = now;
+    if (nextStatus === LoanStatus.REJECTED) statusDateUpdate.rejectedAt = now;
+
     try {
       if (nextStatus === LoanStatus.DISBURSED && this.isGlPostingEnabled()) {
         return await this.prisma.$transaction(async (tx) => {
           // Verify status is still SANCTIONED before updating (concurrency guard)
           const updateResult = await tx.loanApplication.updateMany({
             where: { id: cleanId, status: LoanStatus.SANCTIONED },
-            data: { status: LoanStatus.DISBURSED },
+            data: { status: LoanStatus.DISBURSED, disbursedAt: now },
           });
 
           if (updateResult.count !== 1) {
@@ -462,7 +471,7 @@ export class FinanceLoanService {
 
       return await this.prisma.loanApplication.update({
         where: { id: cleanId },
-        data: { status: nextStatus },
+        data: statusDateUpdate,
         include: {
           branch: { select: { id: true, code: true, name: true } },
           submittingUser: {
@@ -478,6 +487,125 @@ export class FinanceLoanService {
         `Failed to update loan status for ${cleanId}: ${(error as Error).message}`,
       );
       throw new InternalServerErrorException('Error updating loan status.');
+    }
+  }
+
+  /**
+   * PATCH /api/finance/loans/:id
+   * Update details of an existing loan application (customer name, loan amount, interest rate, tenure, commission, lender).
+   */
+  async update(user: AuthenticatedUser, id: string, dto: UpdateLoanDto) {
+    if (!id || typeof id !== 'string' || !id.trim()) {
+      throw new BadRequestException('A valid loan application ID is required.');
+    }
+    const cleanId = id.trim();
+
+    const loan = await this.prisma.loanApplication.findUnique({
+      where: { id: cleanId },
+    });
+
+    if (!loan) {
+      throw new NotFoundException(`Loan application with ID '${cleanId}' was not found.`);
+    }
+
+    this.verifyBranchAccess(user, loan.branchId);
+
+    const dataToUpdate: Record<string, unknown> = {};
+
+    if (dto.customerName !== undefined) {
+      const name = dto.customerName.trim();
+      if (!name) throw new BadRequestException('Customer name cannot be empty.');
+      dataToUpdate.customerName = name;
+    }
+
+    if (dto.loanAmount !== undefined) {
+      if (dto.loanAmount <= 0) throw new BadRequestException('Loan amount must be greater than zero.');
+      dataToUpdate.loanAmount = dto.loanAmount;
+    }
+
+    if (dto.interestRate !== undefined) {
+      if (dto.interestRate < 0 || dto.interestRate > 100) {
+        throw new BadRequestException('Interest rate must be between 0% and 100%.');
+      }
+      dataToUpdate.interestRate = dto.interestRate;
+    }
+
+    if (dto.tenureMonths !== undefined) {
+      if (dto.tenureMonths < 1 || dto.tenureMonths > 360) {
+        throw new BadRequestException('Tenure must be between 1 and 360 months.');
+      }
+      dataToUpdate.tenureMonths = dto.tenureMonths;
+    }
+
+    if (dto.commissionAmount !== undefined && dto.commissionAmount !== null) {
+      if (dto.commissionAmount < 0) {
+        throw new BadRequestException('Commission amount cannot be negative.');
+      }
+      dataToUpdate.commissionAmount = Math.round(dto.commissionAmount * 100) / 100;
+    }
+
+    if (dto.branchId !== undefined) {
+      const branchId = dto.branchId.trim();
+      this.verifyBranchAccess(user, branchId);
+      const branch = await this.prisma.branch.findUnique({ where: { id: branchId } });
+      if (!branch || !branch.isActive) {
+        throw new BadRequestException(`Branch '${branchId}' is invalid or inactive.`);
+      }
+      dataToUpdate.branchId = branchId;
+    }
+
+    if (dto.lenderId !== undefined || dto.lenderName !== undefined) {
+      if (dto.lenderId?.trim()) {
+        const cleanLenderId = dto.lenderId.trim();
+        const lender = this.prisma.lender
+          ? await this.prisma.lender.findUnique({ where: { id: cleanLenderId } })
+          : null;
+        if (!lender || !lender.isActive) {
+          throw new BadRequestException(`Lender '${cleanLenderId}' is invalid or inactive.`);
+        }
+        dataToUpdate.lenderId = lender.id;
+        dataToUpdate.lenderName = lender.name;
+      } else if (dto.lenderName?.trim()) {
+        const cleanName = dto.lenderName.trim();
+        if (this.prisma.lender) {
+          const matchedLender = await this.prisma.lender.findFirst({
+            where: {
+              isActive: true,
+              OR: [
+                { name: { equals: cleanName, mode: 'insensitive' } },
+                { tallyLedgerName: { equals: cleanName, mode: 'insensitive' } },
+              ],
+            },
+          });
+          if (matchedLender) {
+            dataToUpdate.lenderId = matchedLender.id;
+            dataToUpdate.lenderName = matchedLender.name;
+          } else {
+            dataToUpdate.lenderId = null;
+            dataToUpdate.lenderName = cleanName;
+          }
+        } else {
+          dataToUpdate.lenderId = null;
+          dataToUpdate.lenderName = cleanName;
+        }
+      }
+    }
+
+    try {
+      return await this.prisma.loanApplication.update({
+        where: { id: cleanId },
+        data: dataToUpdate,
+        include: {
+          branch: { select: { id: true, code: true, name: true } },
+          lender: { select: { id: true, name: true, type: true } },
+          submittingUser: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Failed to update loan ${cleanId}: ${(error as Error).message}`);
+      throw new InternalServerErrorException('Error updating loan application.');
     }
   }
 

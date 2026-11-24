@@ -575,10 +575,6 @@ export type JournalEntryUncheckedUpdateManyWithoutBranchNestedInput = {
   deleteMany?: Prisma.JournalEntryScalarWhereInput | Prisma.JournalEntryScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type EnumJournalStatusFieldUpdateOperationsInput = {
   set?: $Enums.JournalStatus
 }
