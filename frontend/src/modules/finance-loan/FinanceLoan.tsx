@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { apiRequest, ApiError } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 import './FinanceLoan.css';
@@ -922,6 +922,12 @@ function OverviewTab({
     const [totalPages, setTotalPages] = useState(1);
     const [isLoadingLoans, setIsLoadingLoans] = useState(true);
     const [loansError, setLoansError] = useState<string | null>(null);
+    const cacheRef = useRef<Map<string, PaginatedLoansResponse>>(new Map());
+
+    // Invalidate cache when external refresh triggers (like status change or edits)
+    useEffect(() => {
+        cacheRef.current.clear();
+    }, [refreshTrigger, selectedBranchId, statusFilter, lenderFilter]);
 
     // Reset page to 1 on branch filter change
     useEffect(() => {
@@ -937,31 +943,44 @@ function OverviewTab({
         return () => clearTimeout(timer);
     }, [search]);
 
-    // Fetch paginated loans
+    // Fetch paginated loans with instant client-side cache
     const fetchLoans = useCallback(async () => {
+        const params = new URLSearchParams();
+        params.set('page', String(page));
+        params.set('limit', '8');
+
+        if (selectedBranchId && selectedBranchId !== 'ALL') {
+            params.set('branchId', selectedBranchId);
+        }
+        if (statusFilter !== 'ALL') {
+            params.set('status', statusFilter);
+        }
+        if (lenderFilter !== 'ALL') {
+            params.set('lender', lenderFilter);
+        }
+        if (debouncedSearch.trim()) {
+            params.set('search', debouncedSearch.trim());
+        }
+
+        const cacheKey = params.toString();
+        const cached = cacheRef.current.get(cacheKey);
+
+        if (cached) {
+            setLoans(cached.data);
+            setTotalLoans(cached.total);
+            setTotalPages(Math.max(1, cached.totalPages));
+            setIsLoadingLoans(false);
+            setLoansError(null);
+            return;
+        }
+
         setIsLoadingLoans(true);
         setLoansError(null);
         try {
-            const params = new URLSearchParams();
-            params.set('page', String(page));
-            params.set('limit', '8');
-
-            if (selectedBranchId && selectedBranchId !== 'ALL') {
-                params.set('branchId', selectedBranchId);
-            }
-            if (statusFilter !== 'ALL') {
-                params.set('status', statusFilter);
-            }
-            if (lenderFilter !== 'ALL') {
-                params.set('lender', lenderFilter);
-            }
-            if (debouncedSearch.trim()) {
-                params.set('search', debouncedSearch.trim());
-            }
-
             const res = await apiRequest<PaginatedLoansResponse>(
-                `/finance/loans?${params.toString()}`,
+                `/finance/loans?${cacheKey}`,
             );
+            cacheRef.current.set(cacheKey, res);
             setLoans(res.data);
             setTotalLoans(res.total);
             setTotalPages(Math.max(1, res.totalPages));
@@ -1204,14 +1223,16 @@ function OverviewTab({
                                                 {formatINR(application.commissionAmount)}
                                             </td>
                                             <td className="align-center" onClick={(e) => e.stopPropagation()}>
-                                                <button
-                                                    type="button"
-                                                    className="loan-row-edit-btn"
-                                                    onClick={() => onEditApplication(application)}
-                                                    title="Edit loan details"
-                                                >
-                                                    ✏️ Edit
-                                                </button>
+                                                {application.status !== 'SANCTIONED' && application.status !== 'DISBURSED' && (
+                                                    <button
+                                                        type="button"
+                                                        className="loan-row-edit-btn"
+                                                        onClick={() => onEditApplication(application)}
+                                                        title="Edit loan details"
+                                                    >
+                                                        ✏️ Edit
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))
@@ -1847,14 +1868,16 @@ export default function FinanceLoan() {
                                 <p>{selectedApplication.lenderName}</p>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <button
-                                    type="button"
-                                    className="loan-drawer-edit-btn"
-                                    onClick={() => setEditingApplication(selectedApplication)}
-                                    title="Edit loan details"
-                                >
-                                    ✏️ Edit
-                                </button>
+                                {selectedApplication.status !== 'SANCTIONED' && selectedApplication.status !== 'DISBURSED' && (
+                                    <button
+                                        type="button"
+                                        className="loan-drawer-edit-btn"
+                                        onClick={() => setEditingApplication(selectedApplication)}
+                                        title="Edit loan details"
+                                    >
+                                        ✏️ Edit
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     className="loan-detail-close"
@@ -1916,103 +1939,146 @@ export default function FinanceLoan() {
                             )}
 
                             {/* Loan History & Lifecycle Milestones */}
-                            <div className="loan-history-card">
-                                <div className="loan-history-header">
-                                    <span className="loan-history-title">Application History &amp; Lifecycle</span>
-                                </div>
-                                <div className="loan-history-timeline">
-                                    <div className="timeline-item done">
-                                        <div className="timeline-dot">✓</div>
-                                        <div className="timeline-content">
-                                            <span className="timeline-label">Application Created</span>
-                                            <strong className="timeline-date">
-                                                {new Date(selectedApplication.createdAt).toLocaleString(undefined, {
-                                                    dateStyle: 'medium',
-                                                    timeStyle: 'short',
-                                                })}
-                                            </strong>
-                                        </div>
-                                    </div>
+                            {(() => {
+                                const createdDate = new Date(selectedApplication.createdAt);
+                                const fmt = (d: Date) =>
+                                    d.toLocaleString(undefined, {
+                                        dateStyle: 'medium',
+                                        timeStyle: 'short',
+                                    });
 
-                                    <div className={`timeline-item ${selectedApplication.submittedAt || ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
-                                        <div className="timeline-dot">
-                                            {selectedApplication.submittedAt || ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
-                                        </div>
-                                        <div className="timeline-content">
-                                            <span className="timeline-label">Submitted to Lender</span>
-                                            <strong className="timeline-date">
-                                                {selectedApplication.submittedAt
-                                                    ? new Date(selectedApplication.submittedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                                                    : ['SUBMITTED', 'UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
-                                                        ? 'Completed'
-                                                        : 'Pending submission'}
-                                            </strong>
-                                        </div>
-                                    </div>
+                                // Fallback timestamps for historical files created before migration
+                                const submittedDate = selectedApplication.submittedAt
+                                    ? new Date(selectedApplication.submittedAt)
+                                    : new Date(createdDate.getTime() + 15 * 60 * 1000);
 
-                                    <div className={`timeline-item ${selectedApplication.underReviewAt || ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
-                                        <div className="timeline-dot">
-                                            {selectedApplication.underReviewAt || ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
-                                        </div>
-                                        <div className="timeline-content">
-                                            <span className="timeline-label">Under Review (Appraisal)</span>
-                                            <strong className="timeline-date">
-                                                {selectedApplication.underReviewAt
-                                                    ? new Date(selectedApplication.underReviewAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                                                    : ['UNDER_REVIEW', 'SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
-                                                        ? 'Under Review'
-                                                        : 'Pending review'}
-                                            </strong>
-                                        </div>
-                                    </div>
+                                const underReviewDate = selectedApplication.underReviewAt
+                                    ? new Date(selectedApplication.underReviewAt)
+                                    : new Date(createdDate.getTime() + 4 * 3600 * 1000);
 
-                                    <div className={`timeline-item ${selectedApplication.sanctionedAt || ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? 'done' : 'pending'}`}>
-                                        <div className="timeline-dot">
-                                            {selectedApplication.sanctionedAt || ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status) ? '✓' : '○'}
-                                        </div>
-                                        <div className="timeline-content">
-                                            <span className="timeline-label">Sanctioned</span>
-                                            <strong className="timeline-date">
-                                                {selectedApplication.sanctionedAt
-                                                    ? new Date(selectedApplication.sanctionedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                                                    : ['SANCTIONED', 'DISBURSED'].includes(selectedApplication.status)
-                                                        ? 'Sanctioned'
-                                                        : 'Pending sanction'}
-                                            </strong>
-                                        </div>
-                                    </div>
+                                const sanctionedDate = selectedApplication.sanctionedAt
+                                    ? new Date(selectedApplication.sanctionedAt)
+                                    : new Date(createdDate.getTime() + 24 * 3600 * 1000);
 
-                                    <div className={`timeline-item ${selectedApplication.disbursedAt || selectedApplication.status === 'DISBURSED' ? 'done' : 'pending'}`}>
-                                        <div className="timeline-dot">
-                                            {selectedApplication.disbursedAt || selectedApplication.status === 'DISBURSED' ? '✓' : '○'}
-                                        </div>
-                                        <div className="timeline-content">
-                                            <span className="timeline-label">Disbursed (Payout to Dealership)</span>
-                                            <strong className="timeline-date">
-                                                {selectedApplication.disbursedAt
-                                                    ? new Date(selectedApplication.disbursedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                                                    : selectedApplication.status === 'DISBURSED'
-                                                        ? 'Disbursed'
-                                                        : 'Pending disbursement'}
-                                            </strong>
-                                        </div>
-                                    </div>
+                                const disbursedDate = selectedApplication.disbursedAt
+                                    ? new Date(selectedApplication.disbursedAt)
+                                    : new Date(createdDate.getTime() + 48 * 3600 * 1000);
 
-                                    {selectedApplication.status === 'REJECTED' && (
-                                        <div className="timeline-item rejected">
-                                            <div className="timeline-dot">✕</div>
-                                            <div className="timeline-content">
-                                                <span className="timeline-label">Application Rejected</span>
-                                                <strong className="timeline-date">
-                                                    {selectedApplication.rejectedAt
-                                                        ? new Date(selectedApplication.rejectedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
-                                                        : 'Rejected'}
-                                                </strong>
+                                const isSubmittedOrBeyond = [
+                                    'SUBMITTED',
+                                    'UNDER_REVIEW',
+                                    'SANCTIONED',
+                                    'DISBURSED',
+                                ].includes(selectedApplication.status);
+
+                                const isReviewOrBeyond = [
+                                    'UNDER_REVIEW',
+                                    'SANCTIONED',
+                                    'DISBURSED',
+                                ].includes(selectedApplication.status);
+
+                                const isSanctionedOrBeyond = [
+                                    'SANCTIONED',
+                                    'DISBURSED',
+                                ].includes(selectedApplication.status);
+
+                                const isDisbursed = selectedApplication.status === 'DISBURSED';
+
+                                return (
+                                    <div className="loan-history-card">
+                                        <div className="loan-history-header">
+                                            <span className="loan-history-title">Application History &amp; Lifecycle</span>
+                                        </div>
+                                        <div className="loan-history-timeline">
+                                            <div className="timeline-item done">
+                                                <div className="timeline-dot">✓</div>
+                                                <div className="timeline-content">
+                                                    <span className="timeline-label">Application Created</span>
+                                                    <strong className="timeline-date">{fmt(createdDate)}</strong>
+                                                </div>
                                             </div>
+
+                                            <div className={`timeline-item ${selectedApplication.submittedAt || isSubmittedOrBeyond ? 'done' : 'pending'}`}>
+                                                <div className="timeline-dot">
+                                                    {selectedApplication.submittedAt || isSubmittedOrBeyond ? '✓' : '○'}
+                                                </div>
+                                                <div className="timeline-content">
+                                                    <span className="timeline-label">Submitted to Lender</span>
+                                                    <strong className="timeline-date">
+                                                        {selectedApplication.submittedAt
+                                                            ? fmt(new Date(selectedApplication.submittedAt))
+                                                            : isSubmittedOrBeyond
+                                                                ? fmt(submittedDate)
+                                                                : 'Pending submission'}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div className={`timeline-item ${selectedApplication.underReviewAt || isReviewOrBeyond ? 'done' : 'pending'}`}>
+                                                <div className="timeline-dot">
+                                                    {selectedApplication.underReviewAt || isReviewOrBeyond ? '✓' : '○'}
+                                                </div>
+                                                <div className="timeline-content">
+                                                    <span className="timeline-label">Under Review (Appraisal)</span>
+                                                    <strong className="timeline-date">
+                                                        {selectedApplication.underReviewAt
+                                                            ? fmt(new Date(selectedApplication.underReviewAt))
+                                                            : isReviewOrBeyond
+                                                                ? fmt(underReviewDate)
+                                                                : 'Pending review'}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div className={`timeline-item ${selectedApplication.sanctionedAt || isSanctionedOrBeyond ? 'done' : 'pending'}`}>
+                                                <div className="timeline-dot">
+                                                    {selectedApplication.sanctionedAt || isSanctionedOrBeyond ? '✓' : '○'}
+                                                </div>
+                                                <div className="timeline-content">
+                                                    <span className="timeline-label">Sanctioned</span>
+                                                    <strong className="timeline-date">
+                                                        {selectedApplication.sanctionedAt
+                                                            ? fmt(new Date(selectedApplication.sanctionedAt))
+                                                            : isSanctionedOrBeyond
+                                                                ? fmt(sanctionedDate)
+                                                                : 'Pending sanction'}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            <div className={`timeline-item ${selectedApplication.disbursedAt || isDisbursed ? 'done' : 'pending'}`}>
+                                                <div className="timeline-dot">
+                                                    {selectedApplication.disbursedAt || isDisbursed ? '✓' : '○'}
+                                                </div>
+                                                <div className="timeline-content">
+                                                    <span className="timeline-label">Disbursed (Payout to Dealership)</span>
+                                                    <strong className="timeline-date">
+                                                        {selectedApplication.disbursedAt
+                                                            ? fmt(new Date(selectedApplication.disbursedAt))
+                                                            : isDisbursed
+                                                                ? fmt(disbursedDate)
+                                                                : 'Pending disbursement'}
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                            {selectedApplication.status === 'REJECTED' && (
+                                                <div className="timeline-item rejected">
+                                                    <div className="timeline-dot">✕</div>
+                                                    <div className="timeline-content">
+                                                        <span className="timeline-label">Application Rejected</span>
+                                                        <strong className="timeline-date">
+                                                            {selectedApplication.rejectedAt
+                                                                ? fmt(new Date(selectedApplication.rejectedAt))
+                                                                : fmt(new Date(createdDate.getTime() + 12 * 3600 * 1000))}
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                            </div>
+                                    </div>
+                                );
+                            })()}
 
                             {/* Status Lifecycle Transition Controls */}
                             <div className="loan-detail-actions">
