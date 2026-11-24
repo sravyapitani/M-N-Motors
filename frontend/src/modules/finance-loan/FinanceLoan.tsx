@@ -1941,28 +1941,13 @@ export default function FinanceLoan() {
                             {/* Loan History & Lifecycle Milestones */}
                             {(() => {
                                 const createdDate = new Date(selectedApplication.createdAt);
-                                const fmt = (d: Date) =>
-                                    d.toLocaleString(undefined, {
+                                const fmt = (d: Date | string | null | undefined) => {
+                                    if (!d) return null;
+                                    return new Date(d).toLocaleString(undefined, {
                                         dateStyle: 'medium',
                                         timeStyle: 'short',
                                     });
-
-                                // Fallback timestamps for historical files created before migration
-                                const submittedDate = selectedApplication.submittedAt
-                                    ? new Date(selectedApplication.submittedAt)
-                                    : new Date(createdDate.getTime() + 15 * 60 * 1000);
-
-                                const underReviewDate = selectedApplication.underReviewAt
-                                    ? new Date(selectedApplication.underReviewAt)
-                                    : new Date(createdDate.getTime() + 4 * 3600 * 1000);
-
-                                const sanctionedDate = selectedApplication.sanctionedAt
-                                    ? new Date(selectedApplication.sanctionedAt)
-                                    : new Date(createdDate.getTime() + 24 * 3600 * 1000);
-
-                                const disbursedDate = selectedApplication.disbursedAt
-                                    ? new Date(selectedApplication.disbursedAt)
-                                    : new Date(createdDate.getTime() + 48 * 3600 * 1000);
+                                };
 
                                 const isSubmittedOrBeyond = [
                                     'SUBMITTED',
@@ -2006,9 +1991,9 @@ export default function FinanceLoan() {
                                                     <span className="timeline-label">Submitted to Lender</span>
                                                     <strong className="timeline-date">
                                                         {selectedApplication.submittedAt
-                                                            ? fmt(new Date(selectedApplication.submittedAt))
+                                                            ? fmt(selectedApplication.submittedAt)
                                                             : isSubmittedOrBeyond
-                                                                ? fmt(submittedDate)
+                                                                ? fmt(selectedApplication.createdAt)
                                                                 : 'Pending submission'}
                                                     </strong>
                                                 </div>
@@ -2022,9 +2007,9 @@ export default function FinanceLoan() {
                                                     <span className="timeline-label">Under Review (Appraisal)</span>
                                                     <strong className="timeline-date">
                                                         {selectedApplication.underReviewAt
-                                                            ? fmt(new Date(selectedApplication.underReviewAt))
+                                                            ? fmt(selectedApplication.underReviewAt)
                                                             : isReviewOrBeyond
-                                                                ? fmt(underReviewDate)
+                                                                ? fmt(selectedApplication.submittedAt || selectedApplication.createdAt)
                                                                 : 'Pending review'}
                                                     </strong>
                                                 </div>
@@ -2038,9 +2023,9 @@ export default function FinanceLoan() {
                                                     <span className="timeline-label">Sanctioned</span>
                                                     <strong className="timeline-date">
                                                         {selectedApplication.sanctionedAt
-                                                            ? fmt(new Date(selectedApplication.sanctionedAt))
+                                                            ? fmt(selectedApplication.sanctionedAt)
                                                             : isSanctionedOrBeyond
-                                                                ? fmt(sanctionedDate)
+                                                                ? fmt(selectedApplication.underReviewAt || selectedApplication.createdAt)
                                                                 : 'Pending sanction'}
                                                     </strong>
                                                 </div>
@@ -2054,9 +2039,9 @@ export default function FinanceLoan() {
                                                     <span className="timeline-label">Disbursed (Payout to Dealership)</span>
                                                     <strong className="timeline-date">
                                                         {selectedApplication.disbursedAt
-                                                            ? fmt(new Date(selectedApplication.disbursedAt))
+                                                            ? fmt(selectedApplication.disbursedAt)
                                                             : isDisbursed
-                                                                ? fmt(disbursedDate)
+                                                                ? fmt(selectedApplication.sanctionedAt || selectedApplication.createdAt)
                                                                 : 'Pending disbursement'}
                                                     </strong>
                                                 </div>
@@ -2069,8 +2054,8 @@ export default function FinanceLoan() {
                                                         <span className="timeline-label">Application Rejected</span>
                                                         <strong className="timeline-date">
                                                             {selectedApplication.rejectedAt
-                                                                ? fmt(new Date(selectedApplication.rejectedAt))
-                                                                : fmt(new Date(createdDate.getTime() + 12 * 3600 * 1000))}
+                                                                ? fmt(selectedApplication.rejectedAt)
+                                                                : fmt(selectedApplication.createdAt)}
                                                         </strong>
                                                     </div>
                                                 </div>
