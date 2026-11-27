@@ -187,6 +187,7 @@ export type BranchWhereInput = {
   journalEntries?: Prisma.JournalEntryListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
+  fundingDraws?: Prisma.FundingDrawListRelationFilter
 }
 
 export type BranchOrderByWithRelationInput = {
@@ -200,6 +201,7 @@ export type BranchOrderByWithRelationInput = {
   journalEntries?: Prisma.JournalEntryOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   vehicles?: Prisma.VehicleOrderByRelationAggregateInput
+  fundingDraws?: Prisma.FundingDrawOrderByRelationAggregateInput
 }
 
 export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -216,6 +218,7 @@ export type BranchWhereUniqueInput = Prisma.AtLeast<{
   journalEntries?: Prisma.JournalEntryListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
+  fundingDraws?: Prisma.FundingDrawListRelationFilter
 }, "id" | "code">
 
 export type BranchOrderByWithAggregationInput = {
@@ -251,6 +254,7 @@ export type BranchCreateInput = {
   journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateInput = {
@@ -264,6 +268,7 @@ export type BranchUncheckedCreateInput = {
   journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUpdateInput = {
@@ -277,6 +282,7 @@ export type BranchUpdateInput = {
   journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateInput = {
@@ -290,6 +296,7 @@ export type BranchUncheckedUpdateInput = {
   journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateManyInput = {
@@ -422,6 +429,22 @@ export type BranchUpdateOneRequiredWithoutVehiclesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BranchUpdateToOneWithWhereWithoutVehiclesInput, Prisma.BranchUpdateWithoutVehiclesInput>, Prisma.BranchUncheckedUpdateWithoutVehiclesInput>
 }
 
+export type BranchCreateNestedOneWithoutFundingDrawsInput = {
+  create?: Prisma.XOR<Prisma.BranchCreateWithoutFundingDrawsInput, Prisma.BranchUncheckedCreateWithoutFundingDrawsInput>
+  connectOrCreate?: Prisma.BranchCreateOrConnectWithoutFundingDrawsInput
+  connect?: Prisma.BranchWhereUniqueInput
+}
+
+export type BranchUpdateOneWithoutFundingDrawsNestedInput = {
+  create?: Prisma.XOR<Prisma.BranchCreateWithoutFundingDrawsInput, Prisma.BranchUncheckedCreateWithoutFundingDrawsInput>
+  connectOrCreate?: Prisma.BranchCreateOrConnectWithoutFundingDrawsInput
+  upsert?: Prisma.BranchUpsertWithoutFundingDrawsInput
+  disconnect?: Prisma.BranchWhereInput | boolean
+  delete?: Prisma.BranchWhereInput | boolean
+  connect?: Prisma.BranchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BranchUpdateToOneWithWhereWithoutFundingDrawsInput, Prisma.BranchUpdateWithoutFundingDrawsInput>, Prisma.BranchUncheckedUpdateWithoutFundingDrawsInput>
+}
+
 export type BranchCreateWithoutUsersInput = {
   id?: string
   code: string
@@ -432,6 +455,7 @@ export type BranchCreateWithoutUsersInput = {
   journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutUsersInput = {
@@ -444,6 +468,7 @@ export type BranchUncheckedCreateWithoutUsersInput = {
   journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutUsersInput = {
@@ -472,6 +497,7 @@ export type BranchUpdateWithoutUsersInput = {
   journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutUsersInput = {
@@ -484,6 +510,7 @@ export type BranchUncheckedUpdateWithoutUsersInput = {
   journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutLoanApplicationsInput = {
@@ -496,6 +523,7 @@ export type BranchCreateWithoutLoanApplicationsInput = {
   journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutLoanApplicationsInput = {
@@ -508,6 +536,7 @@ export type BranchUncheckedCreateWithoutLoanApplicationsInput = {
   journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutLoanApplicationsInput = {
@@ -536,6 +565,7 @@ export type BranchUpdateWithoutLoanApplicationsInput = {
   journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutLoanApplicationsInput = {
@@ -548,6 +578,7 @@ export type BranchUncheckedUpdateWithoutLoanApplicationsInput = {
   journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutAccountsInput = {
@@ -560,6 +591,7 @@ export type BranchCreateWithoutAccountsInput = {
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutBranchInput
   journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutAccountsInput = {
@@ -572,6 +604,7 @@ export type BranchUncheckedCreateWithoutAccountsInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutBranchInput
   journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutAccountsInput = {
@@ -600,6 +633,7 @@ export type BranchUpdateWithoutAccountsInput = {
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutBranchNestedInput
   journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutAccountsInput = {
@@ -612,6 +646,7 @@ export type BranchUncheckedUpdateWithoutAccountsInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutBranchNestedInput
   journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutJournalEntriesInput = {
@@ -624,6 +659,7 @@ export type BranchCreateWithoutJournalEntriesInput = {
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutJournalEntriesInput = {
@@ -636,6 +672,7 @@ export type BranchUncheckedCreateWithoutJournalEntriesInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutJournalEntriesInput = {
@@ -664,6 +701,7 @@ export type BranchUpdateWithoutJournalEntriesInput = {
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutJournalEntriesInput = {
@@ -676,6 +714,7 @@ export type BranchUncheckedUpdateWithoutJournalEntriesInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutVehiclesInput = {
@@ -688,6 +727,7 @@ export type BranchCreateWithoutVehiclesInput = {
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutBranchInput
   journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutVehiclesInput = {
@@ -700,6 +740,7 @@ export type BranchUncheckedCreateWithoutVehiclesInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutBranchInput
   journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutVehiclesInput = {
@@ -728,6 +769,7 @@ export type BranchUpdateWithoutVehiclesInput = {
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutBranchNestedInput
   journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutVehiclesInput = {
@@ -740,6 +782,75 @@ export type BranchUncheckedUpdateWithoutVehiclesInput = {
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutBranchNestedInput
   journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutBranchNestedInput
+}
+
+export type BranchCreateWithoutFundingDrawsInput = {
+  id?: string
+  code: string
+  name: string
+  isActive?: boolean
+  createdAt?: Date | string
+  users?: Prisma.UserBranchCreateNestedManyWithoutBranchInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutBranchInput
+  journalEntries?: Prisma.JournalEntryCreateNestedManyWithoutBranchInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutBranchInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutBranchInput
+}
+
+export type BranchUncheckedCreateWithoutFundingDrawsInput = {
+  id?: string
+  code: string
+  name: string
+  isActive?: boolean
+  createdAt?: Date | string
+  users?: Prisma.UserBranchUncheckedCreateNestedManyWithoutBranchInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutBranchInput
+  journalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutBranchInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutBranchInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutBranchInput
+}
+
+export type BranchCreateOrConnectWithoutFundingDrawsInput = {
+  where: Prisma.BranchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BranchCreateWithoutFundingDrawsInput, Prisma.BranchUncheckedCreateWithoutFundingDrawsInput>
+}
+
+export type BranchUpsertWithoutFundingDrawsInput = {
+  update: Prisma.XOR<Prisma.BranchUpdateWithoutFundingDrawsInput, Prisma.BranchUncheckedUpdateWithoutFundingDrawsInput>
+  create: Prisma.XOR<Prisma.BranchCreateWithoutFundingDrawsInput, Prisma.BranchUncheckedCreateWithoutFundingDrawsInput>
+  where?: Prisma.BranchWhereInput
+}
+
+export type BranchUpdateToOneWithWhereWithoutFundingDrawsInput = {
+  where?: Prisma.BranchWhereInput
+  data: Prisma.XOR<Prisma.BranchUpdateWithoutFundingDrawsInput, Prisma.BranchUncheckedUpdateWithoutFundingDrawsInput>
+}
+
+export type BranchUpdateWithoutFundingDrawsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserBranchUpdateManyWithoutBranchNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutBranchNestedInput
+  journalEntries?: Prisma.JournalEntryUpdateManyWithoutBranchNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutBranchNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutBranchNestedInput
+}
+
+export type BranchUncheckedUpdateWithoutFundingDrawsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserBranchUncheckedUpdateManyWithoutBranchNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutBranchNestedInput
+  journalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutBranchNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutBranchNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 
@@ -753,6 +864,7 @@ export type BranchCountOutputType = {
   journalEntries: number
   accounts: number
   vehicles: number
+  fundingDraws: number
 }
 
 export type BranchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -761,6 +873,7 @@ export type BranchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   journalEntries?: boolean | BranchCountOutputTypeCountJournalEntriesArgs
   accounts?: boolean | BranchCountOutputTypeCountAccountsArgs
   vehicles?: boolean | BranchCountOutputTypeCountVehiclesArgs
+  fundingDraws?: boolean | BranchCountOutputTypeCountFundingDrawsArgs
 }
 
 /**
@@ -808,6 +921,13 @@ export type BranchCountOutputTypeCountVehiclesArgs<ExtArgs extends runtime.Types
   where?: Prisma.VehicleWhereInput
 }
 
+/**
+ * BranchCountOutputType without action
+ */
+export type BranchCountOutputTypeCountFundingDrawsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundingDrawWhereInput
+}
+
 
 export type BranchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -820,6 +940,7 @@ export type BranchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   journalEntries?: boolean | Prisma.Branch$journalEntriesArgs<ExtArgs>
   accounts?: boolean | Prisma.Branch$accountsArgs<ExtArgs>
   vehicles?: boolean | Prisma.Branch$vehiclesArgs<ExtArgs>
+  fundingDraws?: boolean | Prisma.Branch$fundingDrawsArgs<ExtArgs>
   _count?: boolean | Prisma.BranchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branch"]>
 
@@ -854,6 +975,7 @@ export type BranchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   journalEntries?: boolean | Prisma.Branch$journalEntriesArgs<ExtArgs>
   accounts?: boolean | Prisma.Branch$accountsArgs<ExtArgs>
   vehicles?: boolean | Prisma.Branch$vehiclesArgs<ExtArgs>
+  fundingDraws?: boolean | Prisma.Branch$fundingDrawsArgs<ExtArgs>
   _count?: boolean | Prisma.BranchCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BranchIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -867,6 +989,7 @@ export type $BranchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     journalEntries: Prisma.$JournalEntryPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     vehicles: Prisma.$VehiclePayload<ExtArgs>[]
+    fundingDraws: Prisma.$FundingDrawPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1273,6 +1396,7 @@ export interface Prisma__BranchClient<T, Null = never, ExtArgs extends runtime.T
   journalEntries<T extends Prisma.Branch$journalEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$journalEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JournalEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.Branch$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicles<T extends Prisma.Branch$vehiclesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$vehiclesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundingDraws<T extends Prisma.Branch$fundingDrawsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$fundingDrawsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundingDrawPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1817,6 +1941,30 @@ export type Branch$vehiclesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.VehicleScalarFieldEnum | Prisma.VehicleScalarFieldEnum[]
+}
+
+/**
+ * Branch.fundingDraws
+ */
+export type Branch$fundingDrawsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundingDraw
+   */
+  select?: Prisma.FundingDrawSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundingDraw
+   */
+  omit?: Prisma.FundingDrawOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundingDrawInclude<ExtArgs> | null
+  where?: Prisma.FundingDrawWhereInput
+  orderBy?: Prisma.FundingDrawOrderByWithRelationInput | Prisma.FundingDrawOrderByWithRelationInput[]
+  cursor?: Prisma.FundingDrawWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundingDrawScalarFieldEnum | Prisma.FundingDrawScalarFieldEnum[]
 }
 
 /**

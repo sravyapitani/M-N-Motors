@@ -11,7 +11,7 @@
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "prisma:generate": "prisma generate",
-    "test": "ts-node -e \"import './src/modules/auth/auth.service.spec'; import './src/modules/finance-loan/finance-loan.service.spec'; import './src/modules/finance-loan/finance-loan.strict-branch.spec'; import './src/modules/finance-loan/finance-loan.lender.spec'; import './src/modules/finance-loan/finance-loan.controller.spec'; import './src/modules/general-ledger/general-ledger.service.spec'; import './src/modules/general-ledger/general-ledger.controller.spec';\"",
+    "test": "ts-node -e \"import './src/modules/auth/auth.service.spec'; import './src/modules/finance-loan/finance-loan.service.spec'; import './src/modules/finance-loan/finance-loan.strict-branch.spec'; import './src/modules/finance-loan/finance-loan.lender.spec'; import './src/modules/finance-loan/finance-loan.controller.spec'; import './src/modules/finance-loan/funding-calculator.spec'; import './src/modules/finance-loan/finance-funding.service.spec'; import './src/modules/general-ledger/general-ledger.service.spec'; import './src/modules/general-ledger/general-ledger.controller.spec';\"",
     "test:integration": "ts-node -e \"import './src/modules/general-ledger/general-ledger.integration.spec'; import './src/modules/finance-loan/finance-loan.rbac.integration.spec'; import './src/modules/finance-loan/finance-loan.gl.integration.spec'; import './src/modules/finance-loan/finance-loan.lender.integration.spec';\"",
     "seed:rc-book-rules": "ts-node prisma/seed-rc-book-rules.ts",
     "seed:valuation-rules": "ts-node prisma/seed-valuation-rules.ts",

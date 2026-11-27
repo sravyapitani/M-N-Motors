@@ -40,6 +40,14 @@ export const LoanStatus = {
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus]
 
 
+export const PayoutKind = {
+  LOAN_AMOUNT: 'LOAN_AMOUNT',
+  COMMISSION: 'COMMISSION'
+} as const
+
+export type PayoutKind = (typeof PayoutKind)[keyof typeof PayoutKind]
+
+
 export const AccountType = {
   ASSET: 'ASSET',
   LIABILITY: 'LIABILITY',
@@ -197,3 +205,12 @@ export const VehicleSegment = {
 } as const
 
 export type VehicleSegment = (typeof VehicleSegment)[keyof typeof VehicleSegment]
+
+
+export const FundingFacilityType = {
+  CC: 'CC',
+  INVENTORY: 'INVENTORY',
+  OTHER: 'OTHER'
+} as const
+
+export type FundingFacilityType = (typeof FundingFacilityType)[keyof typeof FundingFacilityType]

@@ -1,0 +1,52 @@
+[
+  {
+    "facilityKey": "BANK-A-CC-1",
+    "bankName": "Sample Bank A",
+    "productCode": "CC",
+    "facilityType": "CC",
+    "sanctionedLimit": 20000000.00,
+    "roiPercent": 9.00,
+    "graceDays": null,
+    "isActive": true
+  },
+  {
+    "facilityKey": "BANK-A-CC-2",
+    "bankName": "Sample Bank A",
+    "productCode": "CC",
+    "facilityType": "CC",
+    "sanctionedLimit": 10000000.00,
+    "roiPercent": 9.50,
+    "graceDays": 45,
+    "isActive": true
+  },
+  {
+    "facilityKey": "BANK-B-INF-AD",
+    "bankName": "Sample Bank B",
+    "productCode": "INF-AD",
+    "facilityType": "INVENTORY",
+    "sanctionedLimit": 50000000.00,
+    "roiPercent": 9.00,
+    "graceDays": 60,
+    "isActive": true
+  },
+  {
+    "facilityKey": "BANK-C-INF-MEAL",
+    "bankName": "Sample Bank C",
+    "productCode": "INF-MEAL",
+    "facilityType": "INVENTORY",
+    "sanctionedLimit": 40000000.00,
+    "roiPercent": null,
+    "graceDays": null,
+    "isActive": true
+  },
+  {
+    "facilityKey": "BANK-D-TA-AD",
+    "bankName": "Sample Bank D",
+    "productCode": "TA-AD",
+    "facilityType": "INVENTORY",
+    "sanctionedLimit": 30000000.00,
+    "roiPercent": 10.00,
+    "graceDays": 90,
+    "isActive": true
+  }
+]

@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { apiRequest, ApiError } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
+import { FundingTab } from './FundingTab';
 import './FinanceLoan.css';
 
 export type LoanStatus =
@@ -915,7 +916,11 @@ function OverviewTab({
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('ALL');
     const [lenderFilter, setLenderFilter] = useState<string>('ALL');
+    const [fromDate, setFromDate] = useState<string>('');
+    const [toDate, setToDate] = useState<string>('');
     const [page, setPage] = useState(1);
+
+    const isDateRangeInvalid = Boolean(fromDate && toDate && fromDate > toDate);
 
     const [loans, setLoans] = useState<LoanApplicationRecord[]>([]);
     const [totalLoans, setTotalLoans] = useState(0);
@@ -927,7 +932,7 @@ function OverviewTab({
     // Invalidate cache when external refresh triggers (like status change or edits)
     useEffect(() => {
         cacheRef.current.clear();
-    }, [refreshTrigger, selectedBranchId, statusFilter, lenderFilter]);
+    }, [refreshTrigger, selectedBranchId, statusFilter, lenderFilter, fromDate, toDate]);
 
     // Reset page to 1 on branch filter change
     useEffect(() => {
@@ -945,6 +950,11 @@ function OverviewTab({
 
     // Fetch paginated loans with instant client-side cache
     const fetchLoans = useCallback(async () => {
+        if (fromDate && toDate && fromDate > toDate) {
+            // "From > To → show 'From date is after To date', no request."
+            return;
+        }
+
         const params = new URLSearchParams();
         params.set('page', String(page));
         params.set('limit', '8');
@@ -960,6 +970,12 @@ function OverviewTab({
         }
         if (debouncedSearch.trim()) {
             params.set('search', debouncedSearch.trim());
+        }
+        if (fromDate) {
+            params.set('fromDate', fromDate);
+        }
+        if (toDate) {
+            params.set('toDate', toDate);
         }
 
         const cacheKey = params.toString();
@@ -991,7 +1007,7 @@ function OverviewTab({
         } finally {
             setIsLoadingLoans(false);
         }
-    }, [page, statusFilter, lenderFilter, debouncedSearch, selectedBranchId]);
+    }, [page, statusFilter, lenderFilter, debouncedSearch, selectedBranchId, fromDate, toDate]);
 
     useEffect(() => {
         fetchLoans();
@@ -1156,6 +1172,54 @@ function OverviewTab({
                             </option>
                         ))}
                     </select>
+
+                    <label className="loan-date-filter-label">
+                        <span>From</span>
+                        <input
+                            type="date"
+                            className="loan-date-input"
+                            value={fromDate}
+                            onChange={(e) => {
+                                setFromDate(e.target.value);
+                                setPage(1);
+                            }}
+                            aria-label="Filter from date"
+                        />
+                    </label>
+
+                    <label className="loan-date-filter-label">
+                        <span>To</span>
+                        <input
+                            type="date"
+                            className="loan-date-input"
+                            value={toDate}
+                            onChange={(e) => {
+                                setToDate(e.target.value);
+                                setPage(1);
+                            }}
+                            aria-label="Filter to date"
+                        />
+                    </label>
+
+                    {(fromDate || toDate) && (
+                        <button
+                            type="button"
+                            className="loan-date-clear-link"
+                            onClick={() => {
+                                setFromDate('');
+                                setToDate('');
+                                setPage(1);
+                            }}
+                        >
+                            Clear
+                        </button>
+                    )}
+
+                    {isDateRangeInvalid && (
+                        <span className="loan-date-range-error" role="alert">
+                            From date is after To date
+                        </span>
+                    )}
 
                     <span className="loan-record-count">
                         {isLoadingLoans ? 'Loading...' : `${totalLoans} records`}
@@ -1624,10 +1688,1136 @@ function BankTieUpsTab({
     );
 }
 
+export interface LoanPayoutReceiptRecord {
+    id: string;
+    payoutId: string;
+    amount: number;
+    receivedDate: string;
+    reference: string | null;
+    receivedInto: string | null;
+    createdById: string;
+    createdBy: {
+        id: string;
+        firstName: string;
+        lastName: string;
+    };
+    createdAt: string;
+}
+
+export interface LoanPayoutHistoryRecord {
+    id: string;
+    payoutId: string;
+    userId: string;
+    user: {
+        id: string;
+        firstName: string;
+        lastName: string;
+    };
+    field: string;
+    oldValue: string | null;
+    newValue: string | null;
+    createdAt: string;
+}
+
+export interface LoanPayoutRecord {
+    id: string;
+    loanId: string;
+    kind: 'LOAN_AMOUNT' | 'COMMISSION';
+    customerName: string;
+    branchId: string;
+    branchName: string;
+    lenderId: string | null;
+    lenderName: string;
+    expectedAmount: number;
+    receivedAmount: number;
+    outstandingAmount: number;
+    expectedDate: string;
+    dateEstimated: boolean;
+    status: 'PENDING' | 'PARTIAL' | 'RECEIVED' | 'OVERDUE';
+    daysOverdue: number;
+    notes: string | null;
+    createdAt: string;
+    receipts: LoanPayoutReceiptRecord[];
+    history: LoanPayoutHistoryRecord[];
+}
+
+export interface PayoutSummaryResponse {
+    totalExpected: number;
+    totalReceived: number;
+    totalOutstanding: number;
+    overdueAmount: number;
+    overdueCount: number;
+    dateToConfirmCount: number;
+    byKind?: Record<string, { expected: number; received: number; outstanding: number; overdue: number; count: number }>;
+    byLender: {
+        id: string | null;
+        name: string;
+        count: number;
+        totalExpected: number;
+        totalReceived: number;
+        totalOutstanding: number;
+        overdueAmount: number;
+        overdueCount: number;
+    }[];
+}
+
+interface PaginatedPayoutsResponse {
+    data: LoanPayoutRecord[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
+interface PayoutTrackerTabProps {
+    lenders: LenderRecord[];
+    refreshTrigger: number;
+    onRefresh: () => void;
+}
+
+function PayoutStatusBadge({ status, daysOverdue, dateEstimated }: { status: string; daysOverdue?: number; dateEstimated?: boolean }) {
+    if (status === 'RECEIVED') {
+        return (
+            <span className="payout-badge received" title="Full payout received from financer">
+                ✓ Received
+            </span>
+        );
+    }
+    if (status === 'PARTIAL') {
+        return (
+            <span className="payout-badge partial" title="Partly received payout">
+                ◑ Partly received
+            </span>
+        );
+    }
+    if (status === 'OVERDUE') {
+        return (
+            <span className="payout-badge overdue" title={`Overdue by ${daysOverdue ?? 0} days`}>
+                ⚠️ Overdue ({daysOverdue ?? 0}d)
+            </span>
+        );
+    }
+    return (
+        <span className="payout-badge pending" title="Waiting for payout">
+            ⏳ Waiting {dateEstimated ? '(Estimated date)' : ''}
+        </span>
+    );
+}
+
+function PayoutTrackerTab({ lenders, refreshTrigger, onRefresh }: PayoutTrackerTabProps) {
+    const { user, selectedBranchId } = useAuth();
+    const canManagePayout = user?.roles?.includes('SYSTEM_ADMIN') || user?.permissions?.includes('PAYOUT_MANAGE');
+
+    const [statusFilter, setStatusFilter] = useState('ALL');
+    const [kindFilter, setKindFilter] = useState('ALL');
+    const [lenderFilter, setLenderFilter] = useState('ALL');
+    const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [overdueOnly, setOverdueOnly] = useState(() => {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('payoutId')) return false;
+            return params.get('overdue') === 'true' || params.get('status') === 'OVERDUE';
+        } catch {
+            return false;
+        }
+    });
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
+    const [page, setPage] = useState(1);
+
+    const [payouts, setPayouts] = useState<LoanPayoutRecord[]>([]);
+    const [total, setTotal] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const [summary, setSummary] = useState<PayoutSummaryResponse | null>(null);
+    const [isLoadingSummary, setIsLoadingSummary] = useState(true);
+    const [summaryError, setSummaryError] = useState<string | null>(null);
+
+    // Detail drawer & Modals
+    const [selectedPayout, setSelectedPayout] = useState<LoanPayoutRecord | null>(null);
+    const [recordingReceiptPayout, setRecordingReceiptPayout] = useState<LoanPayoutRecord | null>(null);
+    const [editingPayout, setEditingPayout] = useState<LoanPayoutRecord | null>(null);
+
+    // Check for payoutId from URL and open detail drawer for that particular payout
+    const checkAndFocusPayout = useCallback(() => {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const payoutId = params.get('payoutId');
+            if (payoutId) {
+                apiRequest<LoanPayoutRecord>(`/finance/payouts/${encodeURIComponent(payoutId)}`)
+                    .then((p) => {
+                        if (p) {
+                            setSelectedPayout(p);
+                        }
+                    })
+                    .catch(() => {});
+            }
+        } catch {}
+    }, []);
+
+    useEffect(() => {
+        checkAndFocusPayout();
+        window.addEventListener('popstate', checkAndFocusPayout);
+        window.addEventListener('nexus:navigate-tab', checkAndFocusPayout);
+        return () => {
+            window.removeEventListener('popstate', checkAndFocusPayout);
+            window.removeEventListener('nexus:navigate-tab', checkAndFocusPayout);
+        };
+    }, [checkAndFocusPayout]);
+
+    // Receipt form fields
+    const [receiptAmount, setReceiptAmount] = useState('');
+    const [receivedDate, setReceivedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [reference, setReference] = useState('');
+    const [receivedInto, setReceivedInto] = useState('');
+    const [receiptWarning, setReceiptWarning] = useState<string | null>(null);
+    const [isSubmittingReceipt, setIsSubmittingReceipt] = useState(false);
+    const [receiptFormError, setReceiptFormError] = useState<string | null>(null);
+
+    // Edit payout terms fields
+    const [editAmount, setEditAmount] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [editNotes, setEditNotes] = useState('');
+    const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
+    const [editFormError, setEditFormError] = useState<string | null>(null);
+
+    // Debounce customer search input
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+            setPage(1);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [search]);
+
+    // Fetch Summary Cards
+    const fetchSummary = useCallback(async () => {
+        setIsLoadingSummary(true);
+        setSummaryError(null);
+        try {
+            const params = new URLSearchParams();
+            if (selectedBranchId && selectedBranchId !== 'ALL') params.set('branchId', selectedBranchId);
+            if (kindFilter !== 'ALL') params.set('kind', kindFilter);
+            if (lenderFilter !== 'ALL') params.set('lenderId', lenderFilter);
+            if (fromDate) params.set('fromDate', fromDate);
+            if (toDate) params.set('toDate', toDate);
+
+            const res = await apiRequest<PayoutSummaryResponse>(`/finance/payouts/summary?${params.toString()}`);
+            setSummary(res);
+        } catch (err: unknown) {
+            setSummaryError(err instanceof Error ? err.message : 'Failed to load payout summary');
+        } finally {
+            setIsLoadingSummary(false);
+        }
+    }, [selectedBranchId, kindFilter, lenderFilter, fromDate, toDate]);
+
+    // Fetch Paginated Payouts Table
+    const fetchPayouts = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const params = new URLSearchParams();
+            params.set('page', String(page));
+            params.set('limit', '10');
+            if (selectedBranchId && selectedBranchId !== 'ALL') params.set('branchId', selectedBranchId);
+            if (kindFilter !== 'ALL') params.set('kind', kindFilter);
+            if (statusFilter !== 'ALL') params.set('status', statusFilter);
+            if (kindFilter !== 'ALL') params.set('kind', kindFilter);
+            if (lenderFilter !== 'ALL') params.set('lenderId', lenderFilter);
+            if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
+            if (overdueOnly) params.set('overdueOnly', 'true');
+            if (fromDate) params.set('fromDate', fromDate);
+            if (toDate) params.set('toDate', toDate);
+
+            const res = await apiRequest<PaginatedPayoutsResponse>(`/finance/payouts?${params.toString()}`);
+            setPayouts(res.data);
+            setTotal(res.total);
+            setTotalPages(Math.max(1, res.totalPages));
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Failed to load payouts');
+        } finally {
+            setIsLoading(false);
+        }
+    }, [page, selectedBranchId, kindFilter, statusFilter, lenderFilter, debouncedSearch, overdueOnly, fromDate, toDate]);
+
+    useEffect(() => {
+        fetchSummary();
+    }, [fetchSummary, refreshTrigger]);
+
+    useEffect(() => {
+        fetchPayouts();
+    }, [fetchPayouts, refreshTrigger]);
+
+    const handleOpenReceiptModal = (payout: LoanPayoutRecord) => {
+        setRecordingReceiptPayout(payout);
+        setReceiptAmount(String(payout.outstandingAmount > 0 ? payout.outstandingAmount : ''));
+        setReceivedDate(new Date().toISOString().split('T')[0]);
+        setReference('');
+        setReceivedInto('');
+        setReceiptWarning(null);
+        setReceiptFormError(null);
+    };
+
+    const handleRecordReceiptSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!recordingReceiptPayout) return;
+        setReceiptFormError(null);
+        setReceiptWarning(null);
+
+        const amt = parseFloat(receiptAmount);
+        if (isNaN(amt) || amt <= 0) {
+            setReceiptFormError('Receipt amount must be greater than zero.');
+            return;
+        }
+
+        setIsSubmittingReceipt(true);
+        try {
+            const res = await apiRequest<{ warning?: string }>(`/finance/payouts/${recordingReceiptPayout.id}/receipts`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    amount: amt,
+                    receivedDate,
+                    reference: reference.trim() || undefined,
+                    receivedInto: receivedInto.trim() || undefined,
+                }),
+            });
+
+            if (res.warning) {
+                setReceiptWarning(res.warning);
+            }
+            onRefresh();
+            setRecordingReceiptPayout(null);
+        } catch (err: unknown) {
+            setReceiptFormError(err instanceof Error ? err.message : 'Failed to record payment receipt');
+        } finally {
+            setIsSubmittingReceipt(false);
+        }
+    };
+
+    const handleOpenEditModal = (payout: LoanPayoutRecord) => {
+        setEditingPayout(payout);
+        setEditAmount(String(payout.expectedAmount));
+        setEditDate(payout.expectedDate.split('T')[0]);
+        setEditNotes(payout.notes || '');
+        setEditFormError(null);
+    };
+
+    const handleEditPayoutSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!editingPayout) return;
+        setEditFormError(null);
+
+        const amt = parseFloat(editAmount);
+        if (isNaN(amt) || amt < 0) {
+            setEditFormError('Expected amount cannot be negative.');
+            return;
+        }
+
+        setIsSubmittingEdit(true);
+        try {
+            await apiRequest(`/finance/payouts/${editingPayout.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    expectedAmount: amt,
+                    expectedDate: editDate,
+                    notes: editNotes.trim() || undefined,
+                }),
+            });
+            onRefresh();
+            setEditingPayout(null);
+        } catch (err: unknown) {
+            setEditFormError(err instanceof Error ? err.message : 'Failed to update payout terms');
+        } finally {
+            setIsSubmittingEdit(false);
+        }
+    };
+
+    return (
+        <section className="payout-tracker-tab">
+            {/* Split Summary Cards by Type */}
+            {(() => {
+                const doSummary = summary?.byKind?.LOAN_AMOUNT ?? { expected: 0, received: 0, outstanding: 0, overdue: 0, count: 0 };
+                const commSummary = summary?.byKind?.COMMISSION ?? { expected: 0, received: 0, outstanding: 0, overdue: 0, count: 0 };
+
+                return (
+                    <>
+                        {(kindFilter === 'ALL' || kindFilter === 'LOAN_AMOUNT') && (
+                            <div className="payout-summary-group">
+                                <div className="payout-summary-header">
+                                    <span className="payout-kind-badge do-amount">DO amount</span>
+                                    <span className="payout-summary-title">DO Amount Payouts (Loan Principal from Financer)</span>
+                                </div>
+                                <div className="loan-metrics-grid">
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">DO EXPECTED</span>
+                                        <strong>{isLoadingSummary ? '...' : formatCurrencyCompact(doSummary.expected)}</strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Financer loan disbursement</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">DO RECEIVED</span>
+                                        <strong style={{ color: '#0f766e' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(doSummary.received)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Cleared into accounts</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">DO OUTSTANDING</span>
+                                        <strong style={{ color: '#1e40af' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(doSummary.outstanding)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Pending financer settlement</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">DO OVERDUE</span>
+                                        <strong style={{ color: '#b91c1c' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(doSummary.overdue)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Past expected date</span>
+                                    </article>
+                                </div>
+                            </div>
+                        )}
+
+                        {(kindFilter === 'ALL' || kindFilter === 'COMMISSION') && (
+                            <div className="payout-summary-group">
+                                <div className="payout-summary-header">
+                                    <span className="payout-kind-badge commission">Commission</span>
+                                    <span className="payout-summary-title">Commission Payouts (Dealership Commission)</span>
+                                </div>
+                                <div className="loan-metrics-grid">
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">COMMISSION EXPECTED</span>
+                                        <strong>{isLoadingSummary ? '...' : formatCurrencyCompact(commSummary.expected)}</strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Financer payout (incl. GST)</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">COMMISSION RECEIVED</span>
+                                        <strong style={{ color: '#0f766e' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(commSummary.received)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Cleared into accounts</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">COMMISSION OUTSTANDING</span>
+                                        <strong style={{ color: '#1e40af' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(commSummary.outstanding)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>Pending settlement (incl. GST)</span>
+                                    </article>
+                                    <article className="loan-metric-card">
+                                        <span className="loan-metric-label">COMMISSION OVERDUE</span>
+                                        <strong style={{ color: '#b91c1c' }}>
+                                            {isLoadingSummary ? '...' : formatCurrencyCompact(commSummary.overdue)}
+                                        </strong>
+                                        <span style={{ fontSize: '11px', color: '#64748b' }}>
+                                            Past expected date
+                                            {(summary?.dateToConfirmCount ?? 0) > 0 && (
+                                                <span style={{ marginLeft: '4px', color: '#d97706' }}>
+                                                    • {summary?.dateToConfirmCount} to confirm
+                                                </span>
+                                            )}
+                                        </span>
+                                    </article>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                );
+            })()}
+
+            {summaryError && (
+                <div className="loan-error-state" role="alert">
+                    <span>Failed to load summary: {summaryError}</span>
+                    <button className="loan-button-secondary" type="button" onClick={fetchSummary}>
+                        Retry
+                    </button>
+                </div>
+            )}
+
+            {/* Filter Bar */}
+            <div className="loan-filters" style={{ marginTop: '16px' }}>
+                <label className="loan-search-box">
+                    <span aria-hidden="true">⌕</span>
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search customer name..."
+                        aria-label="Search customer"
+                    />
+                    {search && (
+                        <button type="button" onClick={() => setSearch('')} aria-label="Clear search">
+                            ×
+                        </button>
+                    )}
+                </label>
+
+                <select
+                    className="loan-filter-select"
+                    value={kindFilter}
+                    onChange={(e) => {
+                        setKindFilter(e.target.value);
+                        setPage(1);
+                    }}
+                    aria-label="Filter by payout type"
+                >
+                    <option value="ALL">Type: All</option>
+                    <option value="LOAN_AMOUNT">Type: DO amount</option>
+                    <option value="COMMISSION">Type: Commission</option>
+                </select>
+
+                <select
+                    className="loan-filter-select"
+                    value={statusFilter}
+                    onChange={(e) => {
+                        setStatusFilter(e.target.value);
+                        setPage(1);
+                    }}
+                    aria-label="Filter by status"
+                >
+                    <option value="ALL">Status: All</option>
+                    <option value="PENDING">Status: Waiting</option>
+                    <option value="PARTIAL">Status: Partly received</option>
+                    <option value="RECEIVED">Status: Received</option>
+                    <option value="OVERDUE">Status: Overdue</option>
+                </select>
+
+                <select
+                    className="loan-filter-select lender-filter"
+                    value={lenderFilter}
+                    onChange={(e) => {
+                        setLenderFilter(e.target.value);
+                        setPage(1);
+                    }}
+                    aria-label="Filter by lender"
+                >
+                    <option value="ALL">Financer: All</option>
+                    {lenders.map((l) => (
+                        <option key={l.id} value={l.id}>
+                            {l.name}
+                        </option>
+                    ))}
+                </select>
+
+                <label className="payout-overdue-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={overdueOnly}
+                        onChange={(e) => {
+                            setOverdueOnly(e.target.checked);
+                            setPage(1);
+                        }}
+                    />
+                    <span>Overdue only</span>
+                </label>
+
+                <div className="payout-date-range">
+                    <input
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => {
+                            setFromDate(e.target.value);
+                            setPage(1);
+                        }}
+                        title="From expected date"
+                    />
+                    <span>to</span>
+                    <input
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => {
+                            setToDate(e.target.value);
+                            setPage(1);
+                        }}
+                        title="To expected date"
+                    />
+                </div>
+
+                <span className="loan-record-count">
+                    {isLoading ? 'Loading...' : `${total} files`}
+                </span>
+            </div>
+
+            {/* Payouts Table */}
+            {error ? (
+                <div className="loan-error-state" role="alert">
+                    <span>Failed to load payouts: {error}</span>
+                    <button className="loan-button-secondary" type="button" onClick={fetchPayouts}>
+                        Retry Loading
+                    </button>
+                </div>
+            ) : (
+                <div className="loan-table-wrapper" style={{ marginTop: '14px' }}>
+                    <table className="loan-table">
+                        <thead>
+                            <tr>
+                                <th>CUSTOMER &amp; BRANCH</th>
+                                <th>TYPE</th>
+                                <th>FINANCER (LENDER)</th>
+                                <th className="align-right">EXPECTED</th>
+                                <th className="align-right">RECEIVED</th>
+                                <th className="align-right">OUTSTANDING</th>
+                                <th>EXPECTED DATE</th>
+                                <th>STATUS</th>
+                                <th className="align-center">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {isLoading ? (
+                                <tr>
+                                    <td colSpan={9} className="loan-loading-state">
+                                        Loading financer payouts...
+                                    </td>
+                                </tr>
+                            ) : payouts.length > 0 ? (
+                                payouts.map((p) => (
+                                    <tr
+                                        key={p.id}
+                                        onClick={() => setSelectedPayout(p)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <td>
+                                            <strong>{p.customerName}</strong>
+                                            <div style={{ fontSize: '11px', color: '#64748b' }}>
+                                                {p.branchName}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span
+                                                className={`payout-kind-badge ${p.kind === 'LOAN_AMOUNT' ? 'do-amount' : 'commission'}`}
+                                                title={p.kind === 'LOAN_AMOUNT' ? 'DO amount (loan principal disbursement)' : 'Financer commission (incl. GST)'}
+                                            >
+                                                {p.kind === 'LOAN_AMOUNT' ? 'DO amount' : 'Commission'}
+                                            </span>
+                                        </td>
+                                        <td>{p.lenderName}</td>
+                                        <td className="align-right font-medium">
+                                            <div>{formatINR(p.expectedAmount)}</div>
+                                            {p.kind === 'COMMISSION' && (
+                                                <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 400 }}>
+                                                    incl. GST
+                                                </div>
+                                            )}
+                                        </td>
+                                        <td className="align-right font-medium" style={{ color: p.receivedAmount > 0 ? '#0f766e' : undefined }}>
+                                            {formatINR(p.receivedAmount)}
+                                        </td>
+                                        <td className="align-right font-bold" style={{ color: p.outstandingAmount > 0 ? '#1e40af' : '#64748b' }}>
+                                            {formatINR(p.outstandingAmount)}
+                                        </td>
+                                        <td>
+                                            <div>
+                                                {new Date(p.expectedDate).toLocaleDateString(undefined, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                })}
+                                            </div>
+                                            {p.dateEstimated && (
+                                                <span className="payout-estimated-tag" title="Disbursement date was not explicitly recorded; date estimated">
+                                                    Estimated date
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            <PayoutStatusBadge
+                                                status={p.status}
+                                                daysOverdue={p.daysOverdue}
+                                                dateEstimated={p.dateEstimated}
+                                            />
+                                        </td>
+                                        <td className="align-center" onClick={(e) => e.stopPropagation()}>
+                                            <div style={{ display: 'inline-flex', gap: '6px' }}>
+                                                {canManagePayout && (
+                                                    <button
+                                                        type="button"
+                                                        className="loan-row-edit-btn"
+                                                        onClick={() => handleOpenReceiptModal(p)}
+                                                        title="Record payment received from lender"
+                                                    >
+                                                        + Record payment
+                                                    </button>
+                                                )}
+                                                {canManagePayout && (
+                                                    <button
+                                                        type="button"
+                                                        className="loan-row-edit-btn"
+                                                        style={{ background: '#f8fafc', borderColor: '#cbd5e1', color: '#475569' }}
+                                                        onClick={() => handleOpenEditModal(p)}
+                                                        title="Edit expected payout terms"
+                                                    >
+                                                        ✏️ Edit
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td className="loan-empty-state" colSpan={8}>
+                                        No disbursed loan payouts match your criteria.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
+            {/* Pagination Controls */}
+            <div className="loan-table-footer">
+                <span>
+                    Page {page} of {Math.max(1, totalPages)} ({total} total payouts)
+                </span>
+                <div className="loan-pagination">
+                    <button
+                        type="button"
+                        onClick={() => setPage((current) => Math.max(1, current - 1))}
+                        disabled={page <= 1 || isLoading}
+                    >
+                        ← Prev
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                        disabled={page >= totalPages || isLoading}
+                    >
+                        Next →
+                    </button>
+                </div>
+            </div>
+
+            {/* Record Payment Receipt Modal */}
+            {recordingReceiptPayout && (
+                <div className="loan-modal-backdrop" role="dialog" aria-modal="true">
+                    <section className="loan-modal" style={{ maxWidth: '480px' }}>
+                        <div className="loan-modal-heading">
+                            <div>
+                                <h2>Record Payment Receipt</h2>
+                                <p>Record money received from {recordingReceiptPayout.lenderName} for {recordingReceiptPayout.customerName}</p>
+                            </div>
+                            <button
+                                className="loan-modal-close"
+                                type="button"
+                                onClick={() => setRecordingReceiptPayout(null)}
+                                disabled={isSubmittingReceipt}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {receiptFormError && (
+                            <div className="loan-modal-error" role="alert">
+                                <strong>Error: </strong>{receiptFormError}
+                            </div>
+                        )}
+
+                        {receiptWarning && (
+                            <div className="tieup-notice" role="alert" style={{ marginBottom: '12px' }}>
+                                ⚠️ <strong>Note: </strong>{receiptWarning}
+                            </div>
+                        )}
+
+                        <form className="loan-modal-form" onSubmit={handleRecordReceiptSubmit}>
+                            <label>
+                                Amount Received (₹) *
+                                <input
+                                    required
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    value={receiptAmount}
+                                    onChange={(e) => setReceiptAmount(e.target.value)}
+                                    placeholder="Enter receipt amount"
+                                    disabled={isSubmittingReceipt}
+                                />
+                                <span style={{ fontSize: '11px', color: '#64748b' }}>
+                                    Outstanding: {formatINR(recordingReceiptPayout.outstandingAmount)} (Expected payout incl. GST: {formatINR(recordingReceiptPayout.expectedAmount)})
+                                </span>
+                            </label>
+
+                            <label>
+                                Received Date *
+                                <input
+                                    required
+                                    type="date"
+                                    value={receivedDate}
+                                    onChange={(e) => setReceivedDate(e.target.value)}
+                                    disabled={isSubmittingReceipt}
+                                />
+                            </label>
+
+                            <label>
+                                Payment Reference / UTR
+                                <input
+                                    type="text"
+                                    value={reference}
+                                    onChange={(e) => setReference(e.target.value)}
+                                    placeholder="e.g. UTR123456789 or Cheque #8821"
+                                    disabled={isSubmittingReceipt}
+                                />
+                            </label>
+
+                            <label>
+                                Receiving Bank / Account Label
+                                <input
+                                    type="text"
+                                    value={receivedInto}
+                                    onChange={(e) => setReceivedInto(e.target.value)}
+                                    placeholder='e.g. "HO current account" or "Axis current - Rajahmundry"'
+                                    disabled={isSubmittingReceipt}
+                                />
+                                <span style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px' }}>
+                                    Short label only. NEVER enter full bank account numbers.
+                                </span>
+                            </label>
+
+                            <div className="loan-modal-actions">
+                                <button
+                                    className="loan-button-secondary"
+                                    type="button"
+                                    onClick={() => setRecordingReceiptPayout(null)}
+                                    disabled={isSubmittingReceipt}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="loan-button-primary"
+                                    type="submit"
+                                    disabled={isSubmittingReceipt}
+                                >
+                                    {isSubmittingReceipt ? 'Recording Payment...' : 'Record Payment'}
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            )}
+
+            {/* Edit Payout Terms Modal */}
+            {editingPayout && (
+                <div className="loan-modal-backdrop" role="dialog" aria-modal="true">
+                    <section className="loan-modal" style={{ maxWidth: '480px' }}>
+                        <div className="loan-modal-heading">
+                            <div>
+                                <h2>Edit Expected Payout Terms</h2>
+                                <p>Update expected amount or settlement date for {editingPayout.customerName}</p>
+                            </div>
+                            <button
+                                className="loan-modal-close"
+                                type="button"
+                                onClick={() => setEditingPayout(null)}
+                                disabled={isSubmittingEdit}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {editFormError && (
+                            <div className="loan-modal-error" role="alert">
+                                <strong>Error: </strong>{editFormError}
+                            </div>
+                        )}
+
+                        <form className="loan-modal-form" onSubmit={handleEditPayoutSubmit}>
+                            <label>
+                                Expected Payout (incl. GST) (₹) *
+                                <input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    value={editAmount}
+                                    onChange={(e) => setEditAmount(e.target.value)}
+                                    placeholder="Enter expected payout"
+                                    disabled={isSubmittingEdit}
+                                />
+                                <span style={{ fontSize: '11px', color: '#64748b' }}>
+                                    Commission payout expected from {editingPayout.lenderName}.
+                                </span>
+                            </label>
+
+                            <label>
+                                Expected Date *
+                                <input
+                                    required
+                                    type="date"
+                                    value={editDate}
+                                    onChange={(e) => setEditDate(e.target.value)}
+                                    disabled={isSubmittingEdit}
+                                />
+                                <span style={{ fontSize: '11px', color: '#64748b' }}>
+                                    Editing expected date marks it as confirmed (clears estimated flag).
+                                </span>
+                            </label>
+
+                            <label>
+                                Internal Notes / Reason
+                                <textarea
+                                    rows={3}
+                                    value={editNotes}
+                                    onChange={(e) => setEditNotes(e.target.value)}
+                                    placeholder="Reason for adjustment, revised financer terms, etc."
+                                    disabled={isSubmittingEdit}
+                                    style={{
+                                        width: '100%',
+                                        padding: '8px 10px',
+                                        borderRadius: '6px',
+                                        border: '1px solid #cbd5e1',
+                                        font: 'inherit',
+                                        fontSize: '13px',
+                                    }}
+                                />
+                            </label>
+
+                            <div className="loan-modal-actions">
+                                <button
+                                    className="loan-button-secondary"
+                                    type="button"
+                                    onClick={() => setEditingPayout(null)}
+                                    disabled={isSubmittingEdit}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="loan-button-primary"
+                                    type="submit"
+                                    disabled={isSubmittingEdit}
+                                >
+                                    {isSubmittingEdit ? 'Saving Changes...' : 'Save Payout Terms'}
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            )}
+
+            {/* Payout Details & History Drawer */}
+            {selectedPayout && (
+                <div
+                    className="loan-detail-overlay"
+                    onClick={() => setSelectedPayout(null)}
+                >
+                    <aside
+                        className="loan-detail-panel"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ width: '460px' }}
+                    >
+                        <div className="loan-detail-header">
+                            <div>
+                                <h2>Payout: {selectedPayout.customerName}</h2>
+                                <p>{selectedPayout.lenderName} • {selectedPayout.branchName}</p>
+                            </div>
+                            <button
+                                type="button"
+                                className="loan-detail-close"
+                                onClick={() => setSelectedPayout(null)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div className="loan-detail-content">
+                            <div className="loan-detail-row">
+                                <span>Payout Type</span>
+                                <strong>
+                                    <span
+                                        className={`payout-kind-badge ${selectedPayout.kind === 'LOAN_AMOUNT' ? 'do-amount' : 'commission'}`}
+                                    >
+                                        {selectedPayout.kind === 'LOAN_AMOUNT' ? 'DO amount' : 'Commission'}
+                                    </span>
+                                </strong>
+                            </div>
+                            <div className="loan-detail-row">
+                                <span>Status</span>
+                                <strong>
+                                    <PayoutStatusBadge
+                                        status={selectedPayout.status}
+                                        daysOverdue={selectedPayout.daysOverdue}
+                                        dateEstimated={selectedPayout.dateEstimated}
+                                    />
+                                </strong>
+                            </div>
+                            <div className="loan-detail-row">
+                                <span>{selectedPayout.kind === 'COMMISSION' ? 'Expected Payout (incl. GST)' : 'Expected DO Amount'}</span>
+                                <strong>{formatINR(selectedPayout.expectedAmount)}</strong>
+                            </div>
+                            <div className="loan-detail-row">
+                                <span>Total Received</span>
+                                <strong style={{ color: selectedPayout.receivedAmount > 0 ? '#0f766e' : undefined }}>
+                                    {formatINR(selectedPayout.receivedAmount)}
+                                </strong>
+                            </div>
+                            <div className="loan-detail-row">
+                                <span>Remaining Outstanding</span>
+                                <strong style={{ color: selectedPayout.outstandingAmount > 0 ? '#1e40af' : '#64748b' }}>
+                                    {formatINR(selectedPayout.outstandingAmount)}
+                                </strong>
+                            </div>
+                            <div className="loan-detail-row">
+                                <span>Expected Settlement Date</span>
+                                <strong>
+                                    {new Date(selectedPayout.expectedDate).toLocaleDateString(undefined, {
+                                        day: 'numeric',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    })}
+                                    {selectedPayout.dateEstimated && ' (Estimated)'}
+                                </strong>
+                            </div>
+                            {selectedPayout.notes && (
+                                <div className="loan-detail-row" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
+                                    <span>Notes</span>
+                                    <p style={{ margin: 0, fontSize: '12px', color: '#334155', background: '#f1f5f9', padding: '6px 10px', borderRadius: '6px', width: '100%' }}>
+                                        {selectedPayout.notes}
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Payment Receipts Section */}
+                            <div style={{ marginTop: '20px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                                        Payment Receipts ({selectedPayout.receipts?.length ?? 0})
+                                    </span>
+                                    {canManagePayout && selectedPayout.outstandingAmount > 0 && (
+                                        <button
+                                            type="button"
+                                            className="loan-row-edit-btn"
+                                            onClick={() => handleOpenReceiptModal(selectedPayout)}
+                                        >
+                                            + Add receipt
+                                        </button>
+                                    )}
+                                </div>
+
+                                {selectedPayout.receipts && selectedPayout.receipts.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {selectedPayout.receipts.map((r) => (
+                                            <div
+                                                key={r.id}
+                                                style={{
+                                                    padding: '10px 12px',
+                                                    background: '#f8fafc',
+                                                    border: '1px solid #e2e8f0',
+                                                    borderRadius: '8px',
+                                                    fontSize: '12px',
+                                                }}
+                                            >
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600 }}>
+                                                    <span style={{ color: '#0f766e' }}>{formatINR(r.amount)}</span>
+                                                    <span style={{ color: '#64748b' }}>
+                                                        {new Date(r.receivedDate).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                {r.reference && (
+                                                    <div style={{ color: '#475569', marginTop: '2px' }}>
+                                                        Ref: {r.reference}
+                                                    </div>
+                                                )}
+                                                {r.receivedInto && (
+                                                    <div style={{ color: '#64748b', fontSize: '11px', marginTop: '2px' }}>
+                                                        Into: {r.receivedInto}
+                                                    </div>
+                                                )}
+                                                <div style={{ color: '#94a3b8', fontSize: '10px', marginTop: '4px' }}>
+                                                    Recorded by {r.createdBy.firstName} {r.createdBy.lastName}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '6px', color: '#64748b', textAlign: 'center', fontSize: '12px' }}>
+                                        No receipts recorded yet.
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Edit History Section */}
+                            <div style={{ marginTop: '20px' }}>
+                                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', display: 'block', marginBottom: '8px' }}>
+                                    Payout Edit History ({selectedPayout.history?.length ?? 0})
+                                </span>
+
+                                {selectedPayout.history && selectedPayout.history.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                        {selectedPayout.history.map((h) => (
+                                            <div
+                                                key={h.id}
+                                                style={{
+                                                    padding: '8px 10px',
+                                                    background: '#f8fafc',
+                                                    border: '1px solid #e2e8f0',
+                                                    borderRadius: '6px',
+                                                    fontSize: '11px',
+                                                }}
+                                            >
+                                                <div style={{ fontWeight: 600, color: '#334155' }}>
+                                                    {h.user.firstName} {h.user.lastName} changed {h.field}
+                                                </div>
+                                                <div style={{ color: '#64748b', marginTop: '2px' }}>
+                                                    From <s>{h.oldValue || 'none'}</s> → <strong>{h.newValue}</strong>
+                                                </div>
+                                                <div style={{ color: '#94a3b8', fontSize: '10px', marginTop: '2px' }}>
+                                                    {new Date(h.createdAt).toLocaleString(undefined, {
+                                                        dateStyle: 'medium',
+                                                        timeStyle: 'short',
+                                                    })}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '6px', color: '#64748b', textAlign: 'center', fontSize: '11px' }}>
+                                        No edits recorded.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            )}
+        </section>
+    );
+}
+
 export default function FinanceLoan() {
     const { user } = useAuth();
     const { selectedBranchId } = useAuth();
-    const [activeTab, setActiveTab] = useState<'overview' | 'tieups'>('overview');
+    const hasCcView = Boolean(
+        user?.roles?.includes('SYSTEM_ADMIN') || user?.permissions?.includes('CC_VIEW'),
+    );
+    const [activeTab, setActiveTab] = useState<'overview' | 'tieups' | 'payouts' | 'funding'>(() => {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const t = params.get('tab');
+            if (t === 'funding' || t === 'payouts' || t === 'tieups' || t === 'overview') {
+                return t;
+            }
+        } catch {}
+        return 'overview';
+    });
+
+    useEffect(() => {
+        const handleLocationChange = () => {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const t = params.get('tab');
+                if (t === 'funding' || t === 'payouts' || t === 'tieups' || t === 'overview') {
+                    setActiveTab(t);
+                }
+            } catch {}
+        };
+        window.addEventListener('popstate', handleLocationChange);
+        window.addEventListener('nexus:navigate-tab', handleLocationChange);
+        return () => {
+            window.removeEventListener('popstate', handleLocationChange);
+            window.removeEventListener('nexus:navigate-tab', handleLocationChange);
+        };
+    }, []);
     const [selectedApplication, setSelectedApplication] = useState<LoanApplicationRecord | null>(null);
     const [editingApplication, setEditingApplication] = useState<LoanApplicationRecord | null>(null);
     const [showModal, setShowModal] = useState(false);
@@ -1794,6 +2984,26 @@ export default function FinanceLoan() {
                 >
                     <span className="loan-tab-icon">🏦</span> Bank-wise Tie-ups
                 </button>
+                <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === 'payouts'}
+                    className={`loan-tab ${activeTab === 'payouts' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('payouts')}
+                >
+                    <span className="loan-tab-icon">💰</span> Payout Tracker
+                </button>
+                {hasCcView && (
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={activeTab === 'funding'}
+                        className={`loan-tab ${activeTab === 'funding' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('funding')}
+                    >
+                        <span className="loan-tab-icon">💳</span> CC / Funding
+                    </button>
+                )}
             </div>
 
             {activeTab === 'overview' ? (
@@ -1813,7 +3023,7 @@ export default function FinanceLoan() {
                     refreshTrigger={refreshTrigger}
                     lenders={activeLenders}
                 />
-            ) : (
+            ) : activeTab === 'tieups' ? (
                 <BankTieUpsTab
                     metrics={metrics}
                     isLoadingMetrics={isLoadingMetrics}
@@ -1824,6 +3034,14 @@ export default function FinanceLoan() {
                     isLoadingInactiveLenders={isLoadingInactiveLenders}
                     activeLendersError={activeLendersError}
                     inactiveLendersError={inactiveLendersError}
+                />
+            ) : activeTab === 'funding' && hasCcView ? (
+                <FundingTab />
+            ) : (
+                <PayoutTrackerTab
+                    lenders={activeLenders}
+                    refreshTrigger={refreshTrigger}
+                    onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
                 />
             )}
 

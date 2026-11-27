@@ -20,8 +20,20 @@ export type LenderModel = runtime.Types.Result.DefaultSelection<Prisma.$LenderPa
 
 export type AggregateLender = {
   _count: LenderCountAggregateOutputType | null
+  _avg: LenderAvgAggregateOutputType | null
+  _sum: LenderSumAggregateOutputType | null
   _min: LenderMinAggregateOutputType | null
   _max: LenderMaxAggregateOutputType | null
+}
+
+export type LenderAvgAggregateOutputType = {
+  payoutDays: number | null
+  commissionPayoutDays: number | null
+}
+
+export type LenderSumAggregateOutputType = {
+  payoutDays: number | null
+  commissionPayoutDays: number | null
 }
 
 export type LenderMinAggregateOutputType = {
@@ -30,6 +42,8 @@ export type LenderMinAggregateOutputType = {
   tallyLedgerName: string | null
   type: $Enums.LenderType | null
   isActive: boolean | null
+  payoutDays: number | null
+  commissionPayoutDays: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +54,8 @@ export type LenderMaxAggregateOutputType = {
   tallyLedgerName: string | null
   type: $Enums.LenderType | null
   isActive: boolean | null
+  payoutDays: number | null
+  commissionPayoutDays: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,11 +66,23 @@ export type LenderCountAggregateOutputType = {
   tallyLedgerName: number
   type: number
   isActive: number
+  payoutDays: number
+  commissionPayoutDays: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type LenderAvgAggregateInputType = {
+  payoutDays?: true
+  commissionPayoutDays?: true
+}
+
+export type LenderSumAggregateInputType = {
+  payoutDays?: true
+  commissionPayoutDays?: true
+}
 
 export type LenderMinAggregateInputType = {
   id?: true
@@ -62,6 +90,8 @@ export type LenderMinAggregateInputType = {
   tallyLedgerName?: true
   type?: true
   isActive?: true
+  payoutDays?: true
+  commissionPayoutDays?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +102,8 @@ export type LenderMaxAggregateInputType = {
   tallyLedgerName?: true
   type?: true
   isActive?: true
+  payoutDays?: true
+  commissionPayoutDays?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +114,8 @@ export type LenderCountAggregateInputType = {
   tallyLedgerName?: true
   type?: true
   isActive?: true
+  payoutDays?: true
+  commissionPayoutDays?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -125,6 +159,18 @@ export type LenderAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: LenderAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: LenderSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: LenderMinAggregateInputType
@@ -155,6 +201,8 @@ export type LenderGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: LenderCountAggregateInputType | true
+  _avg?: LenderAvgAggregateInputType
+  _sum?: LenderSumAggregateInputType
   _min?: LenderMinAggregateInputType
   _max?: LenderMaxAggregateInputType
 }
@@ -165,9 +213,13 @@ export type LenderGroupByOutputType = {
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive: boolean
+  payoutDays: number | null
+  commissionPayoutDays: number | null
   createdAt: Date
   updatedAt: Date
   _count: LenderCountAggregateOutputType | null
+  _avg: LenderAvgAggregateOutputType | null
+  _sum: LenderSumAggregateOutputType | null
   _min: LenderMinAggregateOutputType | null
   _max: LenderMaxAggregateOutputType | null
 }
@@ -196,9 +248,12 @@ export type LenderWhereInput = {
   tallyLedgerName?: Prisma.StringFilter<"Lender"> | string
   type?: Prisma.EnumLenderTypeFilter<"Lender"> | $Enums.LenderType
   isActive?: Prisma.BoolFilter<"Lender"> | boolean
+  payoutDays?: Prisma.IntNullableFilter<"Lender"> | number | null
+  commissionPayoutDays?: Prisma.IntNullableFilter<"Lender"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Lender"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lender"> | Date | string
   loanApplications?: Prisma.LoanApplicationListRelationFilter
+  fundingFacilities?: Prisma.FundingFacilityListRelationFilter
 }
 
 export type LenderOrderByWithRelationInput = {
@@ -207,9 +262,12 @@ export type LenderOrderByWithRelationInput = {
   tallyLedgerName?: Prisma.SortOrder
   type?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  payoutDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   loanApplications?: Prisma.LoanApplicationOrderByRelationAggregateInput
+  fundingFacilities?: Prisma.FundingFacilityOrderByRelationAggregateInput
 }
 
 export type LenderWhereUniqueInput = Prisma.AtLeast<{
@@ -221,9 +279,12 @@ export type LenderWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Lender"> | string
   type?: Prisma.EnumLenderTypeFilter<"Lender"> | $Enums.LenderType
   isActive?: Prisma.BoolFilter<"Lender"> | boolean
+  payoutDays?: Prisma.IntNullableFilter<"Lender"> | number | null
+  commissionPayoutDays?: Prisma.IntNullableFilter<"Lender"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Lender"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lender"> | Date | string
   loanApplications?: Prisma.LoanApplicationListRelationFilter
+  fundingFacilities?: Prisma.FundingFacilityListRelationFilter
 }, "id" | "tallyLedgerName">
 
 export type LenderOrderByWithAggregationInput = {
@@ -232,11 +293,15 @@ export type LenderOrderByWithAggregationInput = {
   tallyLedgerName?: Prisma.SortOrder
   type?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  payoutDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.LenderCountOrderByAggregateInput
+  _avg?: Prisma.LenderAvgOrderByAggregateInput
   _max?: Prisma.LenderMaxOrderByAggregateInput
   _min?: Prisma.LenderMinOrderByAggregateInput
+  _sum?: Prisma.LenderSumOrderByAggregateInput
 }
 
 export type LenderScalarWhereWithAggregatesInput = {
@@ -248,6 +313,8 @@ export type LenderScalarWhereWithAggregatesInput = {
   tallyLedgerName?: Prisma.StringWithAggregatesFilter<"Lender"> | string
   type?: Prisma.EnumLenderTypeWithAggregatesFilter<"Lender"> | $Enums.LenderType
   isActive?: Prisma.BoolWithAggregatesFilter<"Lender"> | boolean
+  payoutDays?: Prisma.IntNullableWithAggregatesFilter<"Lender"> | number | null
+  commissionPayoutDays?: Prisma.IntNullableWithAggregatesFilter<"Lender"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Lender"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Lender"> | Date | string
 }
@@ -258,9 +325,12 @@ export type LenderCreateInput = {
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutLenderInput
+  fundingFacilities?: Prisma.FundingFacilityCreateNestedManyWithoutLenderInput
 }
 
 export type LenderUncheckedCreateInput = {
@@ -269,9 +339,12 @@ export type LenderUncheckedCreateInput = {
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutLenderInput
+  fundingFacilities?: Prisma.FundingFacilityUncheckedCreateNestedManyWithoutLenderInput
 }
 
 export type LenderUpdateInput = {
@@ -280,9 +353,12 @@ export type LenderUpdateInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutLenderNestedInput
+  fundingFacilities?: Prisma.FundingFacilityUpdateManyWithoutLenderNestedInput
 }
 
 export type LenderUncheckedUpdateInput = {
@@ -291,9 +367,12 @@ export type LenderUncheckedUpdateInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutLenderNestedInput
+  fundingFacilities?: Prisma.FundingFacilityUncheckedUpdateManyWithoutLenderNestedInput
 }
 
 export type LenderCreateManyInput = {
@@ -302,6 +381,8 @@ export type LenderCreateManyInput = {
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -312,6 +393,8 @@ export type LenderUpdateManyMutationInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -322,6 +405,8 @@ export type LenderUncheckedUpdateManyInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,8 +417,15 @@ export type LenderCountOrderByAggregateInput = {
   tallyLedgerName?: Prisma.SortOrder
   type?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  payoutDays?: Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type LenderAvgOrderByAggregateInput = {
+  payoutDays?: Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrder
 }
 
 export type LenderMaxOrderByAggregateInput = {
@@ -342,6 +434,8 @@ export type LenderMaxOrderByAggregateInput = {
   tallyLedgerName?: Prisma.SortOrder
   type?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  payoutDays?: Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -352,8 +446,15 @@ export type LenderMinOrderByAggregateInput = {
   tallyLedgerName?: Prisma.SortOrder
   type?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  payoutDays?: Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type LenderSumOrderByAggregateInput = {
+  payoutDays?: Prisma.SortOrder
+  commissionPayoutDays?: Prisma.SortOrder
 }
 
 export type LenderNullableScalarRelationFilter = {
@@ -363,6 +464,14 @@ export type LenderNullableScalarRelationFilter = {
 
 export type EnumLenderTypeFieldUpdateOperationsInput = {
   set?: $Enums.LenderType
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type LenderCreateNestedOneWithoutLoanApplicationsInput = {
@@ -381,14 +490,33 @@ export type LenderUpdateOneWithoutLoanApplicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LenderUpdateToOneWithWhereWithoutLoanApplicationsInput, Prisma.LenderUpdateWithoutLoanApplicationsInput>, Prisma.LenderUncheckedUpdateWithoutLoanApplicationsInput>
 }
 
+export type LenderCreateNestedOneWithoutFundingFacilitiesInput = {
+  create?: Prisma.XOR<Prisma.LenderCreateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedCreateWithoutFundingFacilitiesInput>
+  connectOrCreate?: Prisma.LenderCreateOrConnectWithoutFundingFacilitiesInput
+  connect?: Prisma.LenderWhereUniqueInput
+}
+
+export type LenderUpdateOneWithoutFundingFacilitiesNestedInput = {
+  create?: Prisma.XOR<Prisma.LenderCreateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedCreateWithoutFundingFacilitiesInput>
+  connectOrCreate?: Prisma.LenderCreateOrConnectWithoutFundingFacilitiesInput
+  upsert?: Prisma.LenderUpsertWithoutFundingFacilitiesInput
+  disconnect?: Prisma.LenderWhereInput | boolean
+  delete?: Prisma.LenderWhereInput | boolean
+  connect?: Prisma.LenderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LenderUpdateToOneWithWhereWithoutFundingFacilitiesInput, Prisma.LenderUpdateWithoutFundingFacilitiesInput>, Prisma.LenderUncheckedUpdateWithoutFundingFacilitiesInput>
+}
+
 export type LenderCreateWithoutLoanApplicationsInput = {
   id?: string
   name: string
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fundingFacilities?: Prisma.FundingFacilityCreateNestedManyWithoutLenderInput
 }
 
 export type LenderUncheckedCreateWithoutLoanApplicationsInput = {
@@ -397,8 +525,11 @@ export type LenderUncheckedCreateWithoutLoanApplicationsInput = {
   tallyLedgerName: string
   type: $Enums.LenderType
   isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  fundingFacilities?: Prisma.FundingFacilityUncheckedCreateNestedManyWithoutLenderInput
 }
 
 export type LenderCreateOrConnectWithoutLoanApplicationsInput = {
@@ -423,8 +554,11 @@ export type LenderUpdateWithoutLoanApplicationsInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fundingFacilities?: Prisma.FundingFacilityUpdateManyWithoutLenderNestedInput
 }
 
 export type LenderUncheckedUpdateWithoutLoanApplicationsInput = {
@@ -433,8 +567,79 @@ export type LenderUncheckedUpdateWithoutLoanApplicationsInput = {
   tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fundingFacilities?: Prisma.FundingFacilityUncheckedUpdateManyWithoutLenderNestedInput
+}
+
+export type LenderCreateWithoutFundingFacilitiesInput = {
+  id?: string
+  name: string
+  tallyLedgerName: string
+  type: $Enums.LenderType
+  isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutLenderInput
+}
+
+export type LenderUncheckedCreateWithoutFundingFacilitiesInput = {
+  id?: string
+  name: string
+  tallyLedgerName: string
+  type: $Enums.LenderType
+  isActive?: boolean
+  payoutDays?: number | null
+  commissionPayoutDays?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutLenderInput
+}
+
+export type LenderCreateOrConnectWithoutFundingFacilitiesInput = {
+  where: Prisma.LenderWhereUniqueInput
+  create: Prisma.XOR<Prisma.LenderCreateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedCreateWithoutFundingFacilitiesInput>
+}
+
+export type LenderUpsertWithoutFundingFacilitiesInput = {
+  update: Prisma.XOR<Prisma.LenderUpdateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedUpdateWithoutFundingFacilitiesInput>
+  create: Prisma.XOR<Prisma.LenderCreateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedCreateWithoutFundingFacilitiesInput>
+  where?: Prisma.LenderWhereInput
+}
+
+export type LenderUpdateToOneWithWhereWithoutFundingFacilitiesInput = {
+  where?: Prisma.LenderWhereInput
+  data: Prisma.XOR<Prisma.LenderUpdateWithoutFundingFacilitiesInput, Prisma.LenderUncheckedUpdateWithoutFundingFacilitiesInput>
+}
+
+export type LenderUpdateWithoutFundingFacilitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutLenderNestedInput
+}
+
+export type LenderUncheckedUpdateWithoutFundingFacilitiesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  tallyLedgerName?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumLenderTypeFieldUpdateOperationsInput | $Enums.LenderType
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  commissionPayoutDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutLenderNestedInput
 }
 
 
@@ -444,10 +649,12 @@ export type LenderUncheckedUpdateWithoutLoanApplicationsInput = {
 
 export type LenderCountOutputType = {
   loanApplications: number
+  fundingFacilities: number
 }
 
 export type LenderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loanApplications?: boolean | LenderCountOutputTypeCountLoanApplicationsArgs
+  fundingFacilities?: boolean | LenderCountOutputTypeCountFundingFacilitiesArgs
 }
 
 /**
@@ -467,6 +674,13 @@ export type LenderCountOutputTypeCountLoanApplicationsArgs<ExtArgs extends runti
   where?: Prisma.LoanApplicationWhereInput
 }
 
+/**
+ * LenderCountOutputType without action
+ */
+export type LenderCountOutputTypeCountFundingFacilitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundingFacilityWhereInput
+}
+
 
 export type LenderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -474,9 +688,12 @@ export type LenderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   tallyLedgerName?: boolean
   type?: boolean
   isActive?: boolean
+  payoutDays?: boolean
+  commissionPayoutDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   loanApplications?: boolean | Prisma.Lender$loanApplicationsArgs<ExtArgs>
+  fundingFacilities?: boolean | Prisma.Lender$fundingFacilitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LenderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lender"]>
 
@@ -486,6 +703,8 @@ export type LenderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   tallyLedgerName?: boolean
   type?: boolean
   isActive?: boolean
+  payoutDays?: boolean
+  commissionPayoutDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["lender"]>
@@ -496,6 +715,8 @@ export type LenderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   tallyLedgerName?: boolean
   type?: boolean
   isActive?: boolean
+  payoutDays?: boolean
+  commissionPayoutDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["lender"]>
@@ -506,13 +727,16 @@ export type LenderSelectScalar = {
   tallyLedgerName?: boolean
   type?: boolean
   isActive?: boolean
+  payoutDays?: boolean
+  commissionPayoutDays?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LenderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tallyLedgerName" | "type" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["lender"]>
+export type LenderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tallyLedgerName" | "type" | "isActive" | "payoutDays" | "commissionPayoutDays" | "createdAt" | "updatedAt", ExtArgs["result"]["lender"]>
 export type LenderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loanApplications?: boolean | Prisma.Lender$loanApplicationsArgs<ExtArgs>
+  fundingFacilities?: boolean | Prisma.Lender$fundingFacilitiesArgs<ExtArgs>
   _count?: boolean | Prisma.LenderCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LenderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -522,6 +746,7 @@ export type $LenderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Lender"
   objects: {
     loanApplications: Prisma.$LoanApplicationPayload<ExtArgs>[]
+    fundingFacilities: Prisma.$FundingFacilityPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -529,6 +754,8 @@ export type $LenderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     tallyLedgerName: string
     type: $Enums.LenderType
     isActive: boolean
+    payoutDays: number | null
+    commissionPayoutDays: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["lender"]>
@@ -926,6 +1153,7 @@ readonly fields: LenderFieldRefs;
 export interface Prisma__LenderClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   loanApplications<T extends Prisma.Lender$loanApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lender$loanApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundingFacilities<T extends Prisma.Lender$fundingFacilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lender$fundingFacilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundingFacilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -960,6 +1188,8 @@ export interface LenderFieldRefs {
   readonly tallyLedgerName: Prisma.FieldRef<"Lender", 'String'>
   readonly type: Prisma.FieldRef<"Lender", 'LenderType'>
   readonly isActive: Prisma.FieldRef<"Lender", 'Boolean'>
+  readonly payoutDays: Prisma.FieldRef<"Lender", 'Int'>
+  readonly commissionPayoutDays: Prisma.FieldRef<"Lender", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Lender", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Lender", 'DateTime'>
 }
@@ -1376,6 +1606,30 @@ export type Lender$loanApplicationsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.LoanApplicationScalarFieldEnum | Prisma.LoanApplicationScalarFieldEnum[]
+}
+
+/**
+ * Lender.fundingFacilities
+ */
+export type Lender$fundingFacilitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundingFacility
+   */
+  select?: Prisma.FundingFacilitySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundingFacility
+   */
+  omit?: Prisma.FundingFacilityOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundingFacilityInclude<ExtArgs> | null
+  where?: Prisma.FundingFacilityWhereInput
+  orderBy?: Prisma.FundingFacilityOrderByWithRelationInput | Prisma.FundingFacilityOrderByWithRelationInput[]
+  cursor?: Prisma.FundingFacilityWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundingFacilityScalarFieldEnum | Prisma.FundingFacilityScalarFieldEnum[]
 }
 
 /**

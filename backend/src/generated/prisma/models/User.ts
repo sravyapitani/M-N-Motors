@@ -218,6 +218,11 @@ export type UserWhereInput = {
   branchAccess?: Prisma.UserBranchListRelationFilter
   loanApplications?: Prisma.LoanApplicationListRelationFilter
   createdJournalEntries?: Prisma.JournalEntryListRelationFilter
+  payoutReceipts?: Prisma.LoanPayoutReceiptListRelationFilter
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryListRelationFilter
+  fundingDraws?: Prisma.FundingDrawListRelationFilter
+  fundingRepayments?: Prisma.FundingRepaymentListRelationFilter
+  fundingDrawHistories?: Prisma.FundingDrawHistoryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -234,6 +239,11 @@ export type UserOrderByWithRelationInput = {
   branchAccess?: Prisma.UserBranchOrderByRelationAggregateInput
   loanApplications?: Prisma.LoanApplicationOrderByRelationAggregateInput
   createdJournalEntries?: Prisma.JournalEntryOrderByRelationAggregateInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptOrderByRelationAggregateInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryOrderByRelationAggregateInput
+  fundingDraws?: Prisma.FundingDrawOrderByRelationAggregateInput
+  fundingRepayments?: Prisma.FundingRepaymentOrderByRelationAggregateInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -253,6 +263,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   branchAccess?: Prisma.UserBranchListRelationFilter
   loanApplications?: Prisma.LoanApplicationListRelationFilter
   createdJournalEntries?: Prisma.JournalEntryListRelationFilter
+  payoutReceipts?: Prisma.LoanPayoutReceiptListRelationFilter
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryListRelationFilter
+  fundingDraws?: Prisma.FundingDrawListRelationFilter
+  fundingRepayments?: Prisma.FundingRepaymentListRelationFilter
+  fundingDrawHistories?: Prisma.FundingDrawHistoryListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -299,6 +314,11 @@ export type UserCreateInput = {
   branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -315,6 +335,11 @@ export type UserUncheckedCreateInput = {
   branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -331,6 +356,11 @@ export type UserUpdateInput = {
   branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -347,6 +377,11 @@ export type UserUncheckedUpdateInput = {
   branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -488,6 +523,34 @@ export type UserUpdateOneRequiredWithoutLoanApplicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLoanApplicationsInput, Prisma.UserUpdateWithoutLoanApplicationsInput>, Prisma.UserUncheckedUpdateWithoutLoanApplicationsInput>
 }
 
+export type UserCreateNestedOneWithoutPayoutReceiptsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPayoutReceiptsInput, Prisma.UserUncheckedCreateWithoutPayoutReceiptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPayoutReceiptsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPayoutReceiptsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPayoutReceiptsInput, Prisma.UserUncheckedCreateWithoutPayoutReceiptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPayoutReceiptsInput
+  upsert?: Prisma.UserUpsertWithoutPayoutReceiptsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPayoutReceiptsInput, Prisma.UserUpdateWithoutPayoutReceiptsInput>, Prisma.UserUncheckedUpdateWithoutPayoutReceiptsInput>
+}
+
+export type UserCreateNestedOneWithoutPayoutHistoryEntriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedCreateWithoutPayoutHistoryEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPayoutHistoryEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPayoutHistoryEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedCreateWithoutPayoutHistoryEntriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPayoutHistoryEntriesInput
+  upsert?: Prisma.UserUpsertWithoutPayoutHistoryEntriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPayoutHistoryEntriesInput, Prisma.UserUpdateWithoutPayoutHistoryEntriesInput>, Prisma.UserUncheckedUpdateWithoutPayoutHistoryEntriesInput>
+}
+
 export type UserCreateNestedOneWithoutCreatedJournalEntriesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedJournalEntriesInput, Prisma.UserUncheckedCreateWithoutCreatedJournalEntriesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedJournalEntriesInput
@@ -500,6 +563,48 @@ export type UserUpdateOneRequiredWithoutCreatedJournalEntriesNestedInput = {
   upsert?: Prisma.UserUpsertWithoutCreatedJournalEntriesInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedJournalEntriesInput, Prisma.UserUpdateWithoutCreatedJournalEntriesInput>, Prisma.UserUncheckedUpdateWithoutCreatedJournalEntriesInput>
+}
+
+export type UserCreateNestedOneWithoutFundingDrawsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawsInput, Prisma.UserUncheckedCreateWithoutFundingDrawsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingDrawsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFundingDrawsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawsInput, Prisma.UserUncheckedCreateWithoutFundingDrawsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingDrawsInput
+  upsert?: Prisma.UserUpsertWithoutFundingDrawsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFundingDrawsInput, Prisma.UserUpdateWithoutFundingDrawsInput>, Prisma.UserUncheckedUpdateWithoutFundingDrawsInput>
+}
+
+export type UserCreateNestedOneWithoutFundingRepaymentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingRepaymentsInput, Prisma.UserUncheckedCreateWithoutFundingRepaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingRepaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFundingRepaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingRepaymentsInput, Prisma.UserUncheckedCreateWithoutFundingRepaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingRepaymentsInput
+  upsert?: Prisma.UserUpsertWithoutFundingRepaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFundingRepaymentsInput, Prisma.UserUpdateWithoutFundingRepaymentsInput>, Prisma.UserUncheckedUpdateWithoutFundingRepaymentsInput>
+}
+
+export type UserCreateNestedOneWithoutFundingDrawHistoriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedCreateWithoutFundingDrawHistoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingDrawHistoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFundingDrawHistoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedCreateWithoutFundingDrawHistoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFundingDrawHistoriesInput
+  upsert?: Prisma.UserUpsertWithoutFundingDrawHistoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFundingDrawHistoriesInput, Prisma.UserUpdateWithoutFundingDrawHistoriesInput>, Prisma.UserUncheckedUpdateWithoutFundingDrawHistoriesInput>
 }
 
 export type UserCreateWithoutRolesInput = {
@@ -515,6 +620,11 @@ export type UserCreateWithoutRolesInput = {
   branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -530,6 +640,11 @@ export type UserUncheckedCreateWithoutRolesInput = {
   branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -561,6 +676,11 @@ export type UserUpdateWithoutRolesInput = {
   branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -576,6 +696,11 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBranchAccessInput = {
@@ -591,6 +716,11 @@ export type UserCreateWithoutBranchAccessInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBranchAccessInput = {
@@ -606,6 +736,11 @@ export type UserUncheckedCreateWithoutBranchAccessInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBranchAccessInput = {
@@ -637,6 +772,11 @@ export type UserUpdateWithoutBranchAccessInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBranchAccessInput = {
@@ -652,6 +792,11 @@ export type UserUncheckedUpdateWithoutBranchAccessInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLoanApplicationsInput = {
@@ -667,6 +812,11 @@ export type UserCreateWithoutLoanApplicationsInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
   createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLoanApplicationsInput = {
@@ -682,6 +832,11 @@ export type UserUncheckedCreateWithoutLoanApplicationsInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLoanApplicationsInput = {
@@ -713,6 +868,11 @@ export type UserUpdateWithoutLoanApplicationsInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLoanApplicationsInput = {
@@ -728,6 +888,203 @@ export type UserUncheckedUpdateWithoutLoanApplicationsInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
   createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPayoutReceiptsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPayoutReceiptsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPayoutReceiptsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPayoutReceiptsInput, Prisma.UserUncheckedCreateWithoutPayoutReceiptsInput>
+}
+
+export type UserUpsertWithoutPayoutReceiptsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPayoutReceiptsInput, Prisma.UserUncheckedUpdateWithoutPayoutReceiptsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPayoutReceiptsInput, Prisma.UserUncheckedCreateWithoutPayoutReceiptsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPayoutReceiptsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPayoutReceiptsInput, Prisma.UserUncheckedUpdateWithoutPayoutReceiptsInput>
+}
+
+export type UserUpdateWithoutPayoutReceiptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPayoutReceiptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPayoutHistoryEntriesInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPayoutHistoryEntriesInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPayoutHistoryEntriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedCreateWithoutPayoutHistoryEntriesInput>
+}
+
+export type UserUpsertWithoutPayoutHistoryEntriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedUpdateWithoutPayoutHistoryEntriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedCreateWithoutPayoutHistoryEntriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPayoutHistoryEntriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPayoutHistoryEntriesInput, Prisma.UserUncheckedUpdateWithoutPayoutHistoryEntriesInput>
+}
+
+export type UserUpdateWithoutPayoutHistoryEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPayoutHistoryEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedJournalEntriesInput = {
@@ -743,6 +1100,11 @@ export type UserCreateWithoutCreatedJournalEntriesInput = {
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedJournalEntriesInput = {
@@ -758,6 +1120,11 @@ export type UserUncheckedCreateWithoutCreatedJournalEntriesInput = {
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
   loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedJournalEntriesInput = {
@@ -789,6 +1156,11 @@ export type UserUpdateWithoutCreatedJournalEntriesInput = {
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedJournalEntriesInput = {
@@ -804,6 +1176,299 @@ export type UserUncheckedUpdateWithoutCreatedJournalEntriesInput = {
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
   loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFundingDrawsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFundingDrawsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFundingDrawsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawsInput, Prisma.UserUncheckedCreateWithoutFundingDrawsInput>
+}
+
+export type UserUpsertWithoutFundingDrawsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFundingDrawsInput, Prisma.UserUncheckedUpdateWithoutFundingDrawsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawsInput, Prisma.UserUncheckedCreateWithoutFundingDrawsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFundingDrawsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFundingDrawsInput, Prisma.UserUncheckedUpdateWithoutFundingDrawsInput>
+}
+
+export type UserUpdateWithoutFundingDrawsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFundingDrawsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFundingRepaymentsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFundingRepaymentsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFundingRepaymentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingRepaymentsInput, Prisma.UserUncheckedCreateWithoutFundingRepaymentsInput>
+}
+
+export type UserUpsertWithoutFundingRepaymentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFundingRepaymentsInput, Prisma.UserUncheckedUpdateWithoutFundingRepaymentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingRepaymentsInput, Prisma.UserUncheckedCreateWithoutFundingRepaymentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFundingRepaymentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFundingRepaymentsInput, Prisma.UserUncheckedUpdateWithoutFundingRepaymentsInput>
+}
+
+export type UserUpdateWithoutFundingRepaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFundingRepaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingDrawHistories?: Prisma.FundingDrawHistoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFundingDrawHistoriesInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutFundingDrawHistoriesInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash?: string | null
+  department?: $Enums.Department | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  branchAccess?: Prisma.UserBranchUncheckedCreateNestedManyWithoutUserInput
+  loanApplications?: Prisma.LoanApplicationUncheckedCreateNestedManyWithoutSubmittingUserInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedCreateNestedManyWithoutCreatedByInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedCreateNestedManyWithoutUserInput
+  fundingDraws?: Prisma.FundingDrawUncheckedCreateNestedManyWithoutCreatedByInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutFundingDrawHistoriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedCreateWithoutFundingDrawHistoriesInput>
+}
+
+export type UserUpsertWithoutFundingDrawHistoriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedUpdateWithoutFundingDrawHistoriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedCreateWithoutFundingDrawHistoriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFundingDrawHistoriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFundingDrawHistoriesInput, Prisma.UserUncheckedUpdateWithoutFundingDrawHistoriesInput>
+}
+
+export type UserUpdateWithoutFundingDrawHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFundingDrawHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableEnumDepartmentFieldUpdateOperationsInput | $Enums.Department | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  branchAccess?: Prisma.UserBranchUncheckedUpdateManyWithoutUserNestedInput
+  loanApplications?: Prisma.LoanApplicationUncheckedUpdateManyWithoutSubmittingUserNestedInput
+  createdJournalEntries?: Prisma.JournalEntryUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutReceipts?: Prisma.LoanPayoutReceiptUncheckedUpdateManyWithoutCreatedByNestedInput
+  payoutHistoryEntries?: Prisma.LoanPayoutHistoryUncheckedUpdateManyWithoutUserNestedInput
+  fundingDraws?: Prisma.FundingDrawUncheckedUpdateManyWithoutCreatedByNestedInput
+  fundingRepayments?: Prisma.FundingRepaymentUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -816,6 +1481,11 @@ export type UserCountOutputType = {
   branchAccess: number
   loanApplications: number
   createdJournalEntries: number
+  payoutReceipts: number
+  payoutHistoryEntries: number
+  fundingDraws: number
+  fundingRepayments: number
+  fundingDrawHistories: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -823,6 +1493,11 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   branchAccess?: boolean | UserCountOutputTypeCountBranchAccessArgs
   loanApplications?: boolean | UserCountOutputTypeCountLoanApplicationsArgs
   createdJournalEntries?: boolean | UserCountOutputTypeCountCreatedJournalEntriesArgs
+  payoutReceipts?: boolean | UserCountOutputTypeCountPayoutReceiptsArgs
+  payoutHistoryEntries?: boolean | UserCountOutputTypeCountPayoutHistoryEntriesArgs
+  fundingDraws?: boolean | UserCountOutputTypeCountFundingDrawsArgs
+  fundingRepayments?: boolean | UserCountOutputTypeCountFundingRepaymentsArgs
+  fundingDrawHistories?: boolean | UserCountOutputTypeCountFundingDrawHistoriesArgs
 }
 
 /**
@@ -863,6 +1538,41 @@ export type UserCountOutputTypeCountCreatedJournalEntriesArgs<ExtArgs extends ru
   where?: Prisma.JournalEntryWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPayoutReceiptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LoanPayoutReceiptWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPayoutHistoryEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LoanPayoutHistoryWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFundingDrawsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundingDrawWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFundingRepaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundingRepaymentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFundingDrawHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FundingDrawHistoryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -878,6 +1588,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   branchAccess?: boolean | Prisma.User$branchAccessArgs<ExtArgs>
   loanApplications?: boolean | Prisma.User$loanApplicationsArgs<ExtArgs>
   createdJournalEntries?: boolean | Prisma.User$createdJournalEntriesArgs<ExtArgs>
+  payoutReceipts?: boolean | Prisma.User$payoutReceiptsArgs<ExtArgs>
+  payoutHistoryEntries?: boolean | Prisma.User$payoutHistoryEntriesArgs<ExtArgs>
+  fundingDraws?: boolean | Prisma.User$fundingDrawsArgs<ExtArgs>
+  fundingRepayments?: boolean | Prisma.User$fundingRepaymentsArgs<ExtArgs>
+  fundingDrawHistories?: boolean | Prisma.User$fundingDrawHistoriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -923,6 +1638,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   branchAccess?: boolean | Prisma.User$branchAccessArgs<ExtArgs>
   loanApplications?: boolean | Prisma.User$loanApplicationsArgs<ExtArgs>
   createdJournalEntries?: boolean | Prisma.User$createdJournalEntriesArgs<ExtArgs>
+  payoutReceipts?: boolean | Prisma.User$payoutReceiptsArgs<ExtArgs>
+  payoutHistoryEntries?: boolean | Prisma.User$payoutHistoryEntriesArgs<ExtArgs>
+  fundingDraws?: boolean | Prisma.User$fundingDrawsArgs<ExtArgs>
+  fundingRepayments?: boolean | Prisma.User$fundingRepaymentsArgs<ExtArgs>
+  fundingDrawHistories?: boolean | Prisma.User$fundingDrawHistoriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -935,6 +1655,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     branchAccess: Prisma.$UserBranchPayload<ExtArgs>[]
     loanApplications: Prisma.$LoanApplicationPayload<ExtArgs>[]
     createdJournalEntries: Prisma.$JournalEntryPayload<ExtArgs>[]
+    payoutReceipts: Prisma.$LoanPayoutReceiptPayload<ExtArgs>[]
+    payoutHistoryEntries: Prisma.$LoanPayoutHistoryPayload<ExtArgs>[]
+    fundingDraws: Prisma.$FundingDrawPayload<ExtArgs>[]
+    fundingRepayments: Prisma.$FundingRepaymentPayload<ExtArgs>[]
+    fundingDrawHistories: Prisma.$FundingDrawHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1344,6 +2069,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   branchAccess<T extends Prisma.User$branchAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$branchAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   loanApplications<T extends Prisma.User$loanApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$loanApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LoanApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdJournalEntries<T extends Prisma.User$createdJournalEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdJournalEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JournalEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payoutReceipts<T extends Prisma.User$payoutReceiptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$payoutReceiptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LoanPayoutReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payoutHistoryEntries<T extends Prisma.User$payoutHistoryEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$payoutHistoryEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LoanPayoutHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundingDraws<T extends Prisma.User$fundingDrawsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fundingDrawsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundingDrawPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundingRepayments<T extends Prisma.User$fundingRepaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fundingRepaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundingRepaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fundingDrawHistories<T extends Prisma.User$fundingDrawHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fundingDrawHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FundingDrawHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1868,6 +2598,126 @@ export type User$createdJournalEntriesArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.JournalEntryScalarFieldEnum | Prisma.JournalEntryScalarFieldEnum[]
+}
+
+/**
+ * User.payoutReceipts
+ */
+export type User$payoutReceiptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LoanPayoutReceipt
+   */
+  select?: Prisma.LoanPayoutReceiptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LoanPayoutReceipt
+   */
+  omit?: Prisma.LoanPayoutReceiptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LoanPayoutReceiptInclude<ExtArgs> | null
+  where?: Prisma.LoanPayoutReceiptWhereInput
+  orderBy?: Prisma.LoanPayoutReceiptOrderByWithRelationInput | Prisma.LoanPayoutReceiptOrderByWithRelationInput[]
+  cursor?: Prisma.LoanPayoutReceiptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LoanPayoutReceiptScalarFieldEnum | Prisma.LoanPayoutReceiptScalarFieldEnum[]
+}
+
+/**
+ * User.payoutHistoryEntries
+ */
+export type User$payoutHistoryEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LoanPayoutHistory
+   */
+  select?: Prisma.LoanPayoutHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LoanPayoutHistory
+   */
+  omit?: Prisma.LoanPayoutHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LoanPayoutHistoryInclude<ExtArgs> | null
+  where?: Prisma.LoanPayoutHistoryWhereInput
+  orderBy?: Prisma.LoanPayoutHistoryOrderByWithRelationInput | Prisma.LoanPayoutHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.LoanPayoutHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LoanPayoutHistoryScalarFieldEnum | Prisma.LoanPayoutHistoryScalarFieldEnum[]
+}
+
+/**
+ * User.fundingDraws
+ */
+export type User$fundingDrawsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundingDraw
+   */
+  select?: Prisma.FundingDrawSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundingDraw
+   */
+  omit?: Prisma.FundingDrawOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundingDrawInclude<ExtArgs> | null
+  where?: Prisma.FundingDrawWhereInput
+  orderBy?: Prisma.FundingDrawOrderByWithRelationInput | Prisma.FundingDrawOrderByWithRelationInput[]
+  cursor?: Prisma.FundingDrawWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundingDrawScalarFieldEnum | Prisma.FundingDrawScalarFieldEnum[]
+}
+
+/**
+ * User.fundingRepayments
+ */
+export type User$fundingRepaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundingRepayment
+   */
+  select?: Prisma.FundingRepaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundingRepayment
+   */
+  omit?: Prisma.FundingRepaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundingRepaymentInclude<ExtArgs> | null
+  where?: Prisma.FundingRepaymentWhereInput
+  orderBy?: Prisma.FundingRepaymentOrderByWithRelationInput | Prisma.FundingRepaymentOrderByWithRelationInput[]
+  cursor?: Prisma.FundingRepaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundingRepaymentScalarFieldEnum | Prisma.FundingRepaymentScalarFieldEnum[]
+}
+
+/**
+ * User.fundingDrawHistories
+ */
+export type User$fundingDrawHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FundingDrawHistory
+   */
+  select?: Prisma.FundingDrawHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FundingDrawHistory
+   */
+  omit?: Prisma.FundingDrawHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FundingDrawHistoryInclude<ExtArgs> | null
+  where?: Prisma.FundingDrawHistoryWhereInput
+  orderBy?: Prisma.FundingDrawHistoryOrderByWithRelationInput | Prisma.FundingDrawHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.FundingDrawHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FundingDrawHistoryScalarFieldEnum | Prisma.FundingDrawHistoryScalarFieldEnum[]
 }
 
 /**

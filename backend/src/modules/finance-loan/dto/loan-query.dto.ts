@@ -4,6 +4,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  Matches,
   Max,
   MaxLength,
   Min,
@@ -54,4 +55,18 @@ export class LoanQueryDto {
     typeof value === 'string' && value.trim() ? value.trim() : undefined,
   )
   search?: string;
+
+  @IsOptional()
+  @IsString({ message: 'fromDate must be a string' })
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+    message: 'fromDate must be in YYYY-MM-DD format',
+  })
+  fromDate?: string;
+
+  @IsOptional()
+  @IsString({ message: 'toDate must be a string' })
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+    message: 'toDate must be in YYYY-MM-DD format',
+  })
+  toDate?: string;
 }

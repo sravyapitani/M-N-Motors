@@ -1032,14 +1032,6 @@ export type VehicleUncheckedUpdateManyWithoutBranchNestedInput = {
   deleteMany?: Prisma.VehicleScalarWhereInput | Prisma.VehicleScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type NullableEnumVehicleFuelTypeFieldUpdateOperationsInput = {
   set?: $Enums.VehicleFuelType | null
 }

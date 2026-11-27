@@ -406,6 +406,9 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   Lender: 'Lender',
   LoanApplication: 'LoanApplication',
+  LoanPayout: 'LoanPayout',
+  LoanPayoutReceipt: 'LoanPayoutReceipt',
+  LoanPayoutHistory: 'LoanPayoutHistory',
   Account: 'Account',
   JournalEntry: 'JournalEntry',
   JournalLine: 'JournalLine',
@@ -418,7 +421,11 @@ export const ModelName = {
   VehicleValuationApproval: 'VehicleValuationApproval',
   VehicleDocument: 'VehicleDocument',
   RcBookVerification: 'RcBookVerification',
-  RcBookRule: 'RcBookRule'
+  RcBookRule: 'RcBookRule',
+  FundingFacility: 'FundingFacility',
+  FundingDraw: 'FundingDraw',
+  FundingRepayment: 'FundingRepayment',
+  FundingDrawHistory: 'FundingDrawHistory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "branch" | "role" | "permission" | "userRole" | "userBranch" | "rolePermission" | "lender" | "loanApplication" | "account" | "journalEntry" | "journalLine" | "vehicle" | "vehicleInspection" | "vehicleBasePrice" | "valuationRule" | "valuationRuleBand" | "vehicleValuation" | "vehicleValuationApproval" | "vehicleDocument" | "rcBookVerification" | "rcBookRule"
+    modelProps: "user" | "branch" | "role" | "permission" | "userRole" | "userBranch" | "rolePermission" | "lender" | "loanApplication" | "loanPayout" | "loanPayoutReceipt" | "loanPayoutHistory" | "account" | "journalEntry" | "journalLine" | "vehicle" | "vehicleInspection" | "vehicleBasePrice" | "valuationRule" | "valuationRuleBand" | "vehicleValuation" | "vehicleValuationApproval" | "vehicleDocument" | "rcBookVerification" | "rcBookRule" | "fundingFacility" | "fundingDraw" | "fundingRepayment" | "fundingDrawHistory"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1101,6 +1108,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.LoanApplicationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.LoanApplicationCountAggregateOutputType> | number
+        }
+      }
+    }
+    LoanPayout: {
+      payload: Prisma.$LoanPayoutPayload<ExtArgs>
+      fields: Prisma.LoanPayoutFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LoanPayoutFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LoanPayoutFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        findFirst: {
+          args: Prisma.LoanPayoutFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LoanPayoutFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        findMany: {
+          args: Prisma.LoanPayoutFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>[]
+        }
+        create: {
+          args: Prisma.LoanPayoutCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        createMany: {
+          args: Prisma.LoanPayoutCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LoanPayoutCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>[]
+        }
+        delete: {
+          args: Prisma.LoanPayoutDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        update: {
+          args: Prisma.LoanPayoutUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        deleteMany: {
+          args: Prisma.LoanPayoutDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LoanPayoutUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LoanPayoutUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>[]
+        }
+        upsert: {
+          args: Prisma.LoanPayoutUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutPayload>
+        }
+        aggregate: {
+          args: Prisma.LoanPayoutAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLoanPayout>
+        }
+        groupBy: {
+          args: Prisma.LoanPayoutGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LoanPayoutCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutCountAggregateOutputType> | number
+        }
+      }
+    }
+    LoanPayoutReceipt: {
+      payload: Prisma.$LoanPayoutReceiptPayload<ExtArgs>
+      fields: Prisma.LoanPayoutReceiptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LoanPayoutReceiptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LoanPayoutReceiptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        findFirst: {
+          args: Prisma.LoanPayoutReceiptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LoanPayoutReceiptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        findMany: {
+          args: Prisma.LoanPayoutReceiptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>[]
+        }
+        create: {
+          args: Prisma.LoanPayoutReceiptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        createMany: {
+          args: Prisma.LoanPayoutReceiptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LoanPayoutReceiptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>[]
+        }
+        delete: {
+          args: Prisma.LoanPayoutReceiptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        update: {
+          args: Prisma.LoanPayoutReceiptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        deleteMany: {
+          args: Prisma.LoanPayoutReceiptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LoanPayoutReceiptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LoanPayoutReceiptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>[]
+        }
+        upsert: {
+          args: Prisma.LoanPayoutReceiptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutReceiptPayload>
+        }
+        aggregate: {
+          args: Prisma.LoanPayoutReceiptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLoanPayoutReceipt>
+        }
+        groupBy: {
+          args: Prisma.LoanPayoutReceiptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutReceiptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LoanPayoutReceiptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutReceiptCountAggregateOutputType> | number
+        }
+      }
+    }
+    LoanPayoutHistory: {
+      payload: Prisma.$LoanPayoutHistoryPayload<ExtArgs>
+      fields: Prisma.LoanPayoutHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LoanPayoutHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LoanPayoutHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.LoanPayoutHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LoanPayoutHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.LoanPayoutHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.LoanPayoutHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.LoanPayoutHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LoanPayoutHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.LoanPayoutHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        update: {
+          args: Prisma.LoanPayoutHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.LoanPayoutHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LoanPayoutHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LoanPayoutHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.LoanPayoutHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoanPayoutHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.LoanPayoutHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLoanPayoutHistory>
+        }
+        groupBy: {
+          args: Prisma.LoanPayoutHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LoanPayoutHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoanPayoutHistoryCountAggregateOutputType> | number
         }
       }
     }
@@ -2066,6 +2295,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FundingFacility: {
+      payload: Prisma.$FundingFacilityPayload<ExtArgs>
+      fields: Prisma.FundingFacilityFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FundingFacilityFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FundingFacilityFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        findFirst: {
+          args: Prisma.FundingFacilityFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FundingFacilityFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        findMany: {
+          args: Prisma.FundingFacilityFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>[]
+        }
+        create: {
+          args: Prisma.FundingFacilityCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        createMany: {
+          args: Prisma.FundingFacilityCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FundingFacilityCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>[]
+        }
+        delete: {
+          args: Prisma.FundingFacilityDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        update: {
+          args: Prisma.FundingFacilityUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        deleteMany: {
+          args: Prisma.FundingFacilityDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FundingFacilityUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FundingFacilityUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>[]
+        }
+        upsert: {
+          args: Prisma.FundingFacilityUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingFacilityPayload>
+        }
+        aggregate: {
+          args: Prisma.FundingFacilityAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFundingFacility>
+        }
+        groupBy: {
+          args: Prisma.FundingFacilityGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingFacilityGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FundingFacilityCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingFacilityCountAggregateOutputType> | number
+        }
+      }
+    }
+    FundingDraw: {
+      payload: Prisma.$FundingDrawPayload<ExtArgs>
+      fields: Prisma.FundingDrawFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FundingDrawFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FundingDrawFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        findFirst: {
+          args: Prisma.FundingDrawFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FundingDrawFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        findMany: {
+          args: Prisma.FundingDrawFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>[]
+        }
+        create: {
+          args: Prisma.FundingDrawCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        createMany: {
+          args: Prisma.FundingDrawCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FundingDrawCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>[]
+        }
+        delete: {
+          args: Prisma.FundingDrawDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        update: {
+          args: Prisma.FundingDrawUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        deleteMany: {
+          args: Prisma.FundingDrawDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FundingDrawUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FundingDrawUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>[]
+        }
+        upsert: {
+          args: Prisma.FundingDrawUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawPayload>
+        }
+        aggregate: {
+          args: Prisma.FundingDrawAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFundingDraw>
+        }
+        groupBy: {
+          args: Prisma.FundingDrawGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingDrawGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FundingDrawCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingDrawCountAggregateOutputType> | number
+        }
+      }
+    }
+    FundingRepayment: {
+      payload: Prisma.$FundingRepaymentPayload<ExtArgs>
+      fields: Prisma.FundingRepaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FundingRepaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FundingRepaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.FundingRepaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FundingRepaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        findMany: {
+          args: Prisma.FundingRepaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>[]
+        }
+        create: {
+          args: Prisma.FundingRepaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        createMany: {
+          args: Prisma.FundingRepaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FundingRepaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.FundingRepaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        update: {
+          args: Prisma.FundingRepaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.FundingRepaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FundingRepaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FundingRepaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.FundingRepaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingRepaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.FundingRepaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFundingRepayment>
+        }
+        groupBy: {
+          args: Prisma.FundingRepaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingRepaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FundingRepaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingRepaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    FundingDrawHistory: {
+      payload: Prisma.$FundingDrawHistoryPayload<ExtArgs>
+      fields: Prisma.FundingDrawHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FundingDrawHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FundingDrawHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.FundingDrawHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FundingDrawHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.FundingDrawHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.FundingDrawHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.FundingDrawHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FundingDrawHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.FundingDrawHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        update: {
+          args: Prisma.FundingDrawHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.FundingDrawHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FundingDrawHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FundingDrawHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.FundingDrawHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FundingDrawHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.FundingDrawHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFundingDrawHistory>
+        }
+        groupBy: {
+          args: Prisma.FundingDrawHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingDrawHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FundingDrawHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FundingDrawHistoryCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2181,6 +2706,8 @@ export const LenderScalarFieldEnum = {
   tallyLedgerName: 'tallyLedgerName',
   type: 'type',
   isActive: 'isActive',
+  payoutDays: 'payoutDays',
+  commissionPayoutDays: 'commissionPayoutDays',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2210,6 +2737,48 @@ export const LoanApplicationScalarFieldEnum = {
 } as const
 
 export type LoanApplicationScalarFieldEnum = (typeof LoanApplicationScalarFieldEnum)[keyof typeof LoanApplicationScalarFieldEnum]
+
+
+export const LoanPayoutScalarFieldEnum = {
+  id: 'id',
+  loanId: 'loanId',
+  kind: 'kind',
+  expectedAmount: 'expectedAmount',
+  expectedDate: 'expectedDate',
+  dateEstimated: 'dateEstimated',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LoanPayoutScalarFieldEnum = (typeof LoanPayoutScalarFieldEnum)[keyof typeof LoanPayoutScalarFieldEnum]
+
+
+export const LoanPayoutReceiptScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  amount: 'amount',
+  receivedDate: 'receivedDate',
+  reference: 'reference',
+  receivedInto: 'receivedInto',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type LoanPayoutReceiptScalarFieldEnum = (typeof LoanPayoutReceiptScalarFieldEnum)[keyof typeof LoanPayoutReceiptScalarFieldEnum]
+
+
+export const LoanPayoutHistoryScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  userId: 'userId',
+  field: 'field',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  createdAt: 'createdAt'
+} as const
+
+export type LoanPayoutHistoryScalarFieldEnum = (typeof LoanPayoutHistoryScalarFieldEnum)[keyof typeof LoanPayoutHistoryScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {
@@ -2451,6 +3020,67 @@ export const RcBookRuleScalarFieldEnum = {
 export type RcBookRuleScalarFieldEnum = (typeof RcBookRuleScalarFieldEnum)[keyof typeof RcBookRuleScalarFieldEnum]
 
 
+export const FundingFacilityScalarFieldEnum = {
+  id: 'id',
+  facilityKey: 'facilityKey',
+  bankName: 'bankName',
+  productCode: 'productCode',
+  facilityType: 'facilityType',
+  sanctionedLimit: 'sanctionedLimit',
+  roiPercent: 'roiPercent',
+  graceDays: 'graceDays',
+  isActive: 'isActive',
+  lenderId: 'lenderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FundingFacilityScalarFieldEnum = (typeof FundingFacilityScalarFieldEnum)[keyof typeof FundingFacilityScalarFieldEnum]
+
+
+export const FundingDrawScalarFieldEnum = {
+  id: 'id',
+  facilityId: 'facilityId',
+  drawDate: 'drawDate',
+  amount: 'amount',
+  reference: 'reference',
+  notes: 'notes',
+  branchId: 'branchId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FundingDrawScalarFieldEnum = (typeof FundingDrawScalarFieldEnum)[keyof typeof FundingDrawScalarFieldEnum]
+
+
+export const FundingRepaymentScalarFieldEnum = {
+  id: 'id',
+  drawId: 'drawId',
+  paymentDate: 'paymentDate',
+  amount: 'amount',
+  reference: 'reference',
+  notes: 'notes',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type FundingRepaymentScalarFieldEnum = (typeof FundingRepaymentScalarFieldEnum)[keyof typeof FundingRepaymentScalarFieldEnum]
+
+
+export const FundingDrawHistoryScalarFieldEnum = {
+  id: 'id',
+  drawId: 'drawId',
+  userId: 'userId',
+  field: 'field',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  createdAt: 'createdAt'
+} as const
+
+export type FundingDrawHistoryScalarFieldEnum = (typeof FundingDrawHistoryScalarFieldEnum)[keyof typeof FundingDrawHistoryScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2562,20 +3192,6 @@ export type ListEnumLenderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2590,6 +3206,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'LoanStatus'
  */
 export type EnumLoanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanStatus'>
@@ -2600,6 +3230,20 @@ export type EnumLoanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'LoanStatus[]'
  */
 export type ListEnumLoanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PayoutKind'
+ */
+export type EnumPayoutKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutKind'>
+    
+
+
+/**
+ * Reference to a field of type 'PayoutKind[]'
+ */
+export type ListEnumPayoutKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutKind[]'>
     
 
 
@@ -2842,6 +3486,20 @@ export type ListEnumRcBookReviewStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
+ * Reference to a field of type 'FundingFacilityType'
+ */
+export type EnumFundingFacilityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FundingFacilityType'>
+    
+
+
+/**
+ * Reference to a field of type 'FundingFacilityType[]'
+ */
+export type ListEnumFundingFacilityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FundingFacilityType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3014,6 +3672,9 @@ export type GlobalOmitConfig = {
   rolePermission?: Prisma.RolePermissionOmit
   lender?: Prisma.LenderOmit
   loanApplication?: Prisma.LoanApplicationOmit
+  loanPayout?: Prisma.LoanPayoutOmit
+  loanPayoutReceipt?: Prisma.LoanPayoutReceiptOmit
+  loanPayoutHistory?: Prisma.LoanPayoutHistoryOmit
   account?: Prisma.AccountOmit
   journalEntry?: Prisma.JournalEntryOmit
   journalLine?: Prisma.JournalLineOmit
@@ -3027,6 +3688,10 @@ export type GlobalOmitConfig = {
   vehicleDocument?: Prisma.VehicleDocumentOmit
   rcBookVerification?: Prisma.RcBookVerificationOmit
   rcBookRule?: Prisma.RcBookRuleOmit
+  fundingFacility?: Prisma.FundingFacilityOmit
+  fundingDraw?: Prisma.FundingDrawOmit
+  fundingRepayment?: Prisma.FundingRepaymentOmit
+  fundingDrawHistory?: Prisma.FundingDrawHistoryOmit
 }
 
 /* Types for Logging */

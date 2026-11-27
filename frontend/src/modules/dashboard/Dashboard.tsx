@@ -1,4 +1,8 @@
 
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { apiRequest } from '../../lib/api';
+import type { LoanMetrics, LoanStatus } from '../finance-loan/FinanceLoan';
 import './Dashboard.css';
 
 type MetricCardProps = {
@@ -75,13 +79,13 @@ function Panel({ title, subtitle, children, className = '' }: PanelProps) {
     );
 }
 
-const loanStatuses = [
-    { label: 'Enquiry', value: 3, percentage: 27 },
-    { label: 'Submitted', value: 8, percentage: 73 },
-    { label: 'Under Review', value: 5, percentage: 46 },
-    { label: 'Sanctioned', value: 9, percentage: 82 },
-    { label: 'Disbursed', value: 10, percentage: 91 },
-    { label: 'Rejected', value: 2, percentage: 18 },
+const LOAN_STATUS_CONFIG: Array<{ key: LoanStatus; label: string }> = [
+    { key: 'ENQUIRY', label: 'Enquiry' },
+    { key: 'SUBMITTED', label: 'Submitted' },
+    { key: 'UNDER_REVIEW', label: 'Under Review' },
+    { key: 'SANCTIONED', label: 'Sanctioned' },
+    { key: 'DISBURSED', label: 'Disbursed' },
+    { key: 'REJECTED', label: 'Rejected' },
 ];
 
 const exchangeStages = [
@@ -139,6 +143,49 @@ const notifications = [
 ];
 
 function Dashboard() {
+    const { selectedBranchId } = useAuth();
+    const [loanMetrics, setLoanMetrics] = useState<LoanMetrics | null>(null);
+    const [isLoadingLoans, setIsLoadingLoans] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+        const fetchLoanMetrics = async () => {
+            setIsLoadingLoans(true);
+            try {
+                const query =
+                    selectedBranchId && selectedBranchId !== 'ALL'
+                        ? `?branchId=${encodeURIComponent(selectedBranchId)}`
+                        : '';
+                const data = await apiRequest<LoanMetrics>(`/finance/loans/metrics${query}`);
+                if (isMounted) {
+                    setLoanMetrics(data);
+                }
+            } catch (err) {
+                console.error('Failed to load loan metrics in dashboard:', err);
+            } finally {
+                if (isMounted) {
+                    setIsLoadingLoans(false);
+                }
+            }
+        };
+
+        fetchLoanMetrics();
+        return () => {
+            isMounted = false;
+        };
+    }, [selectedBranchId]);
+
+    const totalLoans = loanMetrics?.totalApplications ?? 0;
+    const loanStatuses = LOAN_STATUS_CONFIG.map(({ key, label }) => {
+        const count = loanMetrics?.byStatus?.[key]?.count ?? 0;
+        const percentage = totalLoans > 0 ? Math.round((count / totalLoans) * 100) : 0;
+        return {
+            label,
+            value: count,
+            percentage,
+        };
+    });
+
     return (
         <div className="executive-dashboard">
             <div className="dashboard-title-row">
@@ -181,8 +228,12 @@ function Dashboard() {
                 />
                 <MetricCard
                     label="ACTIVE LOAN APPLICATIONS"
-                    value="25"
-                    note="▲ ₹4.17 L commission earned"
+                    value={loanMetrics ? String(loanMetrics.activeLoans) : (isLoadingLoans ? '...' : '0')}
+                    note={
+                        loanMetrics
+                            ? `▲ ₹${(loanMetrics.totalCommissionEarned / 100000).toLocaleString('en-IN', { maximumFractionDigits: 2 })} L commission earned`
+                            : undefined
+                    }
                     noteType="success"
                 />
                 <MetricCard
@@ -249,7 +300,7 @@ function Dashboard() {
                         <ProgressRow
                             key={item.label}
                             label={item.label}
-                            value={String(item.value)}
+                            value={isLoadingLoans ? '...' : String(item.value)}
                             percentage={item.percentage}
                         />
                     ))}

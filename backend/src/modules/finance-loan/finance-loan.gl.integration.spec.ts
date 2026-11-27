@@ -180,8 +180,17 @@ describe('FinanceLoanService — Real Database GL Integration Tests (ENABLE_GL_P
         });
       }
 
-      // 2. Delete test loans
+      // 2. Delete test loans and their child payout records first to satisfy ON DELETE RESTRICT
       if (createdLoanIds.length > 0) {
+        await prisma.loanPayoutReceipt.deleteMany({
+          where: { payout: { loanId: { in: createdLoanIds } } },
+        });
+        await prisma.loanPayoutHistory.deleteMany({
+          where: { payout: { loanId: { in: createdLoanIds } } },
+        });
+        await prisma.loanPayout.deleteMany({
+          where: { loanId: { in: createdLoanIds } },
+        });
         await prisma.loanApplication.deleteMany({
           where: { id: { in: createdLoanIds } },
         });

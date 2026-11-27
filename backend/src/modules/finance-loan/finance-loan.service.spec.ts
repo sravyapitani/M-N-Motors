@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import * as assert from 'node:assert/strict';
+import './payout-alerts.spec';
 import {
   BadRequestException,
   ForbiddenException,
@@ -64,7 +65,7 @@ describe('FinanceLoanService', () => {
     },
   };
 
-  it('should successfully create a loan application with 2% auto-calculated commission', async () => {
+  it('defaults commission to 0 when not provided', async () => {
     let createdData: any = null;
     const mockPrisma: any = {
       branch: {
@@ -94,7 +95,43 @@ describe('FinanceLoanService', () => {
     });
 
     assert.ok(result);
-    assert.strictEqual(createdData.commissionAmount, 12000); // 2% of 600000 = 12000
+    assert.strictEqual(createdData.commissionAmount, 0);
+    assert.strictEqual(createdData.status, LoanStatus.ENQUIRY);
+    assert.strictEqual(createdData.submittingUserId, mockBranchUser.userId);
+  });
+
+  it('should save explicit commissionAmount when provided', async () => {
+    let createdData: any = null;
+    const mockPrisma: any = {
+      branch: {
+        findUnique: async () => ({ id: 'branch-mumbai', isActive: true }),
+      },
+      loanApplication: {
+        create: async ({ data }: any) => {
+          createdData = data;
+          return {
+            id: 'new-loan-id',
+            ...data,
+            branch: sampleLoan.branch,
+            submittingUser: sampleLoan.submittingUser,
+          };
+        },
+      },
+    };
+
+    const service = new FinanceLoanService(mockPrisma);
+    const result = await service.create(mockBranchUser, {
+      customerName: 'Ayesha Rao',
+      lenderName: 'Vertex Capital',
+      loanAmount: 600000,
+      interestRate: 9.5,
+      tenureMonths: 48,
+      commissionAmount: 15000,
+      branchId: 'branch-mumbai',
+    });
+
+    assert.ok(result);
+    assert.strictEqual(createdData.commissionAmount, 15000);
     assert.strictEqual(createdData.status, LoanStatus.ENQUIRY);
     assert.strictEqual(createdData.submittingUserId, mockBranchUser.userId);
   });
@@ -243,6 +280,132 @@ describe('FinanceLoanService', () => {
 
     // For admin with no explicit branchId filter, branchId is not restricted in where
     assert.strictEqual(capturedWhere.branchId, undefined);
+  });
+
+  describe('Loan List Date Filtering (createdAt in IST calendar days)', () => {
+    it('same day: fromDate and toDate same day filters inclusive IST day boundaries', async () => {
+      let capturedWhere: any = null;
+      const mockPrisma: any = {
+        loanApplication: {
+          count: async () => 1,
+          findMany: async ({ where }: any) => {
+            capturedWhere = where;
+            return [sampleLoan];
+          },
+        },
+      };
+
+      const service = new FinanceLoanService(mockPrisma);
+      await service.findAll(mockAdminUser, { fromDate: '2026-11-27', toDate: '2026-11-27' });
+
+      assert.ok(capturedWhere.createdAt);
+      assert.strictEqual(
+        capturedWhere.createdAt.gte.toISOString(),
+        new Date('2026-11-27T00:00:00.000+05:30').toISOString(),
+      );
+      assert.strictEqual(
+        capturedWhere.createdAt.lte.toISOString(),
+        new Date('2026-11-27T23:59:59.999+05:30').toISOString(),
+      );
+    });
+
+    it('only from: filters from date onward', async () => {
+      let capturedWhere: any = null;
+      const mockPrisma: any = {
+        loanApplication: {
+          count: async () => 1,
+          findMany: async ({ where }: any) => {
+            capturedWhere = where;
+            return [sampleLoan];
+          },
+        },
+      };
+
+      const service = new FinanceLoanService(mockPrisma);
+      await service.findAll(mockAdminUser, { fromDate: '2026-11-27' });
+
+      assert.ok(capturedWhere.createdAt.gte);
+      assert.strictEqual(capturedWhere.createdAt.lte, undefined);
+      assert.strictEqual(
+        capturedWhere.createdAt.gte.toISOString(),
+        new Date('2026-11-27T00:00:00.000+05:30').toISOString(),
+      );
+    });
+
+    it('only to: filters up to date', async () => {
+      let capturedWhere: any = null;
+      const mockPrisma: any = {
+        loanApplication: {
+          count: async () => 1,
+          findMany: async ({ where }: any) => {
+            capturedWhere = where;
+            return [sampleLoan];
+          },
+        },
+      };
+
+      const service = new FinanceLoanService(mockPrisma);
+      await service.findAll(mockAdminUser, { toDate: '2026-11-27' });
+
+      assert.strictEqual(capturedWhere.createdAt.gte, undefined);
+      assert.ok(capturedWhere.createdAt.lte);
+      assert.strictEqual(
+        capturedWhere.createdAt.lte.toISOString(),
+        new Date('2026-11-27T23:59:59.999+05:30').toISOString(),
+      );
+    });
+
+    it('IST boundary: 23:30 IST same day falls within the filter range', async () => {
+      let capturedWhere: any = null;
+      const mockPrisma: any = {
+        loanApplication: {
+          count: async () => 1,
+          findMany: async ({ where }: any) => {
+            capturedWhere = where;
+            return [sampleLoan];
+          },
+        },
+      };
+
+      const service = new FinanceLoanService(mockPrisma);
+      await service.findAll(mockAdminUser, { fromDate: '2026-11-27', toDate: '2026-11-27' });
+
+      // 23:30 IST on 2026-11-27 corresponds to 18:00 UTC on 2026-11-27
+      const loanCreatedAt = new Date('2026-11-27T23:30:00.000+05:30');
+      assert.ok(loanCreatedAt >= capturedWhere.createdAt.gte);
+      assert.ok(loanCreatedAt <= capturedWhere.createdAt.lte);
+    });
+
+    it('invalid date -> 400 BadRequestException', async () => {
+      const mockPrisma: any = {
+        loanApplication: {
+          count: async () => 0,
+          findMany: async () => [],
+        },
+      };
+
+      const service = new FinanceLoanService(mockPrisma);
+      await assert.rejects(
+        async () => {
+          await service.findAll(mockAdminUser, { fromDate: 'invalid-date' });
+        },
+        BadRequestException,
+      );
+
+      await assert.rejects(
+        async () => {
+          await service.findAll(mockAdminUser, { toDate: 'not-a-valid-date' });
+        },
+        BadRequestException,
+      );
+
+      await assert.rejects(
+        async () => {
+          await service.findAll(mockAdminUser, { fromDate: '2026-99-99' });
+        },
+        BadRequestException,
+      );
+    });
   });
 
   it('should retrieve a single loan application if authorized', async () => {
@@ -627,11 +790,22 @@ describe('FinanceLoanService', () => {
       status: LoanStatus.SANCTIONED,
       search: '  Priya  ',
       lender: '   ',
+      fromDate: '2026-11-27',
+      toDate: '2026-11-28',
     });
     const errors = await validate(query);
     assert.strictEqual(errors.length, 0);
     assert.strictEqual(query.search, 'Priya');
     assert.strictEqual(query.lender, undefined);
+    assert.strictEqual(query.fromDate, '2026-11-27');
+    assert.strictEqual(query.toDate, '2026-11-28');
+
+    const invalidQuery = plainToInstance(LoanQueryDto, {
+      fromDate: 'invalid-date',
+      toDate: '27-11-2026',
+    });
+    const invalidErrors = await validate(invalidQuery);
+    assert.strictEqual(invalidErrors.length, 2);
   });
 
   describe('General Ledger Integration on Disbursement (ENABLE_GL_POSTING)', () => {

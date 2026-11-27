@@ -15,7 +15,20 @@ import { LoanQueryDto } from './dto/loan-query.dto';
 import { LenderQueryDto } from './dto/lender-query.dto';
 import { UpdateLoanStatusDto } from './dto/update-loan-status.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
-import { LoanStatus, JournalStatus } from '../../generated/prisma/enums';
+import { CreatePayoutReceiptDto } from './dto/create-payout-receipt.dto';
+import { UpdatePayoutDto } from './dto/update-payout.dto';
+import {
+  computeExpectedDate,
+  toCents,
+  fromCents,
+  computePayoutStatus,
+} from './payout-calculator';
+import {
+  classifyPayoutAlert,
+  PayoutAlertItem,
+  PayoutAlertKind,
+} from './payout-alerts';
+import { LoanStatus, JournalStatus, PayoutKind } from '../../generated/prisma/enums';
 import { Prisma } from '../../generated/prisma/client';
 import { GeneralLedgerService } from '../general-ledger/general-ledger.service';
 import { resolveDisbursementAccounts } from './gl-account-resolver';
@@ -164,6 +177,29 @@ export class FinanceLoanService {
     }
     if (query.search?.trim()) {
       where.customerName = { contains: query.search.trim(), mode: 'insensitive' };
+    }
+    if (query.fromDate || query.toDate) {
+      where.createdAt = {};
+      if (query.fromDate) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(query.fromDate.trim())) {
+          throw new BadRequestException('fromDate must be in YYYY-MM-DD format');
+        }
+        const fromD = new Date(`${query.fromDate.trim()}T00:00:00.000+05:30`);
+        if (isNaN(fromD.getTime())) {
+          throw new BadRequestException('Invalid fromDate');
+        }
+        where.createdAt.gte = fromD;
+      }
+      if (query.toDate) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(query.toDate.trim())) {
+          throw new BadRequestException('toDate must be in YYYY-MM-DD format');
+        }
+        const toD = new Date(`${query.toDate.trim()}T23:59:59.999+05:30`);
+        if (isNaN(toD.getTime())) {
+          throw new BadRequestException('Invalid toDate');
+        }
+        where.createdAt.lte = toD;
+      }
     }
 
     try {
@@ -397,7 +433,8 @@ export class FinanceLoanService {
 
     try {
       if (nextStatus === LoanStatus.DISBURSED && this.isGlPostingEnabled()) {
-        return await this.prisma.$transaction(async (tx) => {
+        return await this.prisma.$transaction(
+          async (tx) => {
           // Verify status is still SANCTIONED before updating (concurrency guard)
           const updateResult = await tx.loanApplication.updateMany({
             where: { id: cleanId, status: LoanStatus.SANCTIONED },
@@ -465,11 +502,65 @@ export class FinanceLoanService {
             );
           }
 
+          // Create LoanPayout inside the same transaction if payout model is available in tx
+          // Rule: Each DISBURSED loan has TWO payouts:
+          // 1. DO amount (LOAN_AMOUNT): expected 2 days after disbursement (or lender.payoutDays override)
+          // 2. Commission (COMMISSION, includes GST): expected 60 days after disbursement (or lender.commissionPayoutDays override). Created only when commissionAmount > 0.
+          if ((tx as any).loanPayout) {
+            const lender = loan.lenderId
+              ? await tx.lender.findUnique({
+                  where: { id: loan.lenderId },
+                  select: { id: true, payoutDays: true, commissionPayoutDays: true },
+                })
+              : null;
+
+            // 1. DO amount (LOAN_AMOUNT)
+            const loanAmountExpDate = computeExpectedDate(now, 'LOAN_AMOUNT', lender);
+            await (tx as any).loanPayout.upsert({
+              where: {
+                loanId_kind: {
+                  loanId: cleanId,
+                  kind: PayoutKind.LOAN_AMOUNT,
+                },
+              },
+              update: {},
+              create: {
+                loanId: cleanId,
+                kind: PayoutKind.LOAN_AMOUNT,
+                expectedAmount: loan.loanAmount,
+                expectedDate: loanAmountExpDate,
+                dateEstimated: false,
+              },
+            });
+
+            // 2. Commission (COMMISSION) - create only when commissionAmount > 0
+            const commNum = Number(loan.commissionAmount);
+            if (commNum > 0) {
+              const commExpDate = computeExpectedDate(now, 'COMMISSION', lender);
+              await (tx as any).loanPayout.upsert({
+                where: {
+                  loanId_kind: {
+                    loanId: cleanId,
+                    kind: PayoutKind.COMMISSION,
+                  },
+                },
+                update: {},
+                create: {
+                  loanId: cleanId,
+                  kind: PayoutKind.COMMISSION,
+                  expectedAmount: loan.commissionAmount,
+                  expectedDate: commExpDate,
+                  dateEstimated: false,
+                },
+              });
+            }
+          }
+
           return updatedLoan;
-        });
+        }, { timeout: 20000, maxWait: 10000 });
       }
 
-      return await this.prisma.loanApplication.update({
+      const updated = await this.prisma.loanApplication.update({
         where: { id: cleanId },
         data: statusDateUpdate,
         include: {
@@ -479,6 +570,62 @@ export class FinanceLoanService {
           },
         },
       });
+
+      if (nextStatus === LoanStatus.DISBURSED && (this.prisma as any).loanPayout) {
+        try {
+          const lender = loan.lenderId
+            ? await this.prisma.lender.findUnique({
+                where: { id: loan.lenderId },
+                select: { id: true, payoutDays: true, commissionPayoutDays: true },
+              })
+            : null;
+
+          // 1. DO amount (LOAN_AMOUNT)
+          const loanAmountExpDate = computeExpectedDate(now, 'LOAN_AMOUNT', lender);
+          await (this.prisma as any).loanPayout.upsert({
+            where: {
+              loanId_kind: {
+                loanId: cleanId,
+                kind: PayoutKind.LOAN_AMOUNT,
+              },
+            },
+            update: {},
+            create: {
+              loanId: cleanId,
+              kind: PayoutKind.LOAN_AMOUNT,
+              expectedAmount: loan.loanAmount,
+              expectedDate: loanAmountExpDate,
+              dateEstimated: false,
+            },
+          });
+
+          // 2. Commission (COMMISSION) - create only when commissionAmount > 0
+          const commNum = Number(loan.commissionAmount);
+          if (commNum > 0) {
+            const commExpDate = computeExpectedDate(now, 'COMMISSION', lender);
+            await (this.prisma as any).loanPayout.upsert({
+              where: {
+                loanId_kind: {
+                  loanId: cleanId,
+                  kind: PayoutKind.COMMISSION,
+                },
+              },
+              update: {},
+              create: {
+                loanId: cleanId,
+                kind: PayoutKind.COMMISSION,
+                expectedAmount: loan.commissionAmount,
+                expectedDate: commExpDate,
+                dateEstimated: false,
+              },
+            });
+          }
+        } catch (err: any) {
+          this.logger.warn(`Failed to create payout on disbursement: ${err.message}`);
+        }
+      }
+
+      return updated;
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
@@ -781,5 +928,684 @@ export class FinanceLoanService {
       this.logger.error(`Failed to calculate loan metrics: ${(error as Error).message}`);
       throw new InternalServerErrorException('Error calculating loan metrics.');
     }
+  }
+
+  // =========================================================================
+  // PAYOUT TRACKER METHODS
+  // =========================================================================
+
+  /**
+   * Helper to check PAYOUT_MANAGE permission.
+   * SYSTEM_ADMIN bypasses this check in code.
+   */
+  private verifyPayoutManageAccess(user: AuthenticatedUser) {
+    if (this.isAdmin(user)) return;
+    const permissions = Array.isArray(user?.permissions) ? user.permissions : [];
+    if (!permissions.includes('PAYOUT_MANAGE')) {
+      throw new ForbiddenException(
+        'Access denied: You require the PAYOUT_MANAGE permission to perform this action.',
+      );
+    }
+  }
+
+  /**
+   * Helper to check PAYOUT_VIEW permission.
+   * SYSTEM_ADMIN bypasses this check in code.
+   */
+  private verifyPayoutViewAccess(user: AuthenticatedUser) {
+    if (this.isAdmin(user)) return;
+    const permissions = Array.isArray(user?.permissions) ? user.permissions : [];
+    if (!permissions.includes('PAYOUT_VIEW')) {
+      throw new ForbiddenException(
+        'Access denied: You require the PAYOUT_VIEW permission to perform this action.',
+      );
+    }
+  }
+
+  /**
+   * GET /api/finance/payouts
+   * List payouts with pagination, status calculation, daysOverdue, and branch scoping.
+   */
+  async findAllPayouts(
+    user: AuthenticatedUser,
+    query: {
+      kind?: string;
+      status?: string;
+      lenderId?: string;
+      branchId?: string;
+      search?: string;
+      overdueOnly?: string | boolean;
+      fromDate?: string;
+      toDate?: string;
+      page?: number;
+      limit?: number;
+    },
+  ) {
+    this.verifyPayoutViewAccess(user);
+    const page = Math.max(1, Number(query.page) || 1);
+    const limit = Math.max(1, Math.min(100, Number(query.limit) || 10));
+
+    // Branch scoping
+    let branchFilter: string | { in: string[] } | undefined;
+    const requestedBranch = query.branchId?.trim();
+    if (requestedBranch && requestedBranch !== 'ALL') {
+      this.verifyBranchAccess(user, requestedBranch);
+      branchFilter = requestedBranch;
+    } else if (!this.isAdmin(user)) {
+      const userBranchIds = Array.isArray(user?.branchIds) ? user.branchIds : [];
+      if (userBranchIds.length === 0) {
+        return { data: [], total: 0, page, limit, totalPages: 0 };
+      }
+      branchFilter = { in: userBranchIds };
+    }
+
+    const where: any = {
+      loan: {
+        ...(branchFilter ? { branchId: branchFilter } : {}),
+      },
+    };
+
+    if (query.kind && (query.kind === 'LOAN_AMOUNT' || query.kind === 'COMMISSION')) {
+      where.kind = query.kind as PayoutKind;
+    }
+
+    if (query.lenderId && query.lenderId !== 'ALL') {
+      where.loan.lenderId = query.lenderId;
+    }
+
+    if (query.search?.trim()) {
+      where.loan.customerName = { contains: query.search.trim(), mode: 'insensitive' };
+    }
+
+    if (query.fromDate || query.toDate) {
+      where.expectedDate = {};
+      if (query.fromDate) where.expectedDate.gte = new Date(query.fromDate);
+      if (query.toDate) where.expectedDate.lte = new Date(query.toDate);
+    }
+
+    const allPayouts = await this.prisma.loanPayout.findMany({
+      where,
+      orderBy: { expectedDate: 'asc' },
+      include: {
+        loan: {
+          include: {
+            branch: { select: { id: true, code: true, name: true } },
+            lender: { select: { id: true, name: true, payoutDays: true, commissionPayoutDays: true } },
+          },
+        },
+        receipts: {
+          orderBy: { receivedDate: 'desc' },
+          include: {
+            createdBy: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+        history: {
+          orderBy: { createdAt: 'desc' },
+          include: {
+            user: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+      },
+    });
+
+    const isOverdueOnly = String(query.overdueOnly) === 'true';
+
+    // Enrich and compute statuses
+    const enriched = allPayouts.map((p) => {
+      const receivedCents = p.receipts.reduce((acc, r) => acc + toCents(r.amount), 0);
+      const calc = computePayoutStatus({
+        expectedAmount: p.expectedAmount,
+        receivedAmount: fromCents(receivedCents),
+        expectedDate: p.expectedDate,
+        dateEstimated: p.dateEstimated,
+      });
+
+      return {
+        id: p.id,
+        loanId: p.loanId,
+        kind: p.kind,
+        customerName: p.loan.customerName,
+        branchId: p.loan.branchId,
+        branchName: p.loan.branch.name,
+        lenderId: p.loan.lenderId,
+        lenderName: p.loan.lenderName,
+        expectedAmount: calc.expectedAmount,
+        receivedAmount: calc.receivedAmount,
+        outstandingAmount: calc.outstandingAmount,
+        expectedDate: p.expectedDate,
+        dateEstimated: p.dateEstimated,
+        status: calc.status,
+        daysOverdue: calc.daysOverdue,
+        notes: p.notes,
+        createdAt: p.createdAt,
+        receipts: p.receipts,
+        history: p.history,
+      };
+    });
+
+    // Filter by computed status or overdue
+    let filtered = enriched;
+    if (query.status && query.status !== 'ALL') {
+      filtered = filtered.filter((p) => p.status === query.status);
+    }
+    if (isOverdueOnly) {
+      filtered = filtered.filter((p) => p.status === 'OVERDUE');
+    }
+
+    const total = filtered.length;
+    const totalPages = Math.ceil(total / limit) || 1;
+    const pagedData = filtered.slice((page - 1) * limit, page * limit);
+
+    return {
+      data: pagedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
+  }
+
+  /**
+   * GET /api/finance/payouts/summary
+   * Summary metrics for payouts. Payouts with dateEstimated are NOT counted as overdue.
+   */
+  async getPayoutSummary(
+    user: AuthenticatedUser,
+    query: {
+      kind?: string;
+      branchId?: string;
+      lenderId?: string;
+      fromDate?: string;
+      toDate?: string;
+    },
+  ) {
+    this.verifyPayoutViewAccess(user);
+    let branchFilter: string | { in: string[] } | undefined;
+    const requestedBranch = query.branchId?.trim();
+    if (requestedBranch && requestedBranch !== 'ALL') {
+      this.verifyBranchAccess(user, requestedBranch);
+      branchFilter = requestedBranch;
+    } else if (!this.isAdmin(user)) {
+      const userBranchIds = Array.isArray(user?.branchIds) ? user.branchIds : [];
+      branchFilter = { in: userBranchIds };
+    }
+
+    const where: any = {
+      loan: {
+        ...(branchFilter ? { branchId: branchFilter } : {}),
+      },
+    };
+
+    if (query.kind && (query.kind === 'LOAN_AMOUNT' || query.kind === 'COMMISSION')) {
+      where.kind = query.kind as PayoutKind;
+    }
+
+    if (query.lenderId && query.lenderId !== 'ALL') {
+      where.loan.lenderId = query.lenderId;
+    }
+
+    if (query.fromDate || query.toDate) {
+      where.expectedDate = {};
+      if (query.fromDate) where.expectedDate.gte = new Date(query.fromDate);
+      if (query.toDate) where.expectedDate.lte = new Date(query.toDate);
+    }
+
+    const payouts = await this.prisma.loanPayout.findMany({
+      where,
+      include: {
+        loan: {
+          include: {
+            lender: { select: { id: true, name: true } },
+          },
+        },
+        receipts: true,
+      },
+    });
+
+    let totalExpectedCents = 0;
+    let totalReceivedCents = 0;
+    let totalOutstandingCents = 0;
+    let overdueCents = 0;
+    let overdueCount = 0;
+    let dateToConfirmCount = 0;
+    const byKind: Record<string, { expected: number; received: number; outstanding: number; overdue: number; count: number }> = {
+      LOAN_AMOUNT: { expected: 0, received: 0, outstanding: 0, overdue: 0, count: 0 },
+      COMMISSION: { expected: 0, received: 0, outstanding: 0, overdue: 0, count: 0 },
+    };
+
+    const lenderMap: Record<string, {
+      id: string | null;
+      name: string;
+      count: number;
+      expectedCents: number;
+      receivedCents: number;
+      outstandingCents: number;
+      overdueCents: number;
+      overdueCount: number;
+    }> = {};
+
+    for (const p of payouts) {
+      const recCents = p.receipts.reduce((acc, r) => acc + toCents(r.amount), 0);
+      const calc = computePayoutStatus({
+        expectedAmount: p.expectedAmount,
+        receivedAmount: fromCents(recCents),
+        expectedDate: p.expectedDate,
+        dateEstimated: p.dateEstimated,
+      });
+
+      totalExpectedCents += calc.expectedCents;
+      totalReceivedCents += calc.receivedCents;
+      totalOutstandingCents += calc.outstandingCents;
+
+      if (p.dateEstimated) {
+        dateToConfirmCount += 1;
+      } else if (calc.status === 'OVERDUE') {
+        overdueCents += calc.outstandingCents;
+        overdueCount += 1;
+      }
+
+      if (p.kind && byKind[p.kind]) {
+        byKind[p.kind].count += 1;
+        byKind[p.kind].expected += calc.expectedAmount;
+        byKind[p.kind].received += calc.receivedAmount;
+        byKind[p.kind].outstanding += calc.outstandingAmount;
+        if (calc.status === 'OVERDUE' && !p.dateEstimated) {
+          byKind[p.kind].overdue += calc.outstandingAmount;
+        }
+      }
+
+      const lKey = p.loan.lenderId || p.loan.lenderName || 'Other';
+      if (!lenderMap[lKey]) {
+        lenderMap[lKey] = {
+          id: p.loan.lenderId,
+          name: p.loan.lenderName,
+          count: 0,
+          expectedCents: 0,
+          receivedCents: 0,
+          outstandingCents: 0,
+          overdueCents: 0,
+          overdueCount: 0,
+        };
+      }
+
+      const lEntry = lenderMap[lKey];
+      lEntry.count += 1;
+      lEntry.expectedCents += calc.expectedCents;
+      lEntry.receivedCents += calc.receivedCents;
+      lEntry.outstandingCents += calc.outstandingCents;
+      if (calc.status === 'OVERDUE' && !p.dateEstimated) {
+        lEntry.overdueCents += calc.outstandingCents;
+        lEntry.overdueCount += 1;
+      }
+    }
+
+    const byLender = Object.values(lenderMap).map((l) => ({
+      id: l.id,
+      name: l.name,
+      count: l.count,
+      totalExpected: fromCents(l.expectedCents),
+      totalReceived: fromCents(l.receivedCents),
+      totalOutstanding: fromCents(l.outstandingCents),
+      overdueAmount: fromCents(l.overdueCents),
+      overdueCount: l.overdueCount,
+    }));
+
+    return {
+      totalExpected: fromCents(totalExpectedCents),
+      totalReceived: fromCents(totalReceivedCents),
+      totalOutstanding: fromCents(totalOutstandingCents),
+      overdueAmount: fromCents(overdueCents),
+      overdueCount,
+      dateToConfirmCount,
+      byKind,
+      byLender,
+    };
+  }
+
+  /**
+   * GET /api/finance/payouts/alerts
+   * Active payout alerts (due soon, overdue, date to confirm) computed on read.
+   * Compares expectedDate against Asia/Kolkata (IST) calendar dates.
+   */
+  async getPayoutAlerts(user: AuthenticatedUser, branchIdQuery?: string) {
+    this.verifyPayoutViewAccess(user);
+
+    let branchFilter: string | { in: string[] } | undefined;
+    const requestedBranch = branchIdQuery?.trim();
+    if (requestedBranch && requestedBranch !== 'ALL') {
+      this.verifyBranchAccess(user, requestedBranch);
+      branchFilter = requestedBranch;
+    } else if (!this.isAdmin(user)) {
+      const userBranchIds = Array.isArray(user?.branchIds) ? user.branchIds : [];
+      if (userBranchIds.length === 0) {
+        return {
+          summary: {
+            totalAlerts: 0,
+            dueSoonCount: 0,
+            overdueCount: 0,
+            dateToConfirmCount: 0,
+            totalOutstandingAlertAmount: 0,
+          },
+          alerts: [],
+        };
+      }
+      branchFilter = { in: userBranchIds };
+    }
+
+    const payouts = await this.prisma.loanPayout.findMany({
+      where: {
+        loan: {
+          ...(branchFilter ? { branchId: branchFilter } : {}),
+        },
+      },
+      include: {
+        loan: {
+          include: {
+            branch: { select: { id: true, code: true, name: true } },
+            lender: { select: { id: true, name: true } },
+          },
+        },
+        receipts: {
+          select: { amount: true },
+        },
+      },
+      orderBy: {
+        expectedDate: 'asc',
+      },
+    });
+
+    const now = new Date();
+    const alerts: PayoutAlertItem[] = [];
+
+    for (const p of payouts) {
+      const expectedAmount = Number(p.expectedAmount);
+      const receivedAmount = p.receipts.reduce((sum, r) => sum + Number(r.amount), 0);
+      const outstanding = Math.round((expectedAmount - receivedAmount) * 100) / 100;
+      if (outstanding <= 0) continue;
+
+      const alert = classifyPayoutAlert(
+        {
+          payoutId: p.id,
+          loanId: p.loanId,
+          customerName: p.loan.customerName,
+          branchId: p.loan.branchId,
+          branchCode: p.loan.branch?.code,
+          branchName: p.loan.branch?.name,
+          lenderId: p.loan.lenderId,
+          lenderName: p.loan.lender?.name || p.loan.lenderName,
+          kind: p.kind as PayoutAlertKind,
+          expectedAmount,
+          receivedAmount,
+          expectedDate: p.expectedDate,
+          dateEstimated: p.dateEstimated,
+        },
+        now,
+      );
+
+      if (alert) {
+        alerts.push(alert);
+      }
+    }
+
+    const dueSoonCount = alerts.filter((a) => a.alertType === 'DUE_SOON').length;
+    const overdueCount = alerts.filter((a) => a.alertType === 'OVERDUE').length;
+    const dateToConfirmCount = alerts.filter((a) => a.alertType === 'DATE_TO_CONFIRM').length;
+    const totalOutstandingAlertAmount = alerts.reduce(
+      (sum, a) => sum + a.outstandingAmount,
+      0,
+    );
+
+    return {
+      summary: {
+        totalAlerts: alerts.length,
+        dueSoonCount,
+        overdueCount,
+        dateToConfirmCount,
+        totalOutstandingAlertAmount: Math.round(totalOutstandingAlertAmount * 100) / 100,
+      },
+      alerts,
+    };
+  }
+
+  /**
+   * POST /api/finance/payouts/:id/receipts
+   * Records a receipt in a transaction that re-reads the payout and receipts.
+   * amount > 0, partial payments allowed, warn (don't block) if total goes over expectedAmount.
+   */
+  async recordPayoutReceipt(
+    user: AuthenticatedUser,
+    payoutId: string,
+    dto: CreatePayoutReceiptDto,
+  ) {
+    this.verifyPayoutManageAccess(user);
+
+    if (dto.amount <= 0) {
+      throw new BadRequestException('Receipt amount must be greater than zero.');
+    }
+
+    return await this.prisma.$transaction(async (tx) => {
+      const payout = await tx.loanPayout.findUnique({
+        where: { id: payoutId },
+        include: {
+          loan: true,
+          receipts: true,
+        },
+      });
+
+      if (!payout) {
+        throw new NotFoundException(`Loan payout with ID '${payoutId}' not found.`);
+      }
+
+      this.verifyBranchAccess(user, payout.loan.branchId);
+
+      const currentReceivedCents = payout.receipts.reduce(
+        (acc, r) => acc + toCents(r.amount),
+        0,
+      );
+      const newReceiptCents = toCents(dto.amount);
+      const totalNewReceivedCents = currentReceivedCents + newReceiptCents;
+      const expectedCents = toCents(payout.expectedAmount);
+
+      let warning: string | undefined;
+      if (totalNewReceivedCents > expectedCents) {
+        warning = `Total received (₹${fromCents(totalNewReceivedCents)}) exceeds expected amount (₹${fromCents(expectedCents)}).`;
+      }
+
+      const receipt = await tx.loanPayoutReceipt.create({
+        data: {
+          payoutId: payout.id,
+          amount: dto.amount,
+          receivedDate: new Date(dto.receivedDate),
+          reference: dto.reference?.trim() || null,
+          receivedInto: dto.receivedInto?.trim() || null,
+          createdById: user.userId,
+        },
+        include: {
+          createdBy: { select: { id: true, firstName: true, lastName: true } },
+        },
+      });
+
+      return {
+        ...receipt,
+        warning,
+      };
+    });
+  }
+
+  /**
+   * GET /api/finance/payouts/:id
+   * Get a single payout by ID.
+   */
+  async findPayoutById(user: AuthenticatedUser, payoutId: string) {
+    this.verifyPayoutViewAccess(user);
+
+    const p = await this.prisma.loanPayout.findUnique({
+      where: { id: payoutId },
+      include: {
+        loan: {
+          include: {
+            branch: { select: { id: true, code: true, name: true } },
+            lender: { select: { id: true, name: true, payoutDays: true, commissionPayoutDays: true } },
+          },
+        },
+        receipts: {
+          orderBy: { receivedDate: 'desc' },
+          include: {
+            createdBy: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+        history: {
+          orderBy: { createdAt: 'desc' },
+          include: {
+            user: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+      },
+    });
+
+    if (!p) {
+      throw new NotFoundException(`Loan payout with ID '${payoutId}' not found.`);
+    }
+
+    this.verifyBranchAccess(user, p.loan.branchId);
+
+    const receivedCents = p.receipts.reduce((acc, r) => acc + toCents(r.amount), 0);
+    const calc = computePayoutStatus({
+      expectedAmount: p.expectedAmount,
+      receivedAmount: fromCents(receivedCents),
+      expectedDate: p.expectedDate,
+      dateEstimated: p.dateEstimated,
+    });
+
+    return {
+      id: p.id,
+      loanId: p.loanId,
+      kind: p.kind,
+      customerName: p.loan.customerName,
+      branchId: p.loan.branchId,
+      branchName: p.loan.branch.name,
+      lenderId: p.loan.lenderId,
+      lenderName: p.loan.lenderName,
+      expectedAmount: calc.expectedAmount,
+      receivedAmount: calc.receivedAmount,
+      outstandingAmount: calc.outstandingAmount,
+      expectedDate: p.expectedDate,
+      dateEstimated: p.dateEstimated,
+      status: calc.status,
+      daysOverdue: calc.daysOverdue,
+      notes: p.notes,
+      createdAt: p.createdAt,
+      receipts: p.receipts,
+      history: p.history,
+    };
+  }
+
+  /**
+   * PATCH /api/finance/payouts/:id
+   * Edit expectedAmount, expectedDate, or notes.
+   * Writes one LoanPayoutHistory row per changed field.
+   * Editing expectedDate sets dateEstimated = false.
+   */
+  async updatePayout(
+    user: AuthenticatedUser,
+    payoutId: string,
+    dto: UpdatePayoutDto,
+  ) {
+    this.verifyPayoutManageAccess(user);
+
+    return await this.prisma.$transaction(async (tx) => {
+      const payout = await tx.loanPayout.findUnique({
+        where: { id: payoutId },
+        include: { loan: true },
+      });
+
+      if (!payout) {
+        throw new NotFoundException(`Loan payout with ID '${payoutId}' not found.`);
+      }
+
+      this.verifyBranchAccess(user, payout.loan.branchId);
+
+      const updateData: any = {};
+      const historyEntries: { field: string; oldValue: string | null; newValue: string | null }[] = [];
+
+      if (dto.expectedAmount !== undefined && dto.expectedAmount !== null) {
+        if (dto.expectedAmount < 0) {
+          throw new BadRequestException('Expected amount cannot be negative.');
+        }
+        const oldVal = String(payout.expectedAmount);
+        const newVal = String(dto.expectedAmount);
+        if (oldVal !== newVal) {
+          updateData.expectedAmount = dto.expectedAmount;
+          historyEntries.push({
+            field: 'expectedAmount',
+            oldValue: `₹${oldVal}`,
+            newValue: `₹${newVal}`,
+          });
+        }
+      }
+
+      if (dto.expectedDate) {
+        const oldDateStr = payout.expectedDate.toISOString().split('T')[0];
+        const newDate = new Date(dto.expectedDate);
+        const newDateStr = newDate.toISOString().split('T')[0];
+
+        if (oldDateStr !== newDateStr) {
+          updateData.expectedDate = newDate;
+          updateData.dateEstimated = false; // Editing expectedDate sets dateEstimated = false
+          historyEntries.push({
+            field: 'expectedDate',
+            oldValue: oldDateStr,
+            newValue: newDateStr,
+          });
+        }
+      }
+
+      if (dto.notes !== undefined) {
+        const oldNotes = payout.notes || '';
+        const newNotes = dto.notes?.trim() || '';
+        if (oldNotes !== newNotes) {
+          updateData.notes = newNotes || null;
+          historyEntries.push({
+            field: 'notes',
+            oldValue: oldNotes || null,
+            newValue: newNotes || null,
+          });
+        }
+      }
+
+      const updated = await tx.loanPayout.update({
+        where: { id: payoutId },
+        data: updateData,
+        include: {
+          loan: {
+            include: {
+              branch: { select: { id: true, code: true, name: true } },
+              lender: { select: { id: true, name: true } },
+            },
+          },
+          receipts: true,
+          history: {
+            orderBy: { createdAt: 'desc' },
+            include: {
+              user: { select: { id: true, firstName: true, lastName: true } },
+            },
+          },
+        },
+      });
+
+      for (const entry of historyEntries) {
+        await tx.loanPayoutHistory.create({
+          data: {
+            payoutId: payout.id,
+            userId: user.userId,
+            field: entry.field,
+            oldValue: entry.oldValue,
+            newValue: entry.newValue,
+          },
+        });
+      }
+
+      return updated;
+    });
   }
 }

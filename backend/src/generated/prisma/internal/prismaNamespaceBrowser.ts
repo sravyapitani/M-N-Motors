@@ -60,6 +60,9 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   Lender: 'Lender',
   LoanApplication: 'LoanApplication',
+  LoanPayout: 'LoanPayout',
+  LoanPayoutReceipt: 'LoanPayoutReceipt',
+  LoanPayoutHistory: 'LoanPayoutHistory',
   Account: 'Account',
   JournalEntry: 'JournalEntry',
   JournalLine: 'JournalLine',
@@ -72,7 +75,11 @@ export const ModelName = {
   VehicleValuationApproval: 'VehicleValuationApproval',
   VehicleDocument: 'VehicleDocument',
   RcBookVerification: 'RcBookVerification',
-  RcBookRule: 'RcBookRule'
+  RcBookRule: 'RcBookRule',
+  FundingFacility: 'FundingFacility',
+  FundingDraw: 'FundingDraw',
+  FundingRepayment: 'FundingRepayment',
+  FundingDrawHistory: 'FundingDrawHistory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -167,6 +174,8 @@ export const LenderScalarFieldEnum = {
   tallyLedgerName: 'tallyLedgerName',
   type: 'type',
   isActive: 'isActive',
+  payoutDays: 'payoutDays',
+  commissionPayoutDays: 'commissionPayoutDays',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -196,6 +205,48 @@ export const LoanApplicationScalarFieldEnum = {
 } as const
 
 export type LoanApplicationScalarFieldEnum = (typeof LoanApplicationScalarFieldEnum)[keyof typeof LoanApplicationScalarFieldEnum]
+
+
+export const LoanPayoutScalarFieldEnum = {
+  id: 'id',
+  loanId: 'loanId',
+  kind: 'kind',
+  expectedAmount: 'expectedAmount',
+  expectedDate: 'expectedDate',
+  dateEstimated: 'dateEstimated',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LoanPayoutScalarFieldEnum = (typeof LoanPayoutScalarFieldEnum)[keyof typeof LoanPayoutScalarFieldEnum]
+
+
+export const LoanPayoutReceiptScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  amount: 'amount',
+  receivedDate: 'receivedDate',
+  reference: 'reference',
+  receivedInto: 'receivedInto',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type LoanPayoutReceiptScalarFieldEnum = (typeof LoanPayoutReceiptScalarFieldEnum)[keyof typeof LoanPayoutReceiptScalarFieldEnum]
+
+
+export const LoanPayoutHistoryScalarFieldEnum = {
+  id: 'id',
+  payoutId: 'payoutId',
+  userId: 'userId',
+  field: 'field',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  createdAt: 'createdAt'
+} as const
+
+export type LoanPayoutHistoryScalarFieldEnum = (typeof LoanPayoutHistoryScalarFieldEnum)[keyof typeof LoanPayoutHistoryScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {
@@ -435,6 +486,67 @@ export const RcBookRuleScalarFieldEnum = {
 } as const
 
 export type RcBookRuleScalarFieldEnum = (typeof RcBookRuleScalarFieldEnum)[keyof typeof RcBookRuleScalarFieldEnum]
+
+
+export const FundingFacilityScalarFieldEnum = {
+  id: 'id',
+  facilityKey: 'facilityKey',
+  bankName: 'bankName',
+  productCode: 'productCode',
+  facilityType: 'facilityType',
+  sanctionedLimit: 'sanctionedLimit',
+  roiPercent: 'roiPercent',
+  graceDays: 'graceDays',
+  isActive: 'isActive',
+  lenderId: 'lenderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FundingFacilityScalarFieldEnum = (typeof FundingFacilityScalarFieldEnum)[keyof typeof FundingFacilityScalarFieldEnum]
+
+
+export const FundingDrawScalarFieldEnum = {
+  id: 'id',
+  facilityId: 'facilityId',
+  drawDate: 'drawDate',
+  amount: 'amount',
+  reference: 'reference',
+  notes: 'notes',
+  branchId: 'branchId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FundingDrawScalarFieldEnum = (typeof FundingDrawScalarFieldEnum)[keyof typeof FundingDrawScalarFieldEnum]
+
+
+export const FundingRepaymentScalarFieldEnum = {
+  id: 'id',
+  drawId: 'drawId',
+  paymentDate: 'paymentDate',
+  amount: 'amount',
+  reference: 'reference',
+  notes: 'notes',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type FundingRepaymentScalarFieldEnum = (typeof FundingRepaymentScalarFieldEnum)[keyof typeof FundingRepaymentScalarFieldEnum]
+
+
+export const FundingDrawHistoryScalarFieldEnum = {
+  id: 'id',
+  drawId: 'drawId',
+  userId: 'userId',
+  field: 'field',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  createdAt: 'createdAt'
+} as const
+
+export type FundingDrawHistoryScalarFieldEnum = (typeof FundingDrawHistoryScalarFieldEnum)[keyof typeof FundingDrawHistoryScalarFieldEnum]
 
 
 export const SortOrder = {

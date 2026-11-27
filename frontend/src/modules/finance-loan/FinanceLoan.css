@@ -340,6 +340,54 @@
     white-space: nowrap;
 }
 
+.loan-date-filter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.loan-date-input {
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid #e1e8f1;
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #27364b;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.loan-date-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.loan-date-clear-link {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0 4px;
+}
+
+.loan-date-clear-link:hover {
+    color: #1d4ed8;
+}
+
+.loan-date-range-error {
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 
 .loan-table-wrapper {
     width: 100%;
@@ -1745,4 +1793,812 @@
 
 .timeline-item.pending .timeline-date {
     color: #cbd5e1;
+}
+
+/* Payout Tracker Styles */
+.payout-tracker-tab {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.payout-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.payout-badge.received {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.payout-badge.partial {
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.payout-badge.overdue {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.payout-badge.pending {
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.payout-estimated-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #b45309;
+    background: #fef3c7;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 3px;
+    border: 1px solid #fde68a;
+}
+
+.payout-overdue-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    user-select: none;
+    margin-left: 4px;
+}
+
+.payout-date-range {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.payout-date-range input[type="date"] {
+    padding: 5px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #1e293b;
+    background: #ffffff;
+}
+
+
+/* Payout Kind Badge (DO amount vs Commission) */
+.payout-kind-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.payout-kind-badge.do-amount {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.payout-kind-badge.commission {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+
+/* Payout Split Summary Groups */
+.payout-summary-group {
+    margin-bottom: 12px;
+}
+
+.payout-summary-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.payout-summary-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+/* ------------------------------------------------------------- */
+/* CC / STOCK-FUNDING TRACKER STYLES                             */
+/* ------------------------------------------------------------- */
+
+.funding-tab-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 10px;
+}
+
+.funding-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.funding-metric-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.funding-metric-card.metric-card-danger {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.funding-metric-card .metric-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #64748b;
+}
+
+.funding-metric-card .metric-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.funding-metric-card .metric-value.metric-used {
+    color: #2563eb;
+}
+
+.funding-metric-card .metric-value.metric-available {
+    color: #059669;
+}
+
+.funding-metric-card .metric-subtext {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.danger-text {
+    color: #dc2626 !important;
+}
+
+.funding-progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.funding-progress-bar-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+.progress-normal {
+    background: #2563eb;
+}
+
+.progress-warning {
+    background: #d97706;
+}
+
+.progress-danger {
+    background: #dc2626;
+}
+
+.funding-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.funding-section-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.funding-section-subtitle {
+    margin: 3px 0 0;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.funding-facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.facility-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.facility-card.facility-overlimit {
+    border-color: #ef4444;
+    background: #fffbfa;
+}
+
+.facility-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.facility-bank-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    display: block;
+}
+
+.facility-product-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.facility-key-label {
+    font-size: 11px;
+    color: #94a3b8;
+    font-family: monospace;
+}
+
+.facility-card-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.facility-card-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.facility-card-stat .stat-label {
+    font-size: 10px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.facility-card-stat .stat-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.text-used {
+    color: #2563eb !important;
+}
+
+.text-available {
+    color: #059669 !important;
+}
+
+.facility-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.facility-bar-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.facility-card-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 10px;
+    font-size: 11px;
+}
+
+.footer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.footer-label {
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+.footer-val {
+    font-weight: 600;
+    color: #334155;
+}
+
+.funding-draws-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.funding-filter-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #475569;
+}
+
+.filter-group select,
+.filter-group input {
+    height: 32px;
+    padding: 4px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 12px;
+}
+
+.filter-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-search input {
+    width: 100%;
+}
+
+.funding-table-wrapper {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.funding-draws-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: left;
+}
+
+.funding-draws-table th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.funding-draws-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.funding-draws-table tr:hover {
+    background: #f8fafc;
+}
+
+.funding-draws-table tr.row-overdue {
+    background: #fef2f2;
+}
+
+.table-facility-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.table-product-code {
+    display: inline-block;
+    font-size: 10px;
+    background: #e2e8f0;
+    padding: 1px 5px;
+    border-radius: 3px;
+    width: fit-content;
+    color: #334155;
+    font-weight: 600;
+}
+
+.table-facility-key {
+    font-size: 10px;
+    color: #94a3b8;
+    font-family: monospace;
+}
+
+.table-amount {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.text-outstanding {
+    color: #b91c1c;
+}
+
+.text-zero {
+    color: #059669;
+}
+
+.table-due-date {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.funding-alert-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-repaid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-overdue {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    animation: pulse 2s infinite;
+}
+
+.badge-due-today {
+    background: #ffedd5;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+    font-weight: 700;
+}
+
+.badge-due-tomorrow {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge-due-10 {
+    background: #fef9c3;
+    color: #a16207;
+}
+
+.badge-due-20 {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.badge-due-30 {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.badge-normal {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.interest-cell {
+    font-family: monospace;
+    color: #334155;
+    font-weight: 600;
+}
+
+.table-notes-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-width: 220px;
+}
+
+.table-notes-cell code {
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: #0f172a;
+}
+
+.branch-tag {
+    font-size: 10px;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 1px 5px;
+    border-radius: 3px;
+    width: fit-content;
+}
+
+.notes-text {
+    margin: 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.table-actions-cell {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-repay {
+    background: #059669;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-repay:hover {
+    background: #047857;
+}
+
+.btn-edit {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background: #e2e8f0;
+}
+
+/* Modal Styles */
+.funding-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.funding-modal-card {
+    background: #ffffff;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.funding-modal-large {
+    max-width: 650px;
+}
+
+.funding-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.funding-modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #0f172a;
+}
+
+.funding-modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.funding-modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: #f8fafc;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.funding-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.funding-form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.funding-form-group input,
+.funding-form-group select,
+.funding-form-group textarea {
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.form-help {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.facility-quick-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #eff6ff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #1e40af;
+}
+
+.funding-modal-warning {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #b45309;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.funding-modal-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.repay-draw-summary {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.funding-history-section {
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+.funding-history-section h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: #334155;
+}
+
+.funding-history-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 11px;
+    color: #475569;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.funding-history-list code {
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.funding-error-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.funding-loading,
+.funding-empty-state {
+    padding: 30px;
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
 }

@@ -14,19 +14,24 @@ enum Department {
 }
 
 model User {
-  id                    String            @id @default(cuid())
-  email                 String            @unique
+  id                    String              @id @default(cuid())
+  email                 String              @unique
   firstName             String
   lastName              String
   passwordHash          String?
   department            Department?
-  isActive              Boolean           @default(true)
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
+  isActive              Boolean             @default(true)
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
   roles                 UserRole[]
   branchAccess          UserBranch[]
   loanApplications      LoanApplication[]
   createdJournalEntries JournalEntry[]
+  payoutReceipts        LoanPayoutReceipt[]
+  payoutHistoryEntries  LoanPayoutHistory[]
+  fundingDraws          FundingDraw[]
+  fundingRepayments     FundingRepayment[]
+  fundingDrawHistories  FundingDrawHistory[]
 }
 
 model Branch {
@@ -39,6 +44,7 @@ model Branch {
   journalEntries   JournalEntry[]
   accounts         Account[]
   vehicles         Vehicle[]
+  fundingDraws     FundingDraw[]
   createdAt        DateTime          @default(now())
 }
 
@@ -94,14 +100,17 @@ enum LenderType {
 }
 
 model Lender {
-  id               String            @id @default(cuid())
-  name             String
-  tallyLedgerName  String            @unique
-  type             LenderType
-  isActive         Boolean           @default(true)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  loanApplications LoanApplication[]
+  id                   String            @id @default(cuid())
+  name                 String
+  tallyLedgerName      String            @unique
+  type                 LenderType
+  isActive             Boolean           @default(true)
+  payoutDays           Int?
+  commissionPayoutDays Int?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  loanApplications     LoanApplication[]
+  fundingFacilities    FundingFacility[]
 
   @@index([type])
   @@index([isActive])
@@ -138,12 +147,69 @@ model LoanApplication {
   submittingUser   User        @relation(fields: [submittingUserId], references: [id], onDelete: Restrict)
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  payouts          LoanPayout[]
 
   @@index([branchId])
   @@index([lenderId])
   @@index([status])
   @@index([createdAt])
   @@index([branchId, status])
+}
+
+enum PayoutKind {
+  LOAN_AMOUNT
+  COMMISSION
+}
+
+model LoanPayout {
+  id             String              @id @default(cuid())
+  loanId         String
+  kind           PayoutKind
+  loan           LoanApplication     @relation(fields: [loanId], references: [id], onDelete: Restrict)
+  expectedAmount Decimal             @db.Decimal(14, 2)
+  expectedDate   DateTime
+  dateEstimated  Boolean             @default(false)
+  notes          String?
+  receipts       LoanPayoutReceipt[]
+  history        LoanPayoutHistory[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@unique([loanId, kind])
+  @@index([expectedDate])
+  @@index([kind])
+}
+
+model LoanPayoutReceipt {
+  id           String      @id @default(cuid())
+  payoutId     String
+  payout       LoanPayout  @relation(fields: [payoutId], references: [id], onDelete: Restrict)
+  amount       Decimal     @db.Decimal(14, 2)
+  receivedDate DateTime
+  reference    String?
+  receivedInto String?
+  createdById  String
+  createdBy    User        @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt    DateTime    @default(now())
+
+  @@index([payoutId])
+  @@index([receivedDate])
+  @@index([createdById])
+}
+
+model LoanPayoutHistory {
+  id        String     @id @default(cuid())
+  payoutId  String
+  payout    LoanPayout @relation(fields: [payoutId], references: [id], onDelete: Restrict)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Restrict)
+  field     String
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime   @default(now())
+
+  @@index([payoutId])
+  @@index([createdAt])
 }
 
 enum AccountType {
@@ -541,3 +607,86 @@ model RcBookRule {
 
   @@index([isActive, category])
 }
+
+enum FundingFacilityType {
+  CC
+  INVENTORY
+  OTHER
+}
+
+model FundingFacility {
+  id              String               @id @default(cuid())
+  facilityKey     String               @unique
+  bankName        String
+  productCode     String
+  facilityType    FundingFacilityType  @default(INVENTORY)
+  sanctionedLimit Decimal              @db.Decimal(16, 2)
+  roiPercent      Decimal?             @db.Decimal(5, 2)
+  graceDays       Int?
+  isActive        Boolean              @default(true)
+  lenderId        String?
+  lender          Lender?              @relation(fields: [lenderId], references: [id], onDelete: Restrict)
+  draws           FundingDraw[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([bankName])
+  @@index([isActive])
+}
+
+model FundingDraw {
+  id           String               @id @default(cuid())
+  facilityId   String
+  facility     FundingFacility      @relation(fields: [facilityId], references: [id], onDelete: Restrict)
+  drawDate     DateTime             @db.Date
+  amount       Decimal              @db.Decimal(16, 2)
+  reference    String?
+  notes        String?
+  branchId     String?
+  branch       Branch?              @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  createdById  String
+  createdBy    User                 @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  repayments   FundingRepayment[]
+  history      FundingDrawHistory[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@index([facilityId])
+  @@index([drawDate])
+  @@index([createdById])
+  @@index([branchId])
+}
+
+model FundingRepayment {
+  id          String       @id @default(cuid())
+  drawId      String
+  draw        FundingDraw  @relation(fields: [drawId], references: [id], onDelete: Restrict)
+  paymentDate DateTime     @db.Date
+  amount      Decimal      @db.Decimal(16, 2)
+  reference   String?
+  notes       String?
+  createdById String
+  createdBy   User         @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime     @default(now())
+
+  @@index([drawId])
+  @@index([paymentDate])
+  @@index([createdById])
+}
+
+model FundingDrawHistory {
+  id        String      @id @default(cuid())
+  drawId    String
+  draw      FundingDraw @relation(fields: [drawId], references: [id], onDelete: Restrict)
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  field     String
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime    @default(now())
+
+  @@index([drawId])
+  @@index([createdAt])
+  @@index([userId])
+}
+

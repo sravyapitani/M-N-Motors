@@ -85,6 +85,21 @@ export type Lender = Prisma.LenderModel
  */
 export type LoanApplication = Prisma.LoanApplicationModel
 /**
+ * Model LoanPayout
+ * 
+ */
+export type LoanPayout = Prisma.LoanPayoutModel
+/**
+ * Model LoanPayoutReceipt
+ * 
+ */
+export type LoanPayoutReceipt = Prisma.LoanPayoutReceiptModel
+/**
+ * Model LoanPayoutHistory
+ * 
+ */
+export type LoanPayoutHistory = Prisma.LoanPayoutHistoryModel
+/**
  * Model Account
  * 
  */
@@ -149,3 +164,23 @@ export type RcBookVerification = Prisma.RcBookVerificationModel
  * 
  */
 export type RcBookRule = Prisma.RcBookRuleModel
+/**
+ * Model FundingFacility
+ * 
+ */
+export type FundingFacility = Prisma.FundingFacilityModel
+/**
+ * Model FundingDraw
+ * 
+ */
+export type FundingDraw = Prisma.FundingDrawModel
+/**
+ * Model FundingRepayment
+ * 
+ */
+export type FundingRepayment = Prisma.FundingRepaymentModel
+/**
+ * Model FundingDrawHistory
+ * 
+ */
+export type FundingDrawHistory = Prisma.FundingDrawHistoryModel

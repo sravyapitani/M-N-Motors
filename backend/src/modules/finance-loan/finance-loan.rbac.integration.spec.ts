@@ -191,6 +191,16 @@ describe('FinanceLoanService — Real Database RBAC Integration Tests', () => {
   after(async () => {
     try {
       if (createdLoanIds.length > 0) {
+        // Delete child payout records first to satisfy ON DELETE RESTRICT
+        await prisma.loanPayoutReceipt.deleteMany({
+          where: { payout: { loanId: { in: createdLoanIds } } },
+        });
+        await prisma.loanPayoutHistory.deleteMany({
+          where: { payout: { loanId: { in: createdLoanIds } } },
+        });
+        await prisma.loanPayout.deleteMany({
+          where: { loanId: { in: createdLoanIds } },
+        });
         await prisma.loanApplication.deleteMany({
           where: { id: { in: createdLoanIds } },
         });

@@ -1,11 +1,12 @@
 
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AppLayout.css';
 import ArtifactToolbar from '../components/ArtifactToolbar';
 import { useAuth } from '../context/AuthContext';
 import AICopilot from '../components/AICopilot';
 import { getAllowedRoutes } from '../routes/roleRoutes';
+import { PayoutAlertsBell, usePayoutAlertsCount } from '../modules/finance-loan/PayoutAlertsBell';
 
 type AppLayoutProps = {
     children: ReactNode;
@@ -48,6 +49,9 @@ function AppLayout({ children }: AppLayoutProps) {
     const [searchText, setSearchText] = useState('');
     const [darkMode, setDarkMode] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const profileMenuRef = useRef<HTMLDivElement>(null);
+    const alertCount = usePayoutAlertsCount();
 
     const userRoles = user?.roles && user.roles.length > 0 ? user.roles : ['STAFF'];
     const primaryRole = userRoles[0];
@@ -66,9 +70,30 @@ function AppLayout({ children }: AppLayoutProps) {
     }, [allowedRoutes, location.pathname, navigate]);
 
     const handleLogout = () => {
+        setShowProfileMenu(false);
         logout();
         navigate('/dashboard', { replace: true });
     };
+
+    useEffect(() => {
+        if (!showProfileMenu) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(e.target as Node)) {
+                setShowProfileMenu(false);
+            }
+        };
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setShowProfileMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [showProfileMenu]);
 
     const visibleGroups = navigationGroups
         .map((group) => ({
@@ -211,7 +236,7 @@ function AppLayout({ children }: AppLayoutProps) {
                                     aria-label="Toggle notifications"
                                     aria-expanded={showNotifications}
                                 >
-                                    🔔<span className="notification-dot" />
+                                    🔔{alertCount > 0 && <span className="notification-dot" />}
                                 </button>
 
                                 {showNotifications && (
@@ -228,7 +253,7 @@ function AppLayout({ children }: AppLayoutProps) {
                                             <div className="notification-panel-header">
                                                 <div>
                                                     <h2>Notifications</h2>
-                                                    <p>6 recent alerts</p>
+                                                    <p>Recent alerts</p>
                                                 </div>
 
                                                 <button
@@ -242,6 +267,7 @@ function AppLayout({ children }: AppLayoutProps) {
                                             </div>
 
                                             <div className="notification-list">
+                                                <PayoutAlertsBell isOpen={showNotifications} />
                                                 <div className="notification-item">
                                                     <span className="notification-icon">🚨</span>
                                                     <div>
@@ -304,25 +330,43 @@ function AppLayout({ children }: AppLayoutProps) {
                                 )}
                             </div>
 
-                            <div className="user-profile" title={`Signed in as ${displayName}`}>
-                                <span className="user-avatar">{initials}</span>
+                            <div className="user-profile-wrapper" ref={profileMenuRef}>
+                                <button
+                                    type="button"
+                                    className="user-profile"
+                                    onClick={() => setShowProfileMenu((prev) => !prev)}
+                                    title={`Signed in as ${displayName}`}
+                                    aria-label="User profile menu"
+                                    aria-expanded={showProfileMenu}
+                                    aria-haspopup="true"
+                                >
+                                    <span className="user-avatar">{initials}</span>
 
-                                <span className="user-details">
-                                    <strong>{displayName}</strong>
-                                    <small>{primaryRole}</small>
-                                </span>
+                                    <span className="user-details">
+                                        <strong>{displayName}</strong>
+                                        <small>{primaryRole}</small>
+                                    </span>
+                                </button>
+
+                                {showProfileMenu && (
+                                    <div className="user-profile-dropdown" role="menu">
+                                        <div className="profile-dropdown-header">
+                                            <strong className="profile-dropdown-name">{displayName}</strong>
+                                            <span className="profile-dropdown-email">{user?.email || ''}</span>
+                                            <span className="profile-dropdown-role">{primaryRole}</span>
+                                        </div>
+                                        <div className="profile-dropdown-divider" />
+                                        <button
+                                            type="button"
+                                            className="profile-dropdown-signout"
+                                            onClick={handleLogout}
+                                            role="menuitem"
+                                        >
+                                            Sign out
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-
-                            <button
-                                type="button"
-                                className="header-icon-button"
-                                onClick={handleLogout}
-                                title="Sign out"
-                                aria-label="Sign out"
-                                style={{ fontSize: '0.8rem', padding: '0.35rem 0.6rem', color: '#ef4444' }}
-                            >
-                                Sign Out
-                            </button>
                         </div>
                     </header>
 

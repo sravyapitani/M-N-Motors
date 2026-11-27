@@ -1,0 +1,249 @@
+/* Payout Alerts Bell Component Styles */
+.payout-alerts-bell-section {
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.payout-alerts-bell-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #475569;
+    background: #f8fafc;
+    border-radius: 4px;
+    margin: 0 0.25rem 0.35rem 0.25rem;
+}
+
+.payout-alerts-bell-header .payout-badge-count {
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 9999px;
+}
+
+.payout-alert-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+    margin: 0 0.25rem 0.25rem 0.25rem;
+}
+
+.payout-alert-link:hover {
+    background: #f1f5f9;
+}
+
+.payout-alert-link.alert-overdue {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+}
+
+.payout-alert-link.alert-overdue:hover {
+    background: #fee2e2;
+}
+
+.payout-alert-link.alert-due-soon {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+}
+
+.payout-alert-link.alert-due-soon:hover {
+    background: #fef3c7;
+}
+
+.payout-alert-link.alert-date-to-confirm {
+    background: #f8fafc;
+    border-left: 3px solid #94a3b8;
+}
+
+.payout-alert-link.alert-date-to-confirm:hover {
+    background: #f1f5f9;
+}
+
+.payout-alert-icon-box {
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: 0.1rem;
+}
+
+.payout-alert-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.payout-alert-header-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.15rem;
+}
+
+.payout-alert-urgency-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.alert-overdue .payout-alert-urgency-tag {
+    color: #dc2626;
+}
+
+.alert-due-soon .payout-alert-urgency-tag {
+    color: #d97706;
+}
+
+.alert-date-to-confirm .payout-alert-urgency-tag {
+    color: #64748b;
+}
+
+.payout-alert-type-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.05);
+    color: #334155;
+}
+
+.payout-alert-customer-line {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.payout-alert-amount-line {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin: 0.1rem 0 0 0;
+}
+
+.payout-alert-amount-line strong {
+    color: #0f172a;
+}
+
+/* Payout Alerts Pop-up Toast */
+.payout-alerts-toast {
+    position: fixed;
+    top: 76px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+    font-size: 0.82rem;
+    font-weight: 500;
+    max-width: 420px;
+    animation: payout-toast-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+@keyframes payout-toast-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.payout-alerts-toast.payout-toast-red {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+}
+
+.payout-alerts-toast.payout-toast-amber {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+}
+
+.payout-toast-message {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.payout-toast-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.payout-toast-view-btn {
+    border: none;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.payout-toast-red .payout-toast-view-btn {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.payout-toast-red .payout-toast-view-btn:hover {
+    background: #dc2626;
+}
+
+.payout-toast-amber .payout-toast-view-btn {
+    background: #f59e0b;
+    color: #ffffff;
+}
+
+.payout-toast-amber .payout-toast-view-btn:hover {
+    background: #d97706;
+}
+
+.payout-toast-view-btn:active {
+    transform: scale(0.96);
+}
+
+.payout-toast-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.65;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.payout-toast-close-btn:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+}
+
